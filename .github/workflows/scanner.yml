@@ -5,22 +5,14 @@ on:
   workflow_dispatch:
 
   schedule:
-    # 09:30 WIB = 02:30 UTC
-    # Senin-Jumat
+
     - cron: "30 2 * * 1-5"
 
 
-# ==========================================================
-# PERMISSIONS
-# ==========================================================
-
 permissions:
+
   contents: write
 
-
-# ==========================================================
-# CONCURRENCY
-# ==========================================================
 
 concurrency:
 
@@ -40,9 +32,9 @@ jobs:
 
     steps:
 
-      # ====================================================
-      # 1. CHECKOUT
-      # ====================================================
+      # =================================================
+      # CHECKOUT
+      # =================================================
 
       - name: Checkout repository
 
@@ -53,9 +45,9 @@ jobs:
           fetch-depth: 0
 
 
-      # ====================================================
-      # 2. PYTHON
-      # ====================================================
+      # =================================================
+      # PYTHON
+      # =================================================
 
       - name: Setup Python
 
@@ -66,9 +58,9 @@ jobs:
           python-version: "3.11"
 
 
-      # ====================================================
-      # 3. INSTALL
-      # ====================================================
+      # =================================================
+      # INSTALL
+      # =================================================
 
       - name: Install dependencies
 
@@ -76,17 +68,14 @@ jobs:
 
           python -m pip install --upgrade pip
 
-          pip install \
-            yfinance \
-            pandas \
-            numpy
+          pip install yfinance pandas numpy
 
 
-      # ====================================================
-      # 4. STATUS RUNNING
-      # ====================================================
+      # =================================================
+      # STATUS RUNNING
+      # =================================================
 
-      - name: Set scan status RUNNING
+      - name: Set scanner status RUNNING
 
         run: |
 
@@ -96,11 +85,25 @@ jobs:
           from datetime import datetime
           from zoneinfo import ZoneInfo
 
-          now = datetime.now(
-              ZoneInfo("Asia/Jakarta")
-          ).strftime(
+          TZ = ZoneInfo("Asia/Jakarta")
+
+          now = datetime.now(TZ).strftime(
               "%Y-%m-%d %H:%M:%S"
           )
+
+          try:
+
+              with open(
+                  "scan_status.json",
+                  "r",
+                  encoding="utf-8"
+              ) as f:
+
+                  old = json.load(f)
+
+          except Exception:
+
+              old = {}
 
           data = {
 
@@ -108,7 +111,26 @@ jobs:
 
               "started_at": now,
 
-              "finished_at": None
+              "finished_at":
+                  old.get("finished_at"),
+
+              "duration_seconds":
+                  None,
+
+              "duration_text":
+                  None,
+
+              "total_tickers":
+                  old.get("total_tickers", 0),
+
+              "processed":
+                  0,
+
+              "errors":
+                  0,
+
+              "candidates":
+                  0
 
           }
 
@@ -121,59 +143,52 @@ jobs:
               json.dump(
                   data,
                   f,
+                  ensure_ascii=False,
                   indent=2
               )
 
           PY
 
 
-      # ====================================================
-      # 5. COMMIT RUNNING
-      # ====================================================
+      # =================================================
+      # COMMIT RUNNING STATUS
+      # =================================================
 
       - name: Commit RUNNING status
 
         run: |
 
-          git config user.name \
-            "github-actions[bot]"
+          git config user.name "github-actions[bot]"
 
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add scan_status.json
 
-          if git diff --cached --quiet; then
+          git diff --cached --quiet || git commit -m "scanner running"
 
-            echo "Status RUNNING tidak berubah."
-
-          else
-
-            git commit -m "scanner: running"
-
-            git push
-
-          fi
+          git push
 
 
-      # ====================================================
-      # 6. JALANKAN SCANNER
-      # ====================================================
+      # =================================================
+      # RUN SCANNER
+      # =================================================
 
-      - name: Run SMC OB Scanner
+      - name: Run scanner
+
+        id: scanner
+
+        continue-on-error: true
 
         run: |
 
           python scanner.py
 
 
-      # ====================================================
-      # 7. STATUS SUCCESS
-      # ====================================================
+      # =================================================
+      # SET FINAL STATUS
+      # =================================================
 
-      - name: Set scan status SUCCESS
-
-        if: success()
+      - name: Set final scanner status
 
         run: |
 
@@ -183,19 +198,37 @@ jobs:
           from datetime import datetime
           from zoneinfo import ZoneInfo
 
-          now = datetime.now(
-              ZoneInfo("Asia/Jakarta")
-          ).strftime(
+          TZ = ZoneInfo("Asia/Jakarta")
+
+          now = datetime.now(TZ).strftime(
               "%Y-%m-%d %H:%M:%S"
           )
 
-          data = {
+          try:
 
-              "status": "success",
+              with open(
+                  "scan_status.json",
+                  "r",
+                  encoding="utf-8"
+              ) as f:
 
-              "finished_at": now
+                  data = json.load(f)
 
-          }
+          except Exception:
+
+              data = {}
+
+          scanner_outcome = "${{ steps.scanner.outcome }}"
+
+          if scanner_outcome == "success":
+
+              data["status"] = "success"
+
+          else:
+
+              data["status"] = "failed"
+
+          data["finished_at"] = now
 
           with open(
               "scan_status.json",
@@ -206,83 +239,44 @@ jobs:
               json.dump(
                   data,
                   f,
+                  ensure_ascii=False,
                   indent=2
               )
 
           PY
 
 
-      # ====================================================
-      # 8. STATUS FAILED
-      # ====================================================
+      # =================================================
+      # COMMIT RESULT
+      # =================================================
 
-      - name: Set scan status FAILED
-
-        if: failure()
-
-        run: |
-
-          python - <<'PY'
-
-          import json
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-
-          now = datetime.now(
-              ZoneInfo("Asia/Jakarta")
-          ).strftime(
-              "%Y-%m-%d %H:%M:%S"
-          )
-
-          data = {
-
-              "status": "failed",
-
-              "finished_at": now
-
-          }
-
-          with open(
-              "scan_status.json",
-              "w",
-              encoding="utf-8"
-          ) as f:
-
-              json.dump(
-                  data,
-                  f,
-                  indent=2
-              )
-
-          PY
-
-
-      # ====================================================
-      # 9. SIMPAN SEMUA HASIL
-      # ====================================================
-
-      - name: Commit scan results
+      - name: Commit scanner results
 
         if: always()
 
         run: |
 
-          git config user.name \
-            "github-actions[bot]"
+          git config user.name "github-actions[bot]"
 
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -A
+          git add results.json scan_status.json
 
-          if git diff --cached --quiet; then
+          git diff --cached --quiet || git commit -m "update scanner results"
 
-            echo "Tidak ada perubahan untuk disimpan."
+          git push
 
-          else
 
-            git commit -m "scanner: update results"
+      # =================================================
+      # FAIL JOB IF SCANNER FAILED
+      # =================================================
 
-            git push
+      - name: Fail workflow if scanner failed
 
-          fi
+        if: steps.scanner.outcome == 'failure'
+
+        run: |
+
+          echo "Scanner gagal."
+
+          exit 1
