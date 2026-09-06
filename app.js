@@ -2,11 +2,9 @@
 // KONFIGURASI
 // ==========================================================
 
-const RESULTS_URL =
-    "results.json";
+const RESULTS_URL = "results.json";
 
-const STATUS_URL =
-    "scan_status.json";
+const STATUS_URL = "scan_status.json";
 
 const WORKER_URL =
     "https://flat-firefly-50c7smc-ob-trigger.fajarnoviantov.workers.dev/";
@@ -20,12 +18,9 @@ async function loadResults() {
 
     try {
 
-        const response =
-            await fetch(
-                RESULTS_URL +
-                "?t=" +
-                Date.now()
-            );
+        const response = await fetch(
+            RESULTS_URL + "?t=" + Date.now()
+        );
 
         if (!response.ok) {
 
@@ -35,8 +30,7 @@ async function loadResults() {
 
         }
 
-        const result =
-            await response.json();
+        const result = await response.json();
 
 
         document.getElementById(
@@ -71,7 +65,16 @@ async function loadResults() {
         document.getElementById(
             "scanProgress"
         ).textContent =
-            `${result.processed ?? result.total_tickers ?? 0} / ${result.total_tickers ?? 0}`;
+            String(
+                result.processed ??
+                result.total_tickers ??
+                0
+            ) +
+            " / " +
+            String(
+                result.total_tickers ??
+                0
+            );
 
 
         document.getElementById(
@@ -93,10 +96,12 @@ async function loadResults() {
                 result.total_tickers
             ) || 0;
 
+
         const processed =
             Number(
                 result.processed
             ) || 0;
+
 
         let percent = 0;
 
@@ -143,12 +148,9 @@ async function loadScanStatus() {
 
     try {
 
-        const response =
-            await fetch(
-                STATUS_URL +
-                "?t=" +
-                Date.now()
-            );
+        const response = await fetch(
+            STATUS_URL + "?t=" + Date.now()
+        );
 
         if (!response.ok) {
 
@@ -219,7 +221,7 @@ function updateScannerStatus(
 
 
     // ======================================================
-    // SCANNER RUNNING
+    // RUNNING
     // ======================================================
 
     if (
@@ -256,7 +258,7 @@ function updateScannerStatus(
 
 
     // ======================================================
-    // SCANNER FAILED
+    // FAILED
     // ======================================================
 
     if (
@@ -293,7 +295,7 @@ function updateScannerStatus(
 
 
     // ======================================================
-    // SCANNER READY / SUCCESS
+    // READY / SUCCESS
     // ======================================================
 
     liveDot.classList.remove(
@@ -403,10 +405,12 @@ async function startScan() {
     try {
 
         // ==================================================
-        // JALANKAN GITHUB ACTIONS
+        // KIRIM POST KE CLOUDFLARE WORKER
         //
-        // POST TANPA BODY
-        // POST TANPA CONTENT-TYPE
+        // Tidak menggunakan:
+        // - Content-Type
+        // - JSON
+        // - body
         //
         // Tujuannya menghindari CORS preflight.
         // ==================================================
@@ -421,7 +425,7 @@ async function startScan() {
 
 
         // ==================================================
-        // BACA RESPONSE WORKER
+        // BACA RESPONSE
         // ==================================================
 
         let result = null;
@@ -450,8 +454,12 @@ async function startScan() {
         ) {
 
             throw new Error(
-                result?.message ||
-                `HTTP ${response.status}`
+                (
+                    result &&
+                    result.message
+                ) ||
+                "HTTP " +
+                response.status
             );
 
         }
@@ -486,7 +494,7 @@ async function startScan() {
 
 
         // ==================================================
-        // LOAD HASIL TERBARU
+        // LOAD HASIL
         // ==================================================
 
         await loadResults();
@@ -501,7 +509,7 @@ async function startScan() {
 
 
         // ==================================================
-        // KEMBALIKAN STATUS KE ERROR
+        // STATUS ERROR
         // ==================================================
 
         liveDot.classList.remove(
@@ -553,26 +561,20 @@ function renderTable(
 
 
     // ======================================================
-    // TIDAK ADA KANDIDAT
+    // TIDAK ADA DATA
     // ======================================================
 
-    if (!data.length) {
+    if (
+        !data.length
+    ) {
 
-        body.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="10"
-                    class="empty"
-                >
-                    Tidak ada kandidat
-                    yang memenuhi filter.
-                </td>
-
-            </tr>
-
-        `;
+        body.innerHTML =
+            "<tr>" +
+            "<td colspan=\"10\" class=\"empty\">" +
+            "Tidak ada kandidat " +
+            "yang memenuhi filter." +
+            "</td>" +
+            "</tr>";
 
         return;
 
@@ -580,80 +582,85 @@ function renderTable(
 
 
     // ======================================================
-    // TAMPILKAN DATA
+    // RENDER DATA
     // ======================================================
 
     body.innerHTML =
         data.map(
-            (item, index) => `
+            function(item, index) {
 
-            <tr>
+                return (
+                    "<tr>" +
 
-                <td>
-                    ${index + 1}
-                </td>
+                    "<td>" +
+                    (index + 1) +
+                    "</td>" +
 
-                <td class="ticker">
-                    ${item.ticker ?? "-"}
-                </td>
+                    "<td class=\"ticker\">" +
+                    (item.ticker ?? "-") +
+                    "</td>" +
 
-                <td>
-                    ${item.ob_range ?? "-"}
-                </td>
+                    "<td>" +
+                    (item.ob_range ?? "-") +
+                    "</td>" +
 
-                <td>
-                    ${item.sl ?? "-"}
-                    <small>
-                        (${item.sl_pct ?? "-"}%)
-                    </small>
-                </td>
+                    "<td>" +
+                    (item.sl ?? "-") +
+                    " <small>(" +
+                    (item.sl_pct ?? "-") +
+                    "%)</small>" +
+                    "</td>" +
 
-                <td>
-                    ${item.tp ?? "-"}
-                    <small>
-                        (${item.tp_pct ?? "-"}%)
-                    </small>
-                </td>
+                    "<td>" +
+                    (item.tp ?? "-") +
+                    " <small>(" +
+                    (item.tp_pct ?? "-") +
+                    "%)</small>" +
+                    "</td>" +
 
-                <td class="rr">
-                    1:${Number(
+                    "<td class=\"rr\">" +
+                    "1:" +
+                    Number(
                         item.rr ?? 0
-                    ).toFixed(1)}
-                </td>
+                    ).toFixed(1) +
+                    "</td>" +
 
-                <td>
-                    ${Number(
+                    "<td>" +
+                    Number(
                         item.distance ?? 0
-                    ).toFixed(2)}%
-                </td>
+                    ).toFixed(2) +
+                    "%" +
+                    "</td>" +
 
-                <td>
-                    ${item.bos_age ?? "-"}
-                </td>
+                    "<td>" +
+                    (item.bos_age ?? "-") +
+                    "</td>" +
 
-                <td>
-                    ${Number(
+                    "<td>" +
+                    Number(
                         item.ob_size ?? 0
-                    ).toFixed(2)}%
-                </td>
+                    ).toFixed(2) +
+                    "%" +
+                    "</td>" +
 
-                <td class="score">
-                    ${Number(
+                    "<td class=\"score\">" +
+                    Number(
                         item.score ?? 0
-                    ).toFixed(2)}
-                </td>
+                    ).toFixed(2) +
+                    "</td>" +
 
-            </tr>
+                    "</tr>"
+                );
 
-        `
-        )
-        .join("");
+            }
+        ).join("");
+
 
 }
 
 
 // ==========================================================
-// FORMAT TANGGAL DAN WAKTU
+// FORMAT TANGGAL
 // ==========================================================
 
 function formatDateTime(
@@ -668,7 +675,7 @@ function formatDateTime(
 
 
     // ======================================================
-    // JIKA SUDAH ADA WIB
+    // SUDAH FORMAT WIB
     // ======================================================
 
     if (
@@ -757,15 +764,25 @@ function formatDateTime(
 
 
     return (
-        `${day}-${month}-${year} ` +
-        `${hour}:${minute}:${second} WIB`
+        day +
+        "-" +
+        month +
+        "-" +
+        year +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second +
+        " WIB"
     );
 
 }
 
 
 // ==========================================================
-// REFRESH SEMUA DATA
+// REFRESH
 // ==========================================================
 
 function refreshAll() {
@@ -778,7 +795,7 @@ function refreshAll() {
 
 
 // ==========================================================
-// LOAD SAAT WEBSITE DIBUKA
+// LOAD AWAL
 // ==========================================================
 
 loadResults();
@@ -788,7 +805,7 @@ loadScanStatus();
 
 // ==========================================================
 // AUTO REFRESH HASIL
-// Setiap 10 detik
+// 10 DETIK
 // ==========================================================
 
 setInterval(
@@ -799,7 +816,7 @@ setInterval(
 
 // ==========================================================
 // AUTO REFRESH STATUS
-// Setiap 5 detik
+// 5 DETIK
 // ==========================================================
 
 setInterval(
