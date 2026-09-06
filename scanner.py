@@ -3,18 +3,28 @@ import pandas as pd
 import json
 import math
 import time
-from datetime import datetime, timezone
+
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 
 # =========================================================
-# TIMESTAMP
+# TIMESTAMP & TIMER
 # =========================================================
-RUN_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+TZ_WIB = ZoneInfo("Asia/Jakarta")
+
+START_TIME = time.perf_counter()
+
+RUN_STARTED = datetime.now(
+    TZ_WIB
+).strftime("%Y-%m-%d %H:%M:%S")
 
 
 # =========================================================
 # LOAD DAILY OHLC
 # =========================================================
+
 def load_ohlc_yahoo(ticker, period="3mo"):
 
     df = yf.download(
@@ -38,9 +48,17 @@ def load_ohlc_yahoo(ticker, period="3mo"):
         "Close": "close"
     })
 
-    df = df[["open", "high", "low", "close"]].dropna()
+    df = df[[
+        "open",
+        "high",
+        "low",
+        "close"
+    ]].dropna()
 
-    df.reset_index(drop=True, inplace=True)
+    df.reset_index(
+        drop=True,
+        inplace=True
+    )
 
     return df
 
@@ -48,6 +66,7 @@ def load_ohlc_yahoo(ticker, period="3mo"):
 # =========================================================
 # GENCLASH ENGINE — DO NOT TOUCH
 # =========================================================
+
 def genclash_engine(df, n=5):
 
     top_fractal = None
@@ -62,10 +81,16 @@ def genclash_engine(df, n=5):
 
         o, h, l, c = map(
             float,
-            df.iloc[i][["open", "high", "low", "close"]]
+            df.iloc[i][[
+                "open",
+                "high",
+                "low",
+                "close"
+            ]]
         )
 
         if c < o:
+
             last_red = {
                 "index": i,
                 "open": o,
@@ -75,6 +100,7 @@ def genclash_engine(df, n=5):
             }
 
         if c > o:
+
             last_green = {
                 "index": i,
                 "open": o,
@@ -90,6 +116,7 @@ def genclash_engine(df, n=5):
                 and df.iloc[i].high > df.iloc[i+k].high
                 for k in range(1, n + 1)
             ):
+
                 top_fractal = {
                     "type": "UP",
                     "index": i,
@@ -103,6 +130,7 @@ def genclash_engine(df, n=5):
                 and df.iloc[i].low < df.iloc[i+k].low
                 for k in range(1, n + 1)
             ):
+
                 bottom_fractal = {
                     "type": "DOWN",
                     "index": i,
@@ -113,7 +141,10 @@ def genclash_engine(df, n=5):
 
         if top_fractal and i > top_fractal["index"]:
 
-            if h > top_fractal["high"] or c > top_fractal["high"]:
+            if (
+                h > top_fractal["high"]
+                or c > top_fractal["high"]
+            ):
 
                 last_break = {
                     "direction": "BULLISH",
@@ -121,6 +152,7 @@ def genclash_engine(df, n=5):
                 }
 
                 if last_red:
+
                     last_order_block = {
                         "type": "DEMAND",
                         **last_red
@@ -130,7 +162,10 @@ def genclash_engine(df, n=5):
 
         if bottom_fractal and i > bottom_fractal["index"]:
 
-            if l < bottom_fractal["low"] or c < bottom_fractal["low"]:
+            if (
+                l < bottom_fractal["low"]
+                or c < bottom_fractal["low"]
+            ):
 
                 last_break = {
                     "direction": "BEARISH",
@@ -138,6 +173,7 @@ def genclash_engine(df, n=5):
                 }
 
                 if last_green:
+
                     last_order_block = {
                         "type": "SUPPLY",
                         **last_green
@@ -145,7 +181,11 @@ def genclash_engine(df, n=5):
 
                 bottom_fractal = None
 
-    return last_fractal, last_break, last_order_block
+    return (
+        last_fractal,
+        last_break,
+        last_order_block
+    )
 
 
 # =========================================================
@@ -155,8 +195,10 @@ def genclash_engine(df, n=5):
 def calc_distance_pct(last_close, ob):
 
     return round(
-        (last_close - ob["high"]) /
-        ob["high"] * 100,
+        (
+            (last_close - ob["high"])
+            / ob["high"]
+        ) * 100,
         2
     )
 
@@ -164,34 +206,49 @@ def calc_distance_pct(last_close, ob):
 def calc_ob_size_pct(ob, last_close):
 
     return round(
-        (ob["high"] - ob["low"]) /
-        last_close * 100,
+        (
+            (ob["high"] - ob["low"])
+            / last_close
+        ) * 100,
         2
     )
 
 
 def calc_sl_price_and_pct(ob):
 
-    r = ob["high"] - ob["low"]
+    r = (
+        ob["high"]
+        - ob["low"]
+    )
 
-    sl = ob["low"] - (r * 0.02)
+    sl = (
+        ob["low"]
+        - (r * 0.02)
+    )
 
     sl_pct = round(
-        (ob["high"] - sl) /
-        ob["high"] * 100,
+        (
+            (ob["high"] - sl)
+            / ob["high"]
+        ) * 100,
         2
     )
 
     return sl, sl_pct
 
 
-def calc_tp_price_and_pct(ob, fractal):
+def calc_tp_price_and_pct(
+    ob,
+    fractal
+):
 
     tp = fractal["high"]
 
     tp_pct = round(
-        (tp - ob["high"]) /
-        ob["high"] * 100,
+        (
+            (tp - ob["high"])
+            / ob["high"]
+        ) * 100,
         2
     )
 
@@ -210,11 +267,30 @@ def calc_score(
     ob_size
 ):
 
-    s1 = max(0, 30 - abs(distance))
-    s2 = min(tp * 3, 25)
-    s3 = max(0, 15 - sl)
-    s4 = max(0, 15 - bos_age)
-    s5 = max(0, 15 - ob_size)
+    s1 = max(
+        0,
+        30 - abs(distance)
+    )
+
+    s2 = min(
+        tp * 3,
+        25
+    )
+
+    s3 = max(
+        0,
+        15 - sl
+    )
+
+    s4 = max(
+        0,
+        15 - bos_age
+    )
+
+    s5 = max(
+        0,
+        15 - ob_size
+    )
 
     return round(
         s1 + s2 + s3 + s4 + s5,
@@ -226,7 +302,11 @@ def calc_score(
 # OB TOUCH COUNT
 # =========================================================
 
-def calc_ob_touch_count(df, ob, bos_index):
+def calc_ob_touch_count(
+    df,
+    ob,
+    bos_index
+):
 
     count = 0
 
@@ -235,18 +315,23 @@ def calc_ob_touch_count(df, ob, bos_index):
         len(df)
     ):
 
-        h, l = df.iloc[i][["high", "low"]]
+        h, l = df.iloc[i][[
+            "high",
+            "low"
+        ]]
 
         if (
             ob["type"] == "DEMAND"
             and l <= ob["high"]
         ):
+
             count += 1
 
         if (
             ob["type"] == "SUPPLY"
             and h >= ob["low"]
         ):
+
             count += 1
 
     return count
@@ -267,15 +352,23 @@ rows = []
 
 total = len(TICKERS)
 
+processed = 0
+
+errors = 0
+
 print("========================================")
 print("SMC OB SCANNER")
 print("========================================")
 print("Total ticker :", total)
-print("Started      :", RUN_TIME)
+print("Started      :", RUN_STARTED)
+print("========================================")
 print()
 
 
-for number, ticker in enumerate(TICKERS, 1):
+for number, ticker in enumerate(
+    TICKERS,
+    1
+):
 
     print(
         f"[{number}/{total}] {ticker}",
@@ -284,29 +377,40 @@ for number, ticker in enumerate(TICKERS, 1):
 
     try:
 
-        df = load_ohlc_yahoo(ticker)
+        df = load_ohlc_yahoo(
+            ticker
+        )
 
-        fractal, brk, ob = genclash_engine(df)
+        fractal, brk, ob = (
+            genclash_engine(df)
+        )
 
         if not all([
             fractal,
             brk,
             ob
         ]):
+
+            processed += 1
+
             continue
 
         last_close = float(
             df.iloc[-1].close
         )
 
-        distance = calc_distance_pct(
-            last_close,
-            ob
+        distance = (
+            calc_distance_pct(
+                last_close,
+                ob
+            )
         )
 
-        ob_size = calc_ob_size_pct(
-            ob,
-            last_close
+        ob_size = (
+            calc_ob_size_pct(
+                ob,
+                last_close
+            )
         )
 
         bos_age = (
@@ -315,13 +419,17 @@ for number, ticker in enumerate(TICKERS, 1):
             - brk["break_index"]
         )
 
-        tp, tp_pct = calc_tp_price_and_pct(
-            ob,
-            fractal
+        tp, tp_pct = (
+            calc_tp_price_and_pct(
+                ob,
+                fractal
+            )
         )
 
-        sl, sl_pct = calc_sl_price_and_pct(
-            ob
+        sl, sl_pct = (
+            calc_sl_price_and_pct(
+                ob
+            )
         )
 
         rr = (
@@ -333,53 +441,75 @@ for number, ticker in enumerate(TICKERS, 1):
             else 0
         )
 
-        ob_touch = calc_ob_touch_count(
-            df,
-            ob,
-            brk["break_index"]
+        ob_touch = (
+            calc_ob_touch_count(
+                df,
+                ob,
+                brk["break_index"]
+            )
         )
 
-        score = calc_score(
-            distance,
-            tp_pct,
-            sl_pct,
-            bos_age,
-            ob_size
+        score = (
+            calc_score(
+                distance,
+                tp_pct,
+                sl_pct,
+                bos_age,
+                ob_size
+            )
         )
 
         rows.append({
 
-            "Ticker": ticker,
+            "Ticker":
+                ticker,
 
-            "OB Type": ob["type"],
+            "OB Type":
+                ob["type"],
 
-            "Distance": distance,
+            "Distance":
+                distance,
 
             "OB Range":
                 f"{int(round(ob['high']))}-"
                 f"{int(round(ob['low']))}",
 
-            "TP Price": round(tp, 0),
+            "TP Price":
+                round(tp, 0),
 
-            "SL Price": math.floor(sl),
+            "SL Price":
+                math.floor(sl),
 
-            "TP Percent": round(tp_pct, 1),
+            "TP Percent":
+                round(tp_pct, 1),
 
-            "SL Percent": round(sl_pct, 1),
+            "SL Percent":
+                round(sl_pct, 1),
 
-            "BOS Age": bos_age,
+            "BOS Age":
+                bos_age,
 
-            "OB Size": ob_size,
+            "OB Size":
+                ob_size,
 
-            "OB Touch": ob_touch,
+            "OB Touch":
+                ob_touch,
 
-            "RR": rr,
+            "RR":
+                rr,
 
-            "Score": score
+            "Score":
+                score
 
         })
 
+        processed += 1
+
     except Exception as e:
+
+        errors += 1
+
+        processed += 1
 
         print(
             f"  ERROR: {ticker} -> {e}"
@@ -404,17 +534,33 @@ else:
     final = (
 
         df[
-            (df["OB Type"] == "DEMAND") &
 
-            (df["Distance"] > 0) &
-            (df["Distance"] <= 5) &
+            (df["OB Type"] == "DEMAND")
 
-            (df["BOS Age"] > 0) &
-            (df["BOS Age"] <= 10) &
+            &
 
-            (df["OB Touch"] == 0) &
+            (df["Distance"] > 0)
+
+            &
+
+            (df["Distance"] <= 5)
+
+            &
+
+            (df["BOS Age"] > 0)
+
+            &
+
+            (df["BOS Age"] <= 10)
+
+            &
+
+            (df["OB Touch"] == 0)
+
+            &
 
             (df["RR"] >= 2)
+
         ]
 
         .sort_values(
@@ -428,20 +574,74 @@ else:
 
 
 # =========================================================
+# FINISH TIME
+# =========================================================
+
+END_TIME = time.perf_counter()
+
+RUN_FINISHED = datetime.now(
+    TZ_WIB
+).strftime(
+    "%Y-%m-%d %H:%M:%S"
+)
+
+DURATION_SECONDS = round(
+    END_TIME - START_TIME,
+    1
+)
+
+
+minutes = int(
+    DURATION_SECONDS // 60
+)
+
+seconds = int(
+    DURATION_SECONDS % 60
+)
+
+DURATION_TEXT = (
+    f"{minutes}m {seconds}s"
+)
+
+
+# =========================================================
 # CONVERT TO WEB JSON
 # =========================================================
 
 results = {
 
-    "status": "success",
+    "status":
+        "success",
 
-    "generated_at": RUN_TIME,
+    "generated_at":
+        RUN_FINISHED,
 
-    "total_tickers": total,
+    "started_at":
+        RUN_STARTED,
 
-    "candidates": len(final),
+    "finished_at":
+        RUN_FINISHED,
 
-    "data": []
+    "duration_seconds":
+        DURATION_SECONDS,
+
+    "duration_text":
+        DURATION_TEXT,
+
+    "total_tickers":
+        total,
+
+    "processed":
+        processed,
+
+    "errors":
+        errors,
+
+    "candidates":
+        len(final),
+
+    "data":
+        []
 
 }
 
@@ -477,7 +677,9 @@ if not final.empty:
                 row["Distance"],
 
             "bos_age":
-                int(row["BOS Age"]),
+                int(
+                    row["BOS Age"]
+                ),
 
             "ob_size":
                 row["OB Size"],
@@ -506,13 +708,35 @@ with open(
     )
 
 
+# =========================================================
+# CONSOLE
+# =========================================================
+
 print()
 print("========================================")
 print("SCAN FINISHED")
 print("========================================")
 print(
-    "Candidates:",
+    "Candidates :",
     len(final)
+)
+print(
+    "Processed  :",
+    processed,
+    "/",
+    total
+)
+print(
+    "Errors     :",
+    errors
+)
+print(
+    "Duration   :",
+    DURATION_TEXT
+)
+print(
+    "Finished   :",
+    RUN_FINISHED
 )
 print(
     "Result saved to results.json"
