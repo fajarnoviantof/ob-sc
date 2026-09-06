@@ -508,3 +508,358 @@ footer span {
     }
 
 }
+/* =====================================================
+   LIVE SCAN PANEL
+===================================================== */
+
+.livePanel {
+
+    background:
+        #111827;
+
+    border:
+        1px solid #1f2937;
+
+    border-radius:
+        18px;
+
+    padding:
+        20px;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.liveTop {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap:
+        20px;
+
+}
+
+
+.liveTitle {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    font-weight:
+        800;
+
+    font-size:
+        15px;
+
+    color:
+        #ffffff;
+
+}
+
+
+.liveDot {
+
+    width:
+        10px;
+
+    height:
+        10px;
+
+    border-radius:
+        50%;
+
+    background:
+        #22c55e;
+
+    box-shadow:
+        0 0 10px rgba(
+            34,
+            197,
+            94,
+            .6
+        );
+
+}
+
+
+.liveDot.running {
+
+    background:
+        #f59e0b;
+
+    box-shadow:
+        0 0 10px rgba(
+            245,
+            158,
+            11,
+            .7
+        );
+
+    animation:
+        pulse 1s infinite;
+
+}
+
+
+.scanMessage {
+
+    color:
+        #64748b;
+
+    font-size:
+        13px;
+
+    margin-top:
+        6px;
+
+}
+
+
+.scanButtons {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    align-items:
+        center;
+
+}
+
+
+.scanButton {
+
+    border:
+        0;
+
+    background:
+        #2563eb;
+
+    color:
+        #ffffff;
+
+    padding:
+        11px 17px;
+
+    border-radius:
+        10px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+}
+
+
+.scanButton:hover {
+
+    background:
+        #1d4ed8;
+
+}
+
+
+.scanButton:disabled {
+
+    opacity:
+        .6;
+
+    cursor:
+        not-allowed;
+
+}
+
+
+.scanInfo {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        10px;
+
+    margin-top:
+        20px;
+
+}
+
+
+.scanInfo > div {
+
+    background:
+        #0f172a;
+
+    border:
+        1px solid #1f2937;
+
+    border-radius:
+        12px;
+
+    padding:
+        13px;
+
+}
+
+
+.scanInfo span {
+
+    display:
+        block;
+
+    color:
+        #64748b;
+
+    font-size:
+        11px;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.scanInfo strong {
+
+    color:
+        #ffffff;
+
+    font-size:
+        14px;
+
+}
+
+
+.progressBar {
+
+    height:
+        5px;
+
+    background:
+        #1e293b;
+
+    border-radius:
+        999px;
+
+    margin-top:
+        18px;
+
+    overflow:
+        hidden;
+
+}
+
+
+.progressFill {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    background:
+        #22c55e;
+
+}
+
+
+.running + .progressBar {
+
+    background:
+        #1e293b;
+
+}
+
+
+.dot.running {
+
+    background:
+        #f59e0b;
+
+    animation:
+        pulse 1s infinite;
+
+}
+
+
+@keyframes pulse {
+
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .35;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .liveTop {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .scanButtons {
+
+        width:
+            100%;
+
+    }
+
+
+    .scanButton,
+    .refresh {
+
+        flex:
+            1;
+
+    }
+
+
+    .scanInfo {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
