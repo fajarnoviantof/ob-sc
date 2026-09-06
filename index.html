@@ -25,9 +25,9 @@
 <div class="container">
 
 
-    <!-- ======================================
+    <!-- =========================================
          HEADER
-    ======================================= -->
+    ========================================== -->
 
     <header class="header">
 
@@ -57,7 +57,7 @@
             ></span>
 
             <span id="statusText">
-                Memuat...
+                Loading...
             </span>
 
         </div>
@@ -66,9 +66,9 @@
 
 
 
-    <!-- ======================================
+    <!-- =========================================
          LIVE SCAN PANEL
-    ======================================= -->
+    ========================================== -->
 
     <section class="livePanel">
 
@@ -83,18 +83,18 @@
                         class="liveDot"
                     ></span>
 
-                    <span id="liveStatus">
+                    <strong id="liveStatus">
                         LIVE SCAN
-                    </span>
+                    </strong>
 
                 </div>
 
-                <div
+                <p
                     id="scanMessage"
                     class="scanMessage"
                 >
                     Scanner siap digunakan
-                </div>
+                </p>
 
             </div>
 
@@ -111,8 +111,8 @@
 
 
                 <button
-                    onclick="loadResults()"
                     class="refresh"
+                    onclick="refreshAll()"
                 >
                     ↻ Refresh
                 </button>
@@ -122,9 +122,14 @@
         </div>
 
 
+
+        <!-- =====================================
+             INFO SCAN
+        ====================================== -->
+
         <div class="scanInfo">
 
-            <div>
+            <div class="scanInfoItem">
 
                 <span>
                     Terakhir Scan
@@ -137,7 +142,7 @@
             </div>
 
 
-            <div>
+            <div class="scanInfoItem">
 
                 <span>
                     Progress
@@ -150,7 +155,7 @@
             </div>
 
 
-            <div>
+            <div class="scanInfoItem">
 
                 <span>
                     Durasi
@@ -163,20 +168,25 @@
             </div>
 
 
-            <div>
+            <div class="scanInfoItem">
 
                 <span>
                     Error
                 </span>
 
                 <strong id="scanErrors">
-                    0
+                    -
                 </strong>
 
             </div>
 
         </div>
 
+
+
+        <!-- =====================================
+             PROGRESS BAR
+        ====================================== -->
 
         <div class="progressBar">
 
@@ -191,11 +201,12 @@
 
 
 
-    <!-- ======================================
+    <!-- =========================================
          SUMMARY
-    ======================================= -->
+    ========================================== -->
 
     <section class="summary">
+
 
         <div class="card">
 
@@ -238,15 +249,17 @@
 
         </div>
 
+
     </section>
 
 
 
-    <!-- ======================================
-         RESULTS
-    ======================================= -->
+    <!-- =========================================
+         RESULT PANEL
+    ========================================== -->
 
     <section class="panel">
+
 
         <div class="panelHeader">
 
@@ -264,6 +277,7 @@
             </div>
 
         </div>
+
 
 
         <div class="tableWrap">
@@ -313,10 +327,18 @@
 
 
 
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
     <footer>
 
         SMC OB Scanner
-        <span>•</span>
+
+        <span>
+            •
+        </span>
+
         Yahoo Finance Data
 
     </footer>
