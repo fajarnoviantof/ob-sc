@@ -1,3 +1,25 @@
+let scanRunning = false;
+
+
+/* =====================================================
+   FORMAT TANGGAL
+===================================================== */
+
+function formatDate(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+    return value + " WIB";
+
+}
+
+
+/* =====================================================
+   LOAD RESULTS
+===================================================== */
+
 async function loadResults() {
 
     const body =
@@ -5,16 +27,8 @@ async function loadResults() {
             "resultBody"
         );
 
-    const statusText =
-        document.getElementById(
-            "statusText"
-        );
 
     try {
-
-        statusText.textContent =
-            "Loading...";
-
 
         const response =
             await fetch(
@@ -51,13 +65,36 @@ async function loadResults() {
         document.getElementById(
             "generatedAt"
         ).textContent =
-            result.generated_at ?? "-";
+            formatDate(
+                result.generated_at
+            );
 
 
-        statusText.textContent =
-            result.status === "success"
-                ? "Data terbaru"
-                : "Menunggu scan";
+        document.getElementById(
+            "lastScan"
+        ).textContent =
+            formatDate(
+                result.generated_at
+            );
+
+
+        document.getElementById(
+            "scanProgress"
+        ).textContent =
+
+            `${result.processed ?? result.total_tickers ?? 0} / ${result.total_tickers ?? 0}`;
+
+
+        document.getElementById(
+            "scanDuration"
+        ).textContent =
+            result.duration_text ?? "-";
+
+
+        document.getElementById(
+            "scanErrors"
+        ).textContent =
+            result.errors ?? 0;
 
 
         renderTable(
@@ -68,10 +105,6 @@ async function loadResults() {
     } catch (error) {
 
         console.error(error);
-
-        statusText.textContent =
-            "Gagal memuat data";
-
 
         body.innerHTML = `
 
@@ -92,6 +125,157 @@ async function loadResults() {
 
 }
 
+
+/* =====================================================
+   LOAD SCAN STATUS
+===================================================== */
+
+async function loadScanStatus() {
+
+    try {
+
+        const response =
+            await fetch(
+                "scan_status.json?t=" +
+                Date.now()
+            );
+
+
+        if (!response.ok) {
+            return;
+        }
+
+
+        const status =
+            await response.json();
+
+
+        const liveStatus =
+            document.getElementById(
+                "liveStatus"
+            );
+
+
+        const scanMessage =
+            document.getElementById(
+                "scanMessage"
+            );
+
+
+        const liveDot =
+            document.getElementById(
+                "liveDot"
+            );
+
+
+        const statusDot =
+            document.getElementById(
+                "statusDot"
+            );
+
+
+        const statusText =
+            document.getElementById(
+                "statusText"
+            );
+
+
+        const scanButton =
+            document.getElementById(
+                "scanButton"
+            );
+
+
+        if (
+            status.status ===
+            "running"
+        ) {
+
+            scanRunning = true;
+
+
+            liveStatus.textContent =
+                "SCANNER RUNNING";
+
+
+            scanMessage.textContent =
+                "Sedang memproses data Yahoo Finance...";
+
+
+            liveDot.classList.add(
+                "running"
+            );
+
+
+            statusDot.classList.add(
+                "running"
+            );
+
+
+            statusText.textContent =
+                "Scanning...";
+
+
+            scanButton.disabled =
+                true;
+
+
+            scanButton.textContent =
+                "⏳ SCAN SEDANG BERJALAN";
+
+
+        } else {
+
+            scanRunning = false;
+
+
+            liveStatus.textContent =
+                "LIVE SCAN";
+
+
+            scanMessage.textContent =
+                "Scanner siap digunakan";
+
+
+            liveDot.classList.remove(
+                "running"
+            );
+
+
+            statusDot.classList.remove(
+                "running"
+            );
+
+
+            statusText.textContent =
+                "Data terbaru";
+
+
+            scanButton.disabled =
+                false;
+
+
+            scanButton.textContent =
+                "🚀 SCAN SEKARANG";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Status error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER TABLE
+===================================================== */
 
 function renderTable(data) {
 
@@ -125,6 +309,7 @@ function renderTable(data) {
 
 
     body.innerHTML =
+
         data.map(
             (item, index) => `
 
@@ -134,54 +319,77 @@ function renderTable(data) {
                     ${index + 1}
                 </td>
 
+
                 <td class="ticker">
                     ${item.ticker}
                 </td>
+
 
                 <td>
                     ${item.ob_range}
                 </td>
 
+
                 <td>
+
                     ${item.sl}
+
                     <small>
                         (${item.sl_pct}%)
                     </small>
+
                 </td>
 
+
                 <td>
+
                     ${item.tp}
+
                     <small>
                         (${item.tp_pct}%)
                     </small>
+
                 </td>
 
+
                 <td class="rr">
+
                     1:${Number(
                         item.rr
                     ).toFixed(1)}
+
                 </td>
 
+
                 <td>
+
                     ${Number(
                         item.distance
                     ).toFixed(2)}%
+
                 </td>
+
 
                 <td>
                     ${item.bos_age}
                 </td>
 
+
                 <td>
+
                     ${Number(
                         item.ob_size
                     ).toFixed(2)}%
+
                 </td>
 
+
                 <td class="score">
+
                     ${Number(
                         item.score
                     ).toFixed(2)}
+
                 </td>
 
             </tr>
@@ -193,10 +401,63 @@ function renderTable(data) {
 }
 
 
+/* =====================================================
+   SCAN SEKARANG
+===================================================== */
+
+function startScan() {
+
+    /*
+       GitHub tidak mengizinkan workflow_dispatch
+       tanpa autentikasi.
+
+       Jadi tombol ini membuka halaman Actions.
+       Tidak ada GitHub Token yang disimpan di website.
+    */
+
+
+    const url =
+        "https://github.com";
+
+
+    /*
+       Ganti URL di bawah dengan URL repository Anda.
+
+       Contoh:
+
+       https://github.com/fajarxxx/smc-ob-scanner/actions
+
+    */
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
 loadResults();
 
+loadScanStatus();
+
+
+/* =====================================================
+   AUTO REFRESH
+===================================================== */
 
 setInterval(
     loadResults,
-    5 * 60 * 1000
+    15 * 1000
+);
+
+
+setInterval(
+    loadScanStatus,
+    10 * 1000
 );
