@@ -1,15 +1,17 @@
 name: SMC OB Scanner
 
 on:
-
   workflow_dispatch:
 
   schedule:
+    # 09:30 WIB = 02:30 UTC
+    # Senin-Jumat
     - cron: "30 2 * * 1-5"
 
 
-permissions:
-  contents: write
+concurrency:
+  group: smc-ob-scanner
+  cancel-in-progress: false
 
 
 jobs:
@@ -22,44 +24,44 @@ jobs:
     steps:
 
       # ==========================================
-      # CHECKOUT
+      # 1. AMBIL SOURCE CODE
       # ==========================================
 
       - name: Checkout repository
-
         uses: actions/checkout@v4
 
 
       # ==========================================
-      # PYTHON
+      # 2. SETUP PYTHON
       # ==========================================
 
       - name: Setup Python
-
         uses: actions/setup-python@v5
 
         with:
-
           python-version: "3.11"
 
 
       # ==========================================
-      # INSTALL
+      # 3. INSTALL LIBRARY
       # ==========================================
 
       - name: Install dependencies
-
         run: |
 
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+
+          pip install \
+            yfinance \
+            pandas \
+            numpy
 
 
       # ==========================================
-      # STATUS RUNNING
+      # 4. STATUS → RUNNING
       # ==========================================
 
-      - name: Set scanner status RUNNING
-
+      - name: Set scan status RUNNING
         run: |
 
           python - <<'PY'
@@ -68,18 +70,16 @@ jobs:
           from datetime import datetime
           from zoneinfo import ZoneInfo
 
-          tz = ZoneInfo("Asia/Jakarta")
+          now = datetime.now(
+              ZoneInfo("Asia/Jakarta")
+          ).strftime(
+              "%Y-%m-%d %H:%M:%S"
+          )
 
           data = {
-
               "status": "running",
-
-              "started_at":
-                  datetime.now(tz).strftime(
-                      "%Y-%m-%d %H:%M:%S"
-                  ),
-
-              "finished_at": null
+              "started_at": now,
+              "finished_at": None
           }
 
           with open(
@@ -91,7 +91,6 @@ jobs:
               json.dump(
                   data,
                   f,
-                  ensure_ascii=False,
                   indent=2
               )
 
@@ -99,15 +98,13 @@ jobs:
 
 
       # ==========================================
-      # SAVE RUNNING STATUS
+      # 5. SIMPAN STATUS RUNNING
       # ==========================================
 
       - name: Commit RUNNING status
-
         run: |
 
-          git config user.name \
-            "github-actions[bot]"
+          git config user.name "github-actions[bot]"
 
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
@@ -115,32 +112,112 @@ jobs:
           git add scan_status.json
 
           git diff --cached --quiet || \
-            git commit -m "Scanner started"
+            git commit -m "scanner: running"
 
           git push
 
 
       # ==========================================
-      # RUN SCANNER
+      # 6. JALANKAN SCANNER
       # ==========================================
 
-      - name: Run scanner
-
+      - name: Run SMC OB Scanner
         run: |
 
           python scanner.py
 
 
       # ==========================================
-      # SAVE RESULTS
+      # 7. STATUS → SUCCESS
       # ==========================================
 
-      - name: Save results
-
+      - name: Set scan status SUCCESS
+        if: success()
         run: |
 
-          git config user.name \
-            "github-actions[bot]"
+          python - <<'PY'
+
+          import json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          now = datetime.now(
+              ZoneInfo("Asia/Jakarta")
+          ).strftime(
+              "%Y-%m-%d %H:%M:%S"
+          )
+
+          data = {
+              "status": "success",
+              "started_at": None,
+              "finished_at": now
+          }
+
+          with open(
+              "scan_status.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  data,
+                  f,
+                  indent=2
+              )
+
+          PY
+
+
+      # ==========================================
+      # 8. STATUS → FAILED
+      # ==========================================
+
+      - name: Set scan status FAILED
+        if: failure()
+        run: |
+
+          python - <<'PY'
+
+          import json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          now = datetime.now(
+              ZoneInfo("Asia/Jakarta")
+          ).strftime(
+              "%Y-%m-%d %H:%M:%S"
+          )
+
+          data = {
+              "status": "failed",
+              "started_at": None,
+              "finished_at": now
+          }
+
+          with open(
+              "scan_status.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  data,
+                  f,
+                  indent=2
+              )
+
+          PY
+
+
+      # ==========================================
+      # 9. SIMPAN HASIL SCAN
+      # ==========================================
+
+      - name: Commit scan results
+        if: always()
+        run: |
+
+          git config user.name "github-actions[bot]"
 
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
@@ -150,6 +227,6 @@ jobs:
             scan_status.json
 
           git diff --cached --quiet || \
-            git commit -m "Update scanner results"
+            git commit -m "scanner: update results"
 
           git push
