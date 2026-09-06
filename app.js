@@ -1,4 +1,3 @@
-```javascript
 // ==========================================================
 // KONFIGURASI
 // ==========================================================
@@ -40,23 +39,17 @@ async function loadResults() {
             await response.json();
 
 
-        // TOTAL SAHAM
-
         document.getElementById(
             "totalTickers"
         ).textContent =
             result.total_tickers ?? "-";
 
 
-        // JUMLAH KANDIDAT
-
         document.getElementById(
             "candidateCount"
         ).textContent =
             result.candidates ?? "-";
 
-
-        // UPDATE
 
         document.getElementById(
             "generatedAt"
@@ -65,8 +58,6 @@ async function loadResults() {
                 result.generated_at
             );
 
-
-        // LAST SCAN
 
         document.getElementById(
             "lastScan"
@@ -77,15 +68,11 @@ async function loadResults() {
             );
 
 
-        // PROGRESS
-
         document.getElementById(
             "scanProgress"
         ).textContent =
             `${result.processed ?? result.total_tickers ?? 0} / ${result.total_tickers ?? 0}`;
 
-
-        // DURASI
 
         document.getElementById(
             "scanDuration"
@@ -94,16 +81,12 @@ async function loadResults() {
             "-";
 
 
-        // ERROR
-
         document.getElementById(
             "scanErrors"
         ).textContent =
             result.errors ??
             0;
 
-
-        // PROGRESS BAR
 
         const total =
             Number(
@@ -117,12 +100,14 @@ async function loadResults() {
 
         let percent = 0;
 
+
         if (total > 0) {
 
             percent =
                 (processed / total) * 100;
 
         }
+
 
         document.getElementById(
             "progressFill"
@@ -132,8 +117,6 @@ async function loadResults() {
                 100
             ) + "%";
 
-
-        // RENDER DATA
 
         renderTable(
             result.data || []
@@ -177,6 +160,7 @@ async function loadScanStatus() {
 
         const status =
             await response.json();
+
 
         updateScannerStatus(
             status
@@ -235,7 +219,7 @@ function updateScannerStatus(
 
 
     // ======================================================
-    // RUNNING
+    // SCANNER RUNNING
     // ======================================================
 
     if (
@@ -272,7 +256,7 @@ function updateScannerStatus(
 
 
     // ======================================================
-    // FAILED
+    // SCANNER FAILED
     // ======================================================
 
     if (
@@ -309,7 +293,7 @@ function updateScannerStatus(
 
 
     // ======================================================
-    // SUCCESS / READY
+    // SCANNER READY / SUCCESS
     // ======================================================
 
     liveDot.classList.remove(
@@ -389,7 +373,7 @@ async function startScan() {
 
 
     // ======================================================
-    // TAMPILKAN STATUS MEMULAI
+    // STATUS MEMULAI
     // ======================================================
 
     scanButton.disabled =
@@ -419,10 +403,12 @@ async function startScan() {
     try {
 
         // ==================================================
-        // KIRIM REQUEST KE CLOUDFLARE WORKER
+        // JALANKAN GITHUB ACTIONS
         //
-        // TIDAK MENGIRIM JSON / BODY
-        // agar tidak memicu CORS preflight
+        // POST TANPA BODY
+        // POST TANPA CONTENT-TYPE
+        //
+        // Tujuannya menghindari CORS preflight.
         // ==================================================
 
         const response =
@@ -435,10 +421,11 @@ async function startScan() {
 
 
         // ==================================================
-        // BACA RESPONSE
+        // BACA RESPONSE WORKER
         // ==================================================
 
         let result = null;
+
 
         try {
 
@@ -497,6 +484,11 @@ async function startScan() {
 
         await loadScanStatus();
 
+
+        // ==================================================
+        // LOAD HASIL TERBARU
+        // ==================================================
+
         await loadResults();
 
 
@@ -509,7 +501,7 @@ async function startScan() {
 
 
         // ==================================================
-        // KEMBALIKAN STATUS
+        // KEMBALIKAN STATUS KE ERROR
         // ==================================================
 
         liveDot.classList.remove(
@@ -561,7 +553,7 @@ function renderTable(
 
 
     // ======================================================
-    // TIDAK ADA DATA
+    // TIDAK ADA KANDIDAT
     // ======================================================
 
     if (!data.length) {
@@ -588,7 +580,7 @@ function renderTable(
 
 
     // ======================================================
-    // DATA TABLE
+    // TAMPILKAN DATA
     // ======================================================
 
     body.innerHTML =
@@ -661,7 +653,7 @@ function renderTable(
 
 
 // ==========================================================
-// FORMAT TANGGAL
+// FORMAT TANGGAL DAN WAKTU
 // ==========================================================
 
 function formatDateTime(
@@ -676,7 +668,7 @@ function formatDateTime(
 
 
     // ======================================================
-    // JIKA SUDAH FORMAT WIB
+    // JIKA SUDAH ADA WIB
     // ======================================================
 
     if (
@@ -723,6 +715,7 @@ function formatDateTime(
             "0"
         );
 
+
     const month =
         String(
             date.getMonth() + 1
@@ -731,8 +724,10 @@ function formatDateTime(
             "0"
         );
 
+
     const year =
         date.getFullYear();
+
 
     const hour =
         String(
@@ -742,6 +737,7 @@ function formatDateTime(
             "0"
         );
 
+
     const minute =
         String(
             date.getMinutes()
@@ -749,6 +745,7 @@ function formatDateTime(
             2,
             "0"
         );
+
 
     const second =
         String(
@@ -768,7 +765,7 @@ function formatDateTime(
 
 
 // ==========================================================
-// REFRESH
+// REFRESH SEMUA DATA
 // ==========================================================
 
 function refreshAll() {
@@ -781,7 +778,7 @@ function refreshAll() {
 
 
 // ==========================================================
-// LOAD AWAL
+// LOAD SAAT WEBSITE DIBUKA
 // ==========================================================
 
 loadResults();
@@ -809,4 +806,3 @@ setInterval(
     loadScanStatus,
     5 * 1000
 );
-```
