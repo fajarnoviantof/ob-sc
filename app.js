@@ -8,8 +8,8 @@ const RESULTS_URL =
 const STATUS_URL =
     "scan_status.json";
 
-const ACTION_URL =
-    "https://github.com/fajarnoviantof/ob-sc/actions/workflows/scanner.yml";
+const WORKER_URL =
+    "https://flat-firefly-50c7smc-ob-trigger.fajarnoviantov.workers.dev/";
 
 
 // ==========================================================
@@ -27,35 +27,24 @@ async function loadResults() {
                 Date.now()
             );
 
-
         if (!response.ok) {
-
             throw new Error(
                 "Gagal membaca results.json"
             );
-
         }
-
 
         const result =
             await response.json();
-
-
-        // ------------------------------------------
-        // SUMMARY
-        // ------------------------------------------
 
         document.getElementById(
             "totalTickers"
         ).textContent =
             result.total_tickers ?? "-";
 
-
         document.getElementById(
             "candidateCount"
         ).textContent =
             result.candidates ?? "-";
-
 
         document.getElementById(
             "generatedAt"
@@ -63,11 +52,6 @@ async function loadResults() {
             formatDateTime(
                 result.generated_at
             );
-
-
-        // ------------------------------------------
-        // INFO SCAN
-        // ------------------------------------------
 
         document.getElementById(
             "lastScan"
@@ -77,12 +61,10 @@ async function loadResults() {
                 result.generated_at
             );
 
-
         document.getElementById(
             "scanProgress"
         ).textContent =
             `${result.processed ?? result.total_tickers ?? 0} / ${result.total_tickers ?? 0}`;
-
 
         document.getElementById(
             "scanDuration"
@@ -90,40 +72,28 @@ async function loadResults() {
             result.duration_text ??
             "-";
 
-
         document.getElementById(
             "scanErrors"
         ).textContent =
             result.errors ??
             0;
 
-
-        // ------------------------------------------
-        // PROGRESS BAR
-        // ------------------------------------------
-
         const total =
             Number(
                 result.total_tickers
             ) || 0;
-
 
         const processed =
             Number(
                 result.processed
             ) || 0;
 
-
         let percent = 0;
 
-
         if (total > 0) {
-
             percent =
                 (processed / total) * 100;
-
         }
-
 
         document.getElementById(
             "progressFill"
@@ -133,15 +103,9 @@ async function loadResults() {
                 100
             ) + "%";
 
-
-        // ------------------------------------------
-        // TABLE
-        // ------------------------------------------
-
         renderTable(
             result.data || []
         );
-
 
     } catch (error) {
 
@@ -151,7 +115,6 @@ async function loadResults() {
         );
 
     }
-
 }
 
 
@@ -170,24 +133,18 @@ async function loadScanStatus() {
                 Date.now()
             );
 
-
         if (!response.ok) {
-
             throw new Error(
                 "Gagal membaca scan_status.json"
             );
-
         }
-
 
         const status =
             await response.json();
 
-
         updateScannerStatus(
             status
         );
-
 
     } catch (error) {
 
@@ -197,7 +154,6 @@ async function loadScanStatus() {
         );
 
     }
-
 }
 
 
@@ -214,30 +170,25 @@ function updateScannerStatus(
             "liveDot"
         );
 
-
     const liveStatus =
         document.getElementById(
             "liveStatus"
         );
-
 
     const message =
         document.getElementById(
             "scanMessage"
         );
 
-
     const scanButton =
         document.getElementById(
             "scanButton"
         );
 
-
     const statusText =
         document.getElementById(
             "statusText"
         );
-
 
     const statusDot =
         document.getElementById(
@@ -245,9 +196,9 @@ function updateScannerStatus(
         );
 
 
-    // ==========================================
+    // ======================================================
     // RUNNING
-    // ==========================================
+    // ======================================================
 
     if (
         status.status ===
@@ -258,40 +209,32 @@ function updateScannerStatus(
             "running"
         );
 
-
         liveStatus.textContent =
             "SCANNER RUNNING";
-
 
         message.textContent =
             "Sedang memproses data Yahoo Finance...";
 
-
         scanButton.disabled =
             true;
-
 
         scanButton.textContent =
             "⏳ SCAN BERJALAN";
 
-
         statusText.textContent =
             "Scanning...";
-
 
         statusDot.classList.add(
             "running"
         );
 
-
         return;
-
     }
 
 
-    // ==========================================
+    // ======================================================
     // FAILED
-    // ==========================================
+    // ======================================================
 
     if (
         status.status ===
@@ -302,65 +245,51 @@ function updateScannerStatus(
             "running"
         );
 
-
         liveStatus.textContent =
             "SCAN FAILED";
-
 
         message.textContent =
             "Scanner mengalami kesalahan.";
 
-
         scanButton.disabled =
             false;
-
 
         scanButton.textContent =
             "🚀 SCAN SEKARANG";
 
-
         statusText.textContent =
             "Scan gagal";
-
 
         statusDot.classList.remove(
             "running"
         );
 
-
         return;
-
     }
 
 
-    // ==========================================
-    // SUCCESS / READY
-    // ==========================================
+    // ======================================================
+    // SUCCESS / IDLE
+    // ======================================================
 
     liveDot.classList.remove(
         "running"
     );
 
-
     liveStatus.textContent =
         "LIVE SCAN";
-
 
     message.textContent =
         "Scanner siap digunakan";
 
-
     scanButton.disabled =
         false;
-
 
     scanButton.textContent =
         "🚀 SCAN SEKARANG";
 
-
     statusText.textContent =
         "Data terbaru";
-
 
     statusDot.classList.remove(
         "running"
@@ -373,25 +302,178 @@ function updateScannerStatus(
 // TOMBOL SCAN SEKARANG
 // ==========================================================
 
-function startScan() {
+async function startScan() {
 
-    const confirmScan =
-        confirm(
-            "Buka GitHub Actions untuk menjalankan scan sekarang?"
+    const scanButton =
+        document.getElementById(
+            "scanButton"
+        );
+
+    const liveStatus =
+        document.getElementById(
+            "liveStatus"
+        );
+
+    const message =
+        document.getElementById(
+            "scanMessage"
+        );
+
+    const liveDot =
+        document.getElementById(
+            "liveDot"
+        );
+
+    const statusText =
+        document.getElementById(
+            "statusText"
         );
 
 
-    if (!confirmScan) {
+    // ======================================================
+    // CEGAH KLIK GANDA
+    // ======================================================
 
+    if (
+        scanButton.disabled
+    ) {
         return;
-
     }
 
 
-    window.open(
-        ACTION_URL,
-        "_blank"
+    // ======================================================
+    // UBAH UI SEGERA
+    // ======================================================
+
+    scanButton.disabled =
+        true;
+
+    scanButton.textContent =
+        "⏳ MEMULAI SCAN...";
+
+    liveDot.classList.add(
+        "running"
     );
+
+    liveStatus.textContent =
+        "MEMULAI SCAN";
+
+    message.textContent =
+        "Menghubungkan ke scanner...";
+
+    statusText.textContent =
+        "Connecting...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                WORKER_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        action: "scan"
+                    })
+                }
+            );
+
+
+        let result = null;
+
+        try {
+
+            result =
+                await response.json();
+
+        } catch {
+
+            result = null;
+
+        }
+
+
+        // ==================================================
+        // GAGAL
+        // ==================================================
+
+        if (
+            !response.ok ||
+            !result ||
+            !result.success
+        ) {
+
+            throw new Error(
+                result?.message ||
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        // ==================================================
+        // BERHASIL TRIGGER
+        // ==================================================
+
+        liveStatus.textContent =
+            "SCANNER RUNNING";
+
+        message.textContent =
+            "Scanner sedang memproses data Yahoo Finance...";
+
+        scanButton.textContent =
+            "⏳ SCAN BERJALAN";
+
+        statusText.textContent =
+            "Scanning...";
+
+
+        // Ambil status lebih cepat
+        await loadScanStatus();
+
+        await loadResults();
+
+
+    } catch (error) {
+
+        console.error(
+            "startScan:",
+            error
+        );
+
+
+        liveDot.classList.remove(
+            "running"
+        );
+
+        liveStatus.textContent =
+            "SCAN ERROR";
+
+        message.textContent =
+            "Gagal menjalankan scanner.";
+
+        statusText.textContent =
+            "Error";
+
+        scanButton.disabled =
+            false;
+
+        scanButton.textContent =
+            "🚀 SCAN SEKARANG";
+
+
+        alert(
+            "Gagal menjalankan scanner.\n\n" +
+            error.message
+        );
+
+    }
 
 }
 
@@ -408,7 +490,6 @@ function renderTable(
         document.getElementById(
             "resultBody"
         );
-
 
     if (!data.length) {
 
@@ -429,7 +510,6 @@ function renderTable(
         `;
 
         return;
-
     }
 
 
@@ -443,79 +523,54 @@ function renderTable(
                     ${index + 1}
                 </td>
 
-
                 <td class="ticker">
                     ${item.ticker ?? "-"}
                 </td>
-
 
                 <td>
                     ${item.ob_range ?? "-"}
                 </td>
 
-
                 <td>
-
                     ${item.sl ?? "-"}
-
                     <small>
                         (${item.sl_pct ?? "-"}%)
                     </small>
-
                 </td>
 
-
                 <td>
-
                     ${item.tp ?? "-"}
-
                     <small>
                         (${item.tp_pct ?? "-"}%)
                     </small>
-
                 </td>
 
-
                 <td class="rr">
-
                     1:${Number(
                         item.rr ?? 0
                     ).toFixed(1)}
-
                 </td>
 
-
                 <td>
-
                     ${Number(
                         item.distance ?? 0
                     ).toFixed(2)}%
-
                 </td>
 
-
                 <td>
-
                     ${item.bos_age ?? "-"}
-
                 </td>
 
-
                 <td>
-
                     ${Number(
                         item.ob_size ?? 0
                     ).toFixed(2)}%
-
                 </td>
 
-
                 <td class="score">
-
                     ${Number(
                         item.score ?? 0
                     ).toFixed(2)}
-
                 </td>
 
             </tr>
@@ -536,23 +591,16 @@ function formatDateTime(
 ) {
 
     if (!value) {
-
         return "-";
-
     }
 
-
-    // Jika sudah mengandung WIB
     if (
         String(value).includes(
             "WIB"
         )
     ) {
-
         return value;
-
     }
-
 
     const date =
         new Date(
@@ -563,17 +611,13 @@ function formatDateTime(
             "+07:00"
         );
 
-
     if (
         isNaN(
             date.getTime()
         )
     ) {
-
         return value;
-
     }
-
 
     const day =
         String(
@@ -583,7 +627,6 @@ function formatDateTime(
             "0"
         );
 
-
     const month =
         String(
             date.getMonth() + 1
@@ -592,10 +635,8 @@ function formatDateTime(
             "0"
         );
 
-
     const year =
         date.getFullYear();
-
 
     const hour =
         String(
@@ -605,7 +646,6 @@ function formatDateTime(
             "0"
         );
 
-
     const minute =
         String(
             date.getMinutes()
@@ -614,7 +654,6 @@ function formatDateTime(
             "0"
         );
 
-
     const second =
         String(
             date.getSeconds()
@@ -622,7 +661,6 @@ function formatDateTime(
             2,
             "0"
         );
-
 
     return (
         `${day}-${month}-${year} ` +
@@ -658,15 +696,12 @@ loadScanStatus();
 // AUTO REFRESH
 // ==========================================================
 
-// Hasil scanner
 setInterval(
     loadResults,
-    15 * 1000
+    10 * 1000
 );
 
-
-// Status scanner
 setInterval(
     loadScanStatus,
-    10 * 1000
+    5 * 1000
 );
