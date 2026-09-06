@@ -1,7 +1,14 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+
+    box-sizing:
+        border-box;
+
+    margin:
+        0;
+
+    padding:
+        0;
+
 }
 
 
@@ -37,6 +44,10 @@ body {
 
 }
 
+
+/* ==========================================================
+   HEADER
+========================================================== */
 
 .header {
 
@@ -90,7 +101,11 @@ body {
 h1 {
 
     font-size:
-        clamp(28px, 5vw, 44px);
+        clamp(
+            28px,
+            5vw,
+            44px
+        );
 
     color:
         #ffffff;
@@ -146,13 +161,323 @@ h1 {
 }
 
 
+.dot.running {
+
+    background:
+        #f59e0b;
+
+    animation:
+        pulse 1.2s infinite;
+
+}
+
+
+/* ==========================================================
+   LIVE SCAN
+========================================================== */
+
+.livePanel {
+
+    background:
+        #111827;
+
+    border:
+        1px solid #1f2937;
+
+    border-radius:
+        18px;
+
+    padding:
+        20px;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.liveTop {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap:
+        20px;
+
+}
+
+
+.liveTitle {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+}
+
+
+.liveTitle strong {
+
+    color:
+        #ffffff;
+
+    font-size:
+        15px;
+
+    letter-spacing:
+        .5px;
+
+}
+
+
+.liveDot {
+
+    width:
+        10px;
+
+    height:
+        10px;
+
+    border-radius:
+        50%;
+
+    background:
+        #22c55e;
+
+}
+
+
+.liveDot.running {
+
+    background:
+        #f59e0b;
+
+    animation:
+        pulse 1.2s infinite;
+
+}
+
+
+.scanMessage {
+
+    color:
+        #94a3b8;
+
+    font-size:
+        13px;
+
+    margin-top:
+        6px;
+
+}
+
+
+.scanButtons {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+.scanButton {
+
+    border:
+        none;
+
+    background:
+        #22c55e;
+
+    color:
+        #052e16;
+
+    border-radius:
+        10px;
+
+    padding:
+        10px 16px;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        800;
+
+    transition:
+        .2s;
+
+}
+
+
+.scanButton:hover {
+
+    transform:
+        translateY(-1px);
+
+    opacity:
+        .9;
+
+}
+
+
+.scanButton:disabled {
+
+    cursor:
+        not-allowed;
+
+    opacity:
+        .5;
+
+    transform:
+        none;
+
+}
+
+
+/* ==========================================================
+   SCAN INFO
+========================================================== */
+
+.scanInfo {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap:
+        10px;
+
+    margin-top:
+        18px;
+
+}
+
+
+.scanInfoItem {
+
+    background:
+        #0f172a;
+
+    border:
+        1px solid #1f2937;
+
+    border-radius:
+        12px;
+
+    padding:
+        12px;
+
+}
+
+
+.scanInfoItem span {
+
+    display:
+        block;
+
+    color:
+        #64748b;
+
+    font-size:
+        11px;
+
+    margin-bottom:
+        5px;
+
+}
+
+
+.scanInfoItem strong {
+
+    color:
+        #ffffff;
+
+    font-size:
+        14px;
+
+}
+
+
+/* ==========================================================
+   PROGRESS
+========================================================== */
+
+.progressBar {
+
+    height:
+        6px;
+
+    background:
+        #1e293b;
+
+    border-radius:
+        999px;
+
+    overflow:
+        hidden;
+
+    margin-top:
+        16px;
+
+}
+
+
+.progressFill {
+
+    height:
+        100%;
+
+    width:
+        0%;
+
+    background:
+        #22c55e;
+
+    border-radius:
+        inherit;
+
+    transition:
+        width .5s ease;
+
+}
+
+
+/* ==========================================================
+   SUMMARY
+========================================================== */
+
 .summary {
 
     display:
         grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(
+            3,
+            1fr
+        );
 
     gap:
         14px;
@@ -216,6 +541,10 @@ h1 {
 }
 
 
+/* ==========================================================
+   RESULT PANEL
+========================================================== */
+
 .panel {
 
     background:
@@ -278,6 +607,10 @@ h1 {
 }
 
 
+/* ==========================================================
+   BUTTON REFRESH
+========================================================== */
+
 .refresh {
 
     border:
@@ -311,6 +644,10 @@ h1 {
 
 }
 
+
+/* ==========================================================
+   TABLE
+========================================================== */
 
 .tableWrap {
 
@@ -412,6 +749,21 @@ tr:hover td {
 }
 
 
+td small {
+
+    color:
+        #64748b;
+
+    font-size:
+        11px;
+
+}
+
+
+/* ==========================================================
+   LOADING / EMPTY
+========================================================== */
+
 .loading {
 
     text-align:
@@ -440,6 +792,10 @@ tr:hover td {
 }
 
 
+/* ==========================================================
+   FOOTER
+========================================================== */
+
 footer {
 
     text-align:
@@ -465,7 +821,52 @@ footer span {
 }
 
 
-@media (max-width: 700px) {
+/* ==========================================================
+   ANIMATION
+========================================================== */
+
+@keyframes pulse {
+
+    0% {
+
+        transform:
+            scale(1);
+
+        opacity:
+            1;
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.5);
+
+        opacity:
+            .5;
+
+    }
+
+    100% {
+
+        transform:
+            scale(1);
+
+        opacity:
+            1;
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (
+    max-width: 800px
+) {
 
     .container {
 
@@ -482,6 +883,45 @@ footer span {
 
         flex-direction:
             column;
+
+    }
+
+
+    .liveTop {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .scanButtons {
+
+        width:
+            100%;
+
+    }
+
+
+    .scanButton,
+    .refresh {
+
+        flex:
+            1;
+
+    }
+
+
+    .scanInfo {
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
 
     }
 
@@ -508,340 +948,16 @@ footer span {
     }
 
 }
-/* =====================================================
-   LIVE SCAN PANEL
-===================================================== */
 
-.livePanel {
 
-    background:
-        #111827;
+@media (
+    max-width: 480px
+) {
 
-    border:
-        1px solid #1f2937;
+    .scanInfo {
 
-    border-radius:
-        18px;
-
-    padding:
-        20px;
-
-    margin-bottom:
-        20px;
-
-}
-
-
-.liveTop {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    gap:
-        20px;
-
-}
-
-
-.liveTitle {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        9px;
-
-    font-weight:
-        800;
-
-    font-size:
-        15px;
-
-    color:
-        #ffffff;
-
-}
-
-
-.liveDot {
-
-    width:
-        10px;
-
-    height:
-        10px;
-
-    border-radius:
-        50%;
-
-    background:
-        #22c55e;
-
-    box-shadow:
-        0 0 10px rgba(
-            34,
-            197,
-            94,
-            .6
-        );
-
-}
-
-
-.liveDot.running {
-
-    background:
-        #f59e0b;
-
-    box-shadow:
-        0 0 10px rgba(
-            245,
-            158,
-            11,
-            .7
-        );
-
-    animation:
-        pulse 1s infinite;
-
-}
-
-
-.scanMessage {
-
-    color:
-        #64748b;
-
-    font-size:
-        13px;
-
-    margin-top:
-        6px;
-
-}
-
-
-.scanButtons {
-
-    display:
-        flex;
-
-    gap:
-        8px;
-
-    align-items:
-        center;
-
-}
-
-
-.scanButton {
-
-    border:
-        0;
-
-    background:
-        #2563eb;
-
-    color:
-        #ffffff;
-
-    padding:
-        11px 17px;
-
-    border-radius:
-        10px;
-
-    font-weight:
-        800;
-
-    cursor:
-        pointer;
-
-}
-
-
-.scanButton:hover {
-
-    background:
-        #1d4ed8;
-
-}
-
-
-.scanButton:disabled {
-
-    opacity:
-        .6;
-
-    cursor:
-        not-allowed;
-
-}
-
-
-.scanInfo {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap:
-        10px;
-
-    margin-top:
-        20px;
-
-}
-
-
-.scanInfo > div {
-
-    background:
-        #0f172a;
-
-    border:
-        1px solid #1f2937;
-
-    border-radius:
-        12px;
-
-    padding:
-        13px;
-
-}
-
-
-.scanInfo span {
-
-    display:
-        block;
-
-    color:
-        #64748b;
-
-    font-size:
-        11px;
-
-    margin-bottom:
-        6px;
-
-}
-
-
-.scanInfo strong {
-
-    color:
-        #ffffff;
-
-    font-size:
-        14px;
-
-}
-
-
-.progressBar {
-
-    height:
-        5px;
-
-    background:
-        #1e293b;
-
-    border-radius:
-        999px;
-
-    margin-top:
-        18px;
-
-    overflow:
-        hidden;
-
-}
-
-
-.progressFill {
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    background:
-        #22c55e;
-
-}
-
-
-.running + .progressBar {
-
-    background:
-        #1e293b;
-
-}
-
-
-.dot.running {
-
-    background:
-        #f59e0b;
-
-    animation:
-        pulse 1s infinite;
-
-}
-
-
-@keyframes pulse {
-
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: .35;
-    }
-
-    100% {
-        opacity: 1;
-    }
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 700px) {
-
-    .liveTop {
-
-        flex-direction:
-            column;
-
-        align-items:
-            flex-start;
-
-    }
-
-
-    .scanButtons {
-
-        width:
-            100%;
+        grid-template-columns:
+            1fr;
 
     }
 
@@ -849,16 +965,11 @@ footer span {
     .scanButton,
     .refresh {
 
+        width:
+            100%;
+
         flex:
-            1;
-
-    }
-
-
-    .scanInfo {
-
-        grid-template-columns:
-            repeat(2, 1fr);
+            none;
 
     }
 
