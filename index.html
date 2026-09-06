@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SMC OB Scanner</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <header class="header">
+
+        <div>
+
+            <div class="badge">
+                MARKET SCANNER
+            </div>
+
+            <h1>
+                SMC OB Scanner
+            </h1>
+
+            <p>
+                Smart Money Concept —
+                Order Block Scanner
+            </p>
+
+        </div>
+
+        <div class="status">
+
+            <span
+                id="statusDot"
+                class="dot"
+            ></span>
+
+            <span id="statusText">
+                Loading...
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <section class="summary">
+
+        <div class="card">
+
+            <span>
+                Total Saham
+            </span>
+
+            <strong id="totalTickers">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <span>
+                Kandidat
+            </span>
+
+            <strong id="candidateCount">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <span>
+                Update
+            </span>
+
+            <strong
+                id="generatedAt"
+                class="small"
+            >
+                -
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panelHeader">
+
+            <div>
+
+                <h2>
+                    Top 10 Setup
+                </h2>
+
+                <p>
+                    Demand Order Block
+                    dengan RR ≥ 2
+                </p>
+
+            </div>
+
+            <button
+                onclick="loadResults()"
+                class="refresh"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+
+        <div class="tableWrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Ticker</th>
+                        <th>OB Range</th>
+                        <th>SL</th>
+                        <th>TP</th>
+                        <th>RR</th>
+                        <th>Distance</th>
+                        <th>BOS</th>
+                        <th>OB Size</th>
+                        <th>Score</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="resultBody">
+
+                    <tr>
+
+                        <td
+                            colspan="10"
+                            class="loading"
+                        >
+                            Memuat data...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        SMC OB Scanner
+        <span>•</span>
+        Yahoo Finance Data
+
+    </footer>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
