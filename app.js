@@ -1,3 +1,4 @@
+```javascript
 // ==========================================================
 // KONFIGURASI
 // ==========================================================
@@ -28,23 +29,34 @@ async function loadResults() {
             );
 
         if (!response.ok) {
+
             throw new Error(
                 "Gagal membaca results.json"
             );
+
         }
 
         const result =
             await response.json();
+
+
+        // TOTAL SAHAM
 
         document.getElementById(
             "totalTickers"
         ).textContent =
             result.total_tickers ?? "-";
 
+
+        // JUMLAH KANDIDAT
+
         document.getElementById(
             "candidateCount"
         ).textContent =
             result.candidates ?? "-";
+
+
+        // UPDATE
 
         document.getElementById(
             "generatedAt"
@@ -52,6 +64,9 @@ async function loadResults() {
             formatDateTime(
                 result.generated_at
             );
+
+
+        // LAST SCAN
 
         document.getElementById(
             "lastScan"
@@ -61,10 +76,16 @@ async function loadResults() {
                 result.generated_at
             );
 
+
+        // PROGRESS
+
         document.getElementById(
             "scanProgress"
         ).textContent =
             `${result.processed ?? result.total_tickers ?? 0} / ${result.total_tickers ?? 0}`;
+
+
+        // DURASI
 
         document.getElementById(
             "scanDuration"
@@ -72,11 +93,17 @@ async function loadResults() {
             result.duration_text ??
             "-";
 
+
+        // ERROR
+
         document.getElementById(
             "scanErrors"
         ).textContent =
             result.errors ??
             0;
+
+
+        // PROGRESS BAR
 
         const total =
             Number(
@@ -91,8 +118,10 @@ async function loadResults() {
         let percent = 0;
 
         if (total > 0) {
+
             percent =
                 (processed / total) * 100;
+
         }
 
         document.getElementById(
@@ -103,9 +132,13 @@ async function loadResults() {
                 100
             ) + "%";
 
+
+        // RENDER DATA
+
         renderTable(
             result.data || []
         );
+
 
     } catch (error) {
 
@@ -115,6 +148,7 @@ async function loadResults() {
         );
 
     }
+
 }
 
 
@@ -134,9 +168,11 @@ async function loadScanStatus() {
             );
 
         if (!response.ok) {
+
             throw new Error(
                 "Gagal membaca scan_status.json"
             );
+
         }
 
         const status =
@@ -146,6 +182,7 @@ async function loadScanStatus() {
             status
         );
 
+
     } catch (error) {
 
         console.error(
@@ -154,6 +191,7 @@ async function loadScanStatus() {
         );
 
     }
+
 }
 
 
@@ -229,6 +267,7 @@ function updateScannerStatus(
         );
 
         return;
+
     }
 
 
@@ -265,11 +304,12 @@ function updateScannerStatus(
         );
 
         return;
+
     }
 
 
     // ======================================================
-    // SUCCESS / IDLE
+    // SUCCESS / READY
     // ======================================================
 
     liveDot.classList.remove(
@@ -329,20 +369,27 @@ async function startScan() {
             "statusText"
         );
 
+    const statusDot =
+        document.getElementById(
+            "statusDot"
+        );
+
 
     // ======================================================
-    // CEGAH KLIK GANDA
+    // CEGAH DOUBLE CLICK
     // ======================================================
 
     if (
         scanButton.disabled
     ) {
+
         return;
+
     }
 
 
     // ======================================================
-    // UBAH UI SEGERA
+    // TAMPILKAN STATUS MEMULAI
     // ======================================================
 
     scanButton.disabled =
@@ -364,26 +411,32 @@ async function startScan() {
     statusText.textContent =
         "Connecting...";
 
+    statusDot.classList.add(
+        "running"
+    );
+
 
     try {
+
+        // ==================================================
+        // KIRIM REQUEST KE CLOUDFLARE WORKER
+        //
+        // TIDAK MENGIRIM JSON / BODY
+        // agar tidak memicu CORS preflight
+        // ==================================================
 
         const response =
             await fetch(
                 WORKER_URL,
                 {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        action: "scan"
-                    })
+                    method: "POST"
                 }
             );
 
+
+        // ==================================================
+        // BACA RESPONSE
+        // ==================================================
 
         let result = null;
 
@@ -400,7 +453,7 @@ async function startScan() {
 
 
         // ==================================================
-        // GAGAL
+        // CEK RESPONSE
         // ==================================================
 
         if (
@@ -418,7 +471,7 @@ async function startScan() {
 
 
         // ==================================================
-        // BERHASIL TRIGGER
+        // SCANNER BERHASIL DIMULAI
         // ==================================================
 
         liveStatus.textContent =
@@ -433,8 +486,15 @@ async function startScan() {
         statusText.textContent =
             "Scanning...";
 
+        statusDot.classList.add(
+            "running"
+        );
 
-        // Ambil status lebih cepat
+
+        // ==================================================
+        // CEK STATUS TERBARU
+        // ==================================================
+
         await loadScanStatus();
 
         await loadResults();
@@ -448,7 +508,15 @@ async function startScan() {
         );
 
 
+        // ==================================================
+        // KEMBALIKAN STATUS
+        // ==================================================
+
         liveDot.classList.remove(
+            "running"
+        );
+
+        statusDot.classList.remove(
             "running"
         );
 
@@ -491,6 +559,11 @@ function renderTable(
             "resultBody"
         );
 
+
+    // ======================================================
+    // TIDAK ADA DATA
+    // ======================================================
+
     if (!data.length) {
 
         body.innerHTML = `
@@ -510,8 +583,13 @@ function renderTable(
         `;
 
         return;
+
     }
 
+
+    // ======================================================
+    // DATA TABLE
+    // ======================================================
 
     body.innerHTML =
         data.map(
@@ -591,16 +669,30 @@ function formatDateTime(
 ) {
 
     if (!value) {
+
         return "-";
+
     }
+
+
+    // ======================================================
+    // JIKA SUDAH FORMAT WIB
+    // ======================================================
 
     if (
         String(value).includes(
             "WIB"
         )
     ) {
+
         return value;
+
     }
+
+
+    // ======================================================
+    // PARSE DATE
+    // ======================================================
 
     const date =
         new Date(
@@ -611,13 +703,17 @@ function formatDateTime(
             "+07:00"
         );
 
+
     if (
         isNaN(
             date.getTime()
         )
     ) {
+
         return value;
+
     }
+
 
     const day =
         String(
@@ -662,6 +758,7 @@ function formatDateTime(
             "0"
         );
 
+
     return (
         `${day}-${month}-${year} ` +
         `${hour}:${minute}:${second} WIB`
@@ -693,7 +790,8 @@ loadScanStatus();
 
 
 // ==========================================================
-// AUTO REFRESH
+// AUTO REFRESH HASIL
+// Setiap 10 detik
 // ==========================================================
 
 setInterval(
@@ -701,7 +799,14 @@ setInterval(
     10 * 1000
 );
 
+
+// ==========================================================
+// AUTO REFRESH STATUS
+// Setiap 5 detik
+// ==========================================================
+
 setInterval(
     loadScanStatus,
     5 * 1000
 );
+```
