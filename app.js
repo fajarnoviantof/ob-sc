@@ -23,72 +23,94 @@ async function loadResults() {
         );
 
         if (!response.ok) {
-
             throw new Error(
                 "Gagal membaca results.json"
             );
-
         }
 
         const result = await response.json();
 
+        const totalTickers =
+            document.getElementById("totalTickers");
 
-        document.getElementById(
-            "totalTickers"
-        ).textContent =
-            result.total_tickers ?? "-";
+        const candidateCount =
+            document.getElementById("candidateCount");
 
+        const generatedAt =
+            document.getElementById("generatedAt");
 
-        document.getElementById(
-            "candidateCount"
-        ).textContent =
-            result.candidates ?? "-";
+        const lastScan =
+            document.getElementById("lastScan");
 
+        const scanProgress =
+            document.getElementById("scanProgress");
 
-        document.getElementById(
-            "generatedAt"
-        ).textContent =
-            formatDateTime(
-                result.generated_at
-            );
+        const scanDuration =
+            document.getElementById("scanDuration");
 
+        const scanErrors =
+            document.getElementById("scanErrors");
 
-        document.getElementById(
-            "lastScan"
-        ).textContent =
-            formatDateTime(
-                result.finished_at ||
-                result.generated_at
-            );
+        const progressFill =
+            document.getElementById("progressFill");
 
 
-        document.getElementById(
-            "scanProgress"
-        ).textContent =
-            String(
-                result.processed ??
-                result.total_tickers ??
-                0
-            ) +
-            " / " +
-            String(
-                result.total_tickers ??
-                0
-            );
+        if (totalTickers) {
+            totalTickers.textContent =
+                result.total_tickers ?? "-";
+        }
 
+        if (candidateCount) {
+            candidateCount.textContent =
+                result.candidates ?? "-";
+        }
 
-        document.getElementById(
-            "scanDuration"
-        ).textContent =
-            result.duration_text ??
-            "-";
+        if (generatedAt) {
+            generatedAt.textContent =
+                formatDateTime(
+                    result.generated_at
+                );
+        }
 
+        if (lastScan) {
+            lastScan.textContent =
+                formatDateTime(
+                    result.finished_at ||
+                    result.generated_at
+                );
+        }
 
-        document.getElementById(
-            "scanErrors"
-        ).textContent =
-            result.errors ??
-            0;
+        if (scanProgress) {
+
+            scanProgress.textContent =
+                String(
+                    result.processed ??
+                    result.total_tickers ??
+                    0
+                ) +
+                " / " +
+                String(
+                    result.total_tickers ??
+                    0
+                );
+
+        }
+
+        if (scanDuration) {
+
+            scanDuration.textContent =
+                result.duration_text ??
+                "-";
+
+        }
+
+        if (scanErrors) {
+
+            scanErrors.textContent =
+                result.errors ??
+                0;
+
+        }
 
 
         const total =
@@ -96,15 +118,12 @@ async function loadResults() {
                 result.total_tickers
             ) || 0;
 
-
         const processed =
             Number(
                 result.processed
             ) || 0;
 
-
         let percent = 0;
-
 
         if (total > 0) {
 
@@ -113,14 +132,15 @@ async function loadResults() {
 
         }
 
+        if (progressFill) {
 
-        document.getElementById(
-            "progressFill"
-        ).style.width =
-            Math.min(
-                percent,
-                100
-            ) + "%";
+            progressFill.style.width =
+                Math.min(
+                    percent,
+                    100
+                ) + "%";
+
+        }
 
 
         renderTable(
@@ -162,7 +182,6 @@ async function loadScanStatus() {
 
         const status =
             await response.json();
-
 
         updateScannerStatus(
             status
@@ -220,61 +239,115 @@ function updateScannerStatus(
         );
 
 
-    // ======================================================
-    // RUNNING
-    // ======================================================
-
     if (
         status.status ===
         "running"
     ) {
 
-        liveDot.classList.add(
-            "running"
-        );
+        if (liveDot) {
+            liveDot.classList.add(
+                "running"
+            );
+        }
 
-        liveStatus.textContent =
-            "SCANNER RUNNING";
+        if (liveStatus) {
+            liveStatus.textContent =
+                "SCANNER RUNNING";
+        }
 
-        message.textContent =
-            "Sedang memproses data Yahoo Finance...";
+        if (message) {
+            message.textContent =
+                "Sedang memproses data Yahoo Finance...";
+        }
 
-        scanButton.disabled =
-            true;
+        if (scanButton) {
 
-        scanButton.textContent =
-            "⏳ SCAN BERJALAN";
+            scanButton.disabled =
+                true;
 
-        statusText.textContent =
-            "Scanning...";
+            scanButton.textContent =
+                "⏳ SCAN BERJALAN";
 
-        statusDot.classList.add(
-            "running"
-        );
+        }
+
+        if (statusText) {
+            statusText.textContent =
+                "Scanning...";
+        }
+
+        if (statusDot) {
+            statusDot.classList.add(
+                "running"
+            );
+        }
 
         return;
-
     }
 
-
-    // ======================================================
-    // FAILED
-    // ======================================================
 
     if (
         status.status ===
         "failed"
     ) {
 
+        if (liveDot) {
+            liveDot.classList.remove(
+                "running"
+            );
+        }
+
+        if (liveStatus) {
+            liveStatus.textContent =
+                "SCAN FAILED";
+        }
+
+        if (message) {
+            message.textContent =
+                "Scanner mengalami kesalahan.";
+        }
+
+        if (scanButton) {
+
+            scanButton.disabled =
+                false;
+
+            scanButton.textContent =
+                "🚀 SCAN SEKARANG";
+
+        }
+
+        if (statusText) {
+            statusText.textContent =
+                "Scan gagal";
+        }
+
+        if (statusDot) {
+            statusDot.classList.remove(
+                "running"
+            );
+        }
+
+        return;
+    }
+
+
+    if (liveDot) {
         liveDot.classList.remove(
             "running"
         );
+    }
 
+    if (liveStatus) {
         liveStatus.textContent =
-            "SCAN FAILED";
+            "LIVE SCAN";
+    }
 
+    if (message) {
         message.textContent =
-            "Scanner mengalami kesalahan.";
+            "Scanner siap digunakan";
+    }
+
+    if (scanButton) {
 
         scanButton.disabled =
             false;
@@ -282,44 +355,87 @@ function updateScannerStatus(
         scanButton.textContent =
             "🚀 SCAN SEKARANG";
 
-        statusText.textContent =
-            "Scan gagal";
+    }
 
+    if (statusText) {
+        statusText.textContent =
+            "Data terbaru";
+    }
+
+    if (statusDot) {
         statusDot.classList.remove(
             "running"
         );
-
-        return;
-
     }
 
+}
 
-    // ======================================================
-    // READY / SUCCESS
-    // ======================================================
 
-    liveDot.classList.remove(
-        "running"
+// ==========================================================
+// TEST KONEKSI WORKER
+// ==========================================================
+
+async function testWorkerConnection() {
+
+    console.log(
+        "======================================"
     );
 
-    liveStatus.textContent =
-        "LIVE SCAN";
-
-    message.textContent =
-        "Scanner siap digunakan";
-
-    scanButton.disabled =
-        false;
-
-    scanButton.textContent =
-        "🚀 SCAN SEKARANG";
-
-    statusText.textContent =
-        "Data terbaru";
-
-    statusDot.classList.remove(
-        "running"
+    console.log(
+        "TEST CLOUDFLARE WORKER"
     );
+
+    console.log(
+        "Worker URL:",
+        WORKER_URL
+    );
+
+    console.log(
+        "======================================"
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+                WORKER_URL,
+                {
+                    method: "GET",
+                    cache: "no-store"
+                }
+            );
+
+
+        console.log(
+            "Worker HTTP status:",
+            response.status
+        );
+
+
+        const text =
+            await response.text();
+
+
+        console.log(
+            "Worker response:",
+            text
+        );
+
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(
+            "TEST WORKER GAGAL:",
+            error
+        );
+
+        return false;
+
+    }
 
 }
 
@@ -329,6 +445,24 @@ function updateScannerStatus(
 // ==========================================================
 
 async function startScan() {
+
+    console.log(
+        "======================================"
+    );
+
+    console.log(
+        "START SCAN DIPANGGIL"
+    );
+
+    console.log(
+        "Worker:",
+        WORKER_URL
+    );
+
+    console.log(
+        "======================================"
+    );
+
 
     const scanButton =
         document.getElementById(
@@ -361,11 +495,8 @@ async function startScan() {
         );
 
 
-    // ======================================================
-    // CEGAH DOUBLE CLICK
-    // ======================================================
-
     if (
+        scanButton &&
         scanButton.disabled
     ) {
 
@@ -374,59 +505,73 @@ async function startScan() {
     }
 
 
-    // ======================================================
-    // STATUS MEMULAI
-    // ======================================================
+    if (scanButton) {
 
-    scanButton.disabled =
-        true;
+        scanButton.disabled =
+            true;
 
-    scanButton.textContent =
-        "⏳ MEMULAI SCAN...";
+        scanButton.textContent =
+            "⏳ MEMULAI SCAN...";
 
-    liveDot.classList.add(
-        "running"
-    );
+    }
 
-    liveStatus.textContent =
-        "MEMULAI SCAN";
 
-    message.textContent =
-        "Menghubungkan ke scanner...";
+    if (liveDot) {
+        liveDot.classList.add(
+            "running"
+        );
+    }
 
-    statusText.textContent =
-        "Connecting...";
+    if (liveStatus) {
+        liveStatus.textContent =
+            "MEMULAI SCAN";
+    }
 
-    statusDot.classList.add(
-        "running"
-    );
+    if (message) {
+        message.textContent =
+            "Menghubungkan ke scanner...";
+    }
+
+    if (statusText) {
+        statusText.textContent =
+            "Connecting...";
+    }
+
+    if (statusDot) {
+        statusDot.classList.add(
+            "running"
+        );
+    }
 
 
     try {
 
-        // ==================================================
-        // KIRIM POST KE CLOUDFLARE WORKER
-        //
-        // Tidak menggunakan:
-        // - Content-Type
-        // - JSON
-        // - body
-        //
-        // Tujuannya menghindari CORS preflight.
-        // ==================================================
+        console.log(
+            "Mengirim POST ke Worker..."
+        );
+
 
         const response =
             await fetch(
                 WORKER_URL,
                 {
-                    method: "POST"
+                    method: "POST",
+                    mode: "cors",
+                    cache: "no-store"
                 }
             );
 
 
-        // ==================================================
-        // BACA RESPONSE
-        // ==================================================
+        console.log(
+            "Response Worker:",
+            response
+        );
+
+        console.log(
+            "HTTP status:",
+            response.status
+        );
+
 
         let result = null;
 
@@ -436,19 +581,35 @@ async function startScan() {
             result =
                 await response.json();
 
-        } catch {
+        } catch (jsonError) {
 
-            result = null;
+            console.error(
+                "Response bukan JSON:",
+                jsonError
+            );
 
         }
 
 
-        // ==================================================
-        // CEK RESPONSE
-        // ==================================================
+        console.log(
+            "Data Worker:",
+            result
+        );
+
 
         if (
-            !response.ok ||
+            !response.ok
+        ) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
+        if (
             !result ||
             !result.success
         ) {
@@ -458,44 +619,47 @@ async function startScan() {
                     result &&
                     result.message
                 ) ||
-                "HTTP " +
-                response.status
+                "Worker tidak mengonfirmasi scanner."
             );
 
         }
 
 
-        // ==================================================
-        // SCANNER BERHASIL DIMULAI
-        // ==================================================
+        console.log(
+            "======================================"
+        );
 
-        liveStatus.textContent =
-            "SCANNER RUNNING";
+        console.log(
+            "SCANNER BERHASIL DIMULAI"
+        );
 
-        message.textContent =
-            "Scanner sedang memproses data Yahoo Finance...";
-
-        scanButton.textContent =
-            "⏳ SCAN BERJALAN";
-
-        statusText.textContent =
-            "Scanning...";
-
-        statusDot.classList.add(
-            "running"
+        console.log(
+            "======================================"
         );
 
 
-        // ==================================================
-        // CEK STATUS TERBARU
-        // ==================================================
+        if (liveStatus) {
+            liveStatus.textContent =
+                "SCANNER RUNNING";
+        }
+
+        if (message) {
+            message.textContent =
+                "Scanner sedang memproses data Yahoo Finance...";
+        }
+
+        if (scanButton) {
+            scanButton.textContent =
+                "⏳ SCAN BERJALAN";
+        }
+
+        if (statusText) {
+            statusText.textContent =
+                "Scanning...";
+        }
+
 
         await loadScanStatus();
-
-
-        // ==================================================
-        // LOAD HASIL
-        // ==================================================
 
         await loadResults();
 
@@ -503,37 +667,58 @@ async function startScan() {
     } catch (error) {
 
         console.error(
-            "startScan:",
+            "======================================"
+        );
+
+        console.error(
+            "START SCAN GAGAL"
+        );
+
+        console.error(
             error
         );
 
-
-        // ==================================================
-        // STATUS ERROR
-        // ==================================================
-
-        liveDot.classList.remove(
-            "running"
+        console.error(
+            "======================================"
         );
 
-        statusDot.classList.remove(
-            "running"
-        );
 
-        liveStatus.textContent =
-            "SCAN ERROR";
+        if (liveDot) {
+            liveDot.classList.remove(
+                "running"
+            );
+        }
 
-        message.textContent =
-            "Gagal menjalankan scanner.";
+        if (statusDot) {
+            statusDot.classList.remove(
+                "running"
+            );
+        }
 
-        statusText.textContent =
-            "Error";
+        if (liveStatus) {
+            liveStatus.textContent =
+                "SCAN ERROR";
+        }
 
-        scanButton.disabled =
-            false;
+        if (message) {
+            message.textContent =
+                "Gagal menjalankan scanner.";
+        }
 
-        scanButton.textContent =
-            "🚀 SCAN SEKARANG";
+        if (statusText) {
+            statusText.textContent =
+                "Error";
+        }
+
+        if (scanButton) {
+
+            scanButton.disabled =
+                false;
+
+            scanButton.textContent =
+                "🚀 SCAN SEKARANG";
+
+        }
 
 
         alert(
@@ -560,9 +745,10 @@ function renderTable(
         );
 
 
-    // ======================================================
-    // TIDAK ADA DATA
-    // ======================================================
+    if (!body) {
+        return;
+    }
+
 
     if (
         !data.length
@@ -580,10 +766,6 @@ function renderTable(
 
     }
 
-
-    // ======================================================
-    // RENDER DATA
-    // ======================================================
 
     body.innerHTML =
         data.map(
@@ -655,7 +837,6 @@ function renderTable(
             }
         ).join("");
 
-
 }
 
 
@@ -668,15 +849,9 @@ function formatDateTime(
 ) {
 
     if (!value) {
-
         return "-";
-
     }
 
-
-    // ======================================================
-    // SUDAH FORMAT WIB
-    // ======================================================
 
     if (
         String(value).includes(
@@ -688,10 +863,6 @@ function formatDateTime(
 
     }
 
-
-    // ======================================================
-    // PARSE DATE
-    // ======================================================
 
     const date =
         new Date(
@@ -722,7 +893,6 @@ function formatDateTime(
             "0"
         );
 
-
     const month =
         String(
             date.getMonth() + 1
@@ -731,10 +901,8 @@ function formatDateTime(
             "0"
         );
 
-
     const year =
         date.getFullYear();
-
 
     const hour =
         String(
@@ -744,7 +912,6 @@ function formatDateTime(
             "0"
         );
 
-
     const minute =
         String(
             date.getMinutes()
@@ -752,7 +919,6 @@ function formatDateTime(
             2,
             "0"
         );
-
 
     const second =
         String(
@@ -804,20 +970,13 @@ loadScanStatus();
 
 
 // ==========================================================
-// AUTO REFRESH HASIL
-// 10 DETIK
+// AUTO REFRESH
 // ==========================================================
 
 setInterval(
     loadResults,
     10 * 1000
 );
-
-
-// ==========================================================
-// AUTO REFRESH STATUS
-// 5 DETIK
-// ==========================================================
 
 setInterval(
     loadScanStatus,
