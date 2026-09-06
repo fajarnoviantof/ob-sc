@@ -1,6 +1,7 @@
 name: SMC OB Scanner
 
 on:
+
   workflow_dispatch:
 
   schedule:
@@ -10,7 +11,7 @@ on:
 
 
 # ==========================================================
-# IZIN GITHUB ACTIONS
+# PERMISSIONS
 # ==========================================================
 
 permissions:
@@ -18,11 +19,13 @@ permissions:
 
 
 # ==========================================================
-# CEGAH 2 SCAN BERJALAN BERSAMAAN
+# CONCURRENCY
 # ==========================================================
 
 concurrency:
+
   group: smc-ob-scanner
+
   cancel-in-progress: false
 
 
@@ -32,36 +35,43 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    timeout-minutes: 10
+
 
     steps:
 
       # ====================================================
-      # 1. CHECKOUT REPOSITORY
+      # 1. CHECKOUT
       # ====================================================
 
       - name: Checkout repository
+
         uses: actions/checkout@v4
 
         with:
+
           fetch-depth: 0
 
 
       # ====================================================
-      # 2. SETUP PYTHON
+      # 2. PYTHON
       # ====================================================
 
       - name: Setup Python
+
         uses: actions/setup-python@v5
 
         with:
+
           python-version: "3.11"
 
 
       # ====================================================
-      # 3. INSTALL LIBRARY
+      # 3. INSTALL
       # ====================================================
 
       - name: Install dependencies
+
         run: |
 
           python -m pip install --upgrade pip
@@ -73,10 +83,11 @@ jobs:
 
 
       # ====================================================
-      # 4. STATUS = RUNNING
+      # 4. STATUS RUNNING
       # ====================================================
 
       - name: Set scan status RUNNING
+
         run: |
 
           python - <<'PY'
@@ -92,9 +103,13 @@ jobs:
           )
 
           data = {
+
               "status": "running",
+
               "started_at": now,
+
               "finished_at": None
+
           }
 
           with open(
@@ -113,13 +128,15 @@ jobs:
 
 
       # ====================================================
-      # 5. COMMIT STATUS RUNNING
+      # 5. COMMIT RUNNING
       # ====================================================
 
       - name: Commit RUNNING status
+
         run: |
 
-          git config user.name "github-actions[bot]"
+          git config user.name \
+            "github-actions[bot]"
 
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
@@ -128,7 +145,7 @@ jobs:
 
           if git diff --cached --quiet; then
 
-            echo "Tidak ada perubahan status."
+            echo "Status RUNNING tidak berubah."
 
           else
 
@@ -144,17 +161,20 @@ jobs:
       # ====================================================
 
       - name: Run SMC OB Scanner
+
         run: |
 
           python scanner.py
 
 
       # ====================================================
-      # 7. STATUS = SUCCESS
+      # 7. STATUS SUCCESS
       # ====================================================
 
       - name: Set scan status SUCCESS
+
         if: success()
+
         run: |
 
           python - <<'PY'
@@ -170,9 +190,11 @@ jobs:
           )
 
           data = {
+
               "status": "success",
-              "started_at": None,
+
               "finished_at": now
+
           }
 
           with open(
@@ -191,11 +213,13 @@ jobs:
 
 
       # ====================================================
-      # 8. STATUS = FAILED
+      # 8. STATUS FAILED
       # ====================================================
 
       - name: Set scan status FAILED
+
         if: failure()
+
         run: |
 
           python - <<'PY'
@@ -211,9 +235,11 @@ jobs:
           )
 
           data = {
+
               "status": "failed",
-              "started_at": None,
+
               "finished_at": now
+
           }
 
           with open(
@@ -232,25 +258,26 @@ jobs:
 
 
       # ====================================================
-      # 9. SIMPAN HASIL SCAN
+      # 9. SIMPAN SEMUA HASIL
       # ====================================================
 
       - name: Commit scan results
+
         if: always()
+
         run: |
 
-          git config user.name "github-actions[bot]"
+          git config user.name \
+            "github-actions[bot]"
 
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            results.json \
-            scan_status.json
+          git add -A
 
           if git diff --cached --quiet; then
 
-            echo "Tidak ada perubahan hasil."
+            echo "Tidak ada perubahan untuk disimpan."
 
           else
 
