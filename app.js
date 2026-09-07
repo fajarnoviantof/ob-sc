@@ -1,51 +1,58 @@
 // =========================================================
-// SMC OB SCANNER
-// FRONTEND ONLY
+// SMC OB SCANNER - FRONTEND
+// AUTO UPDATE + MANUAL REFRESH
 // =========================================================
 
 
 // =========================================================
-// FILE
+// CONFIG
 // =========================================================
 
-const RESULTS_URL =
-    "results.json";
+const RESULTS_URL = "results.json";
+const STATUS_URL = "scan_status.json";
 
-const STATUS_URL =
-    "scan_status.json";
-
-
-// =========================================================
-// ELEMENT
-// =========================================================
-
-const scanButton =
-    document.getElementById(
-        "scanButton"
-    );
+// Cek otomatis setiap 30 detik
+const AUTO_REFRESH_INTERVAL = 30 * 1000;
 
 
 // =========================================================
 // INIT
 // =========================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-        // Hilangkan tombol scan manual
-        if (scanButton) {
+    // Tombol Scan Now sudah tidak digunakan
+    const scanButton = document.getElementById("scanButton");
 
-            scanButton.style.display =
-                "none";
+    if (scanButton) {
+        scanButton.style.display = "none";
+    }
 
-        }
 
+    // Load pertama kali
+    refreshAll();
+
+
+    // =====================================================
+    // AUTO UPDATE
+    // =====================================================
+    //
+    // Setiap 30 detik website akan mengecek:
+    //
+    // scan_status.json
+    // results.json
+    //
+    // Jika ada hasil scan baru,
+    // tampilan otomatis diperbarui.
+    //
+
+    setInterval(() => {
 
         refreshAll();
 
-    }
-);
+    }, AUTO_REFRESH_INTERVAL);
+
+});
 
 
 // =========================================================
@@ -54,9 +61,25 @@ document.addEventListener(
 
 async function refreshAll() {
 
-    await loadStatus();
+    try {
 
-    await loadResults();
+        await loadStatus();
+
+        await loadResults();
+
+    } catch (error) {
+
+        console.error(
+            "Refresh error:",
+            error
+        );
+
+        setStatus(
+            "offline",
+            "Gagal mengambil data"
+        );
+
+    }
 
 }
 
@@ -67,49 +90,35 @@ async function refreshAll() {
 
 async function loadStatus() {
 
-    try {
+    const url =
+        STATUS_URL +
+        "?t=" +
+        Date.now();
 
-        const response =
-            await fetch(
-                STATUS_URL +
-                "?t=" +
-                Date.now()
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Status HTTP " +
-                response.status
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        updateStatusUI(
-            data
+    const response =
+        await fetch(
+            url,
+            {
+                cache: "no-store"
+            }
         );
 
 
-    } catch (error) {
+    if (!response.ok) {
 
-        console.error(
-            "Gagal membaca status:",
-            error
-        );
-
-
-        setStatus(
-            "offline",
-            "STATUS ERROR"
+        throw new Error(
+            "Status HTTP " +
+            response.status
         );
 
     }
+
+
+    const data =
+        await response.json();
+
+
+    updateStatusUI(data);
 
 }
 
@@ -120,47 +129,37 @@ async function loadStatus() {
 
 function updateStatusUI(data) {
 
-    if (!data) {
-
-        return;
-
-    }
-
-
     const status =
-        String(
-            data.status ||
-            ""
-        ).toLowerCase();
+        data.status || "unknown";
 
+
+    // -----------------------------------------------------
+    // STATUS
+    // -----------------------------------------------------
 
     if (status === "running") {
 
         setStatus(
             "running",
-            "SCANNING..."
+            "Scanner sedang berjalan..."
         );
 
     }
 
-    else if (
-        status === "success"
-    ) {
+    else if (status === "success") {
 
         setStatus(
-            "success",
-            "SCAN SELESAI"
+            "online",
+            "Scanner aktif"
         );
 
     }
 
-    else if (
-        status === "failed"
-    ) {
+    else if (status === "failed") {
 
         setStatus(
             "error",
-            "SCAN GAGAL"
+            "Scan terakhir gagal"
         );
 
     }
@@ -168,28 +167,32 @@ function updateStatusUI(data) {
     else {
 
         setStatus(
-            "idle",
-            "READY"
+            "offline",
+            "Status tidak diketahui"
         );
 
     }
 
 
-    // -----------------------------------------
+    // -----------------------------------------------------
     // LAST SCAN
-    // -----------------------------------------
+    // -----------------------------------------------------
+
+    const finishedAt =
+        data.finished_at ||
+        data.generated_at ||
+        "-";
+
 
     setText(
         "lastScan",
-        data.finished_at ||
-        data.generated_at ||
-        "-"
+        finishedAt
     );
 
 
-    // -----------------------------------------
+    // -----------------------------------------------------
     // PROGRESS
-    // -----------------------------------------
+    // -----------------------------------------------------
 
     const processed =
         Number(
@@ -204,15 +207,11 @@ function updateStatusUI(data) {
 
     let progress = 0;
 
-
     if (total > 0) {
 
         progress =
             Math.round(
-                (
-                    processed /
-                    total
-                ) * 100
+                (processed / total) * 100
             );
 
     }
@@ -226,6 +225,7 @@ function updateStatusUI(data) {
     );
 
 
+    // Progress bar
     const progressFill =
         document.getElementById(
             "progressFill"
@@ -240,25 +240,27 @@ function updateStatusUI(data) {
     }
 
 
-    // -----------------------------------------
+    // -----------------------------------------------------
     // DURATION
-    // -----------------------------------------
+    // -----------------------------------------------------
+
+    const duration =
+        data.duration_text || "-";
+
 
     setText(
         "scanDuration",
-        data.duration_text ||
-        "-"
+        duration
     );
 
 
-    // -----------------------------------------
+    // -----------------------------------------------------
     // ERRORS
-    // -----------------------------------------
+    // -----------------------------------------------------
 
     setText(
         "scanErrors",
-        data.errors ??
-        "-"
+        data.errors ?? 0
     );
 
 }
@@ -270,62 +272,36 @@ function updateStatusUI(data) {
 
 async function loadResults() {
 
-    try {
-
-        const response =
-            await fetch(
-                RESULTS_URL +
-                "?t=" +
-                Date.now()
-            );
+    const url =
+        RESULTS_URL +
+        "?t=" +
+        Date.now();
 
 
-        if (!response.ok) {
-
-            throw new Error(
-                "Results HTTP " +
-                response.status
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        renderResults(
-            data
+    const response =
+        await fetch(
+            url,
+            {
+                cache: "no-store"
+            }
         );
 
 
-    } catch (error) {
+    if (!response.ok) {
 
-        console.error(
-            "Gagal membaca results:",
-            error
+        throw new Error(
+            "Results HTTP " +
+            response.status
         );
-
-
-        const body =
-            document.getElementById(
-                "resultBody"
-            );
-
-
-        if (body) {
-
-            body.innerHTML = `
-                <tr>
-                    <td colspan="10">
-                        Gagal membaca hasil scanner
-                    </td>
-                </tr>
-            `;
-
-        }
 
     }
+
+
+    const data =
+        await response.json();
+
+
+    renderResults(data);
 
 }
 
@@ -336,161 +312,147 @@ async function loadResults() {
 
 function renderResults(data) {
 
-    if (!data) {
-
-        return;
-
-    }
-
-
-    // -----------------------------------------
-    // SUMMARY
-    // -----------------------------------------
+    // -----------------------------------------------------
+    // TOTAL TICKERS
+    // -----------------------------------------------------
 
     setText(
         "totalTickers",
-        data.total_tickers ??
-        "-"
+        formatNumber(
+            data.total_tickers
+        )
     );
 
+
+    // -----------------------------------------------------
+    // CANDIDATE COUNT
+    // -----------------------------------------------------
 
     setText(
         "candidateCount",
-        data.candidates ??
-        0
+        formatNumber(
+            data.candidates
+        )
     );
 
+
+    // -----------------------------------------------------
+    // GENERATED AT
+    // -----------------------------------------------------
 
     setText(
         "generatedAt",
-        data.generated_at ??
-        "-"
+        data.generated_at || "-"
     );
 
 
-    // -----------------------------------------
+    // -----------------------------------------------------
     // TABLE
-    // -----------------------------------------
+    // -----------------------------------------------------
 
-    const body =
+    const tbody =
         document.getElementById(
             "resultBody"
         );
 
 
-    if (!body) {
-
+    if (!tbody) {
         return;
-
     }
 
 
-    body.innerHTML = "";
+    tbody.innerHTML = "";
 
 
     const rows =
-        Array.isArray(
-            data.data
-        )
+        Array.isArray(data.data)
             ? data.data
             : [];
 
 
+    // Tidak ada kandidat
     if (rows.length === 0) {
 
-        body.innerHTML = `
-            <tr>
-                <td colspan="10">
-                    Tidak ada kandidat
-                </td>
-            </tr>
+        const tr =
+            document.createElement("tr");
+
+
+        tr.innerHTML = `
+            <td colspan="100%">
+                Tidak ada kandidat
+            </td>
         `;
+
+
+        tbody.appendChild(tr);
 
         return;
 
     }
 
 
-    rows.forEach(
-        row => {
+    // -----------------------------------------------------
+    // RENDER ROW
+    // -----------------------------------------------------
 
-            const tr =
-                document.createElement(
-                    "tr"
-                );
+    rows.forEach(row => {
 
-
-            tr.innerHTML = `
-
-                <td>
-                    ${safe(
-                        row.ticker
-                    )}
-                </td>
-
-                <td>
-                    ${safe(
-                        row.ob_range
-                    )}
-                </td>
-
-                <td>
-                    ${formatNumber(
-                        row.sl
-                    )}
-                </td>
-
-                <td>
-                    ${formatPercent(
-                        row.sl_pct
-                    )}
-                </td>
-
-                <td>
-                    ${formatNumber(
-                        row.tp
-                    )}
-                </td>
-
-                <td>
-                    ${formatPercent(
-                        row.tp_pct
-                    )}
-                </td>
-
-                <td>
-                    ${formatNumber(
-                        row.rr
-                    )}
-                </td>
-
-                <td>
-                    ${formatPercent(
-                        row.distance
-                    )}
-                </td>
-
-                <td>
-                    ${safe(
-                        row.bos_age
-                    )}
-                </td>
-
-                <td>
-                    ${formatNumber(
-                        row.ob_size
-                    )}
-                </td>
-
-            `;
+        const tr =
+            document.createElement("tr");
 
 
-            body.appendChild(
-                tr
-            );
+        tr.innerHTML = `
 
-        }
-    );
+            <td>
+                ${safe(row.ticker)}
+            </td>
+
+            <td>
+                ${safe(row.ob_range)}
+            </td>
+
+            <td>
+                ${formatNumber(row.sl)}
+            </td>
+
+            <td>
+                ${formatPercent(row.sl_pct)}
+            </td>
+
+            <td>
+                ${formatNumber(row.tp)}
+            </td>
+
+            <td>
+                ${formatPercent(row.tp_pct)}
+            </td>
+
+            <td>
+                ${safe(row.rr)}
+            </td>
+
+            <td>
+                ${formatPercent(row.distance)}
+            </td>
+
+            <td>
+                ${safe(row.bos_age)}
+            </td>
+
+            <td>
+                ${formatPercent(row.ob_size)}
+            </td>
+
+            <td>
+                ${safe(row.score)}
+            </td>
+
+        `;
+
+
+        tbody.appendChild(tr);
+
+    });
 
 }
 
@@ -545,9 +507,7 @@ function setText(
 ) {
 
     const element =
-        document.getElementById(
-            id
-        );
+        document.getElementById(id);
 
 
     if (element) {
@@ -585,18 +545,13 @@ function formatNumber(value) {
         Number.isNaN(number)
     ) {
 
-        return safe(
-            value
-        );
+        return safe(value);
 
     }
 
 
     return number.toLocaleString(
-        "id-ID",
-        {
-            maximumFractionDigits: 2
-        }
+        "id-ID"
     );
 
 }
@@ -627,9 +582,7 @@ function formatPercent(value) {
         Number.isNaN(number)
     ) {
 
-        return safe(
-            value
-        );
+        return safe(value);
 
     }
 
@@ -637,6 +590,7 @@ function formatPercent(value) {
     return number.toLocaleString(
         "id-ID",
         {
+            minimumFractionDigits: 0,
             maximumFractionDigits: 2
         }
     ) + "%";
@@ -660,28 +614,11 @@ function safe(value) {
     }
 
 
-    return String(
-        value
-    )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
