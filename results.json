@@ -1,40 +1,27 @@
 {
   "status": "success",
-  "generated_at": "2026-09-06 13:00:30",
-  "started_at": "2026-09-06 12:57:45",
-  "finished_at": "2026-09-06 13:00:30",
-  "duration_seconds": 164.5,
-  "duration_text": "2m 44s",
+  "generated_at": "2026-09-07 14:30:41",
+  "started_at": "2026-09-07 14:27:29",
+  "finished_at": "2026-09-07 14:30:41",
+  "duration_seconds": 192.0,
+  "duration_text": "3m 12s",
   "total_tickers": 957,
   "processed": 957,
   "errors": 1,
-  "candidates": 2,
+  "candidates": 1,
   "data": [
     {
-      "ticker": "NASI.JK",
-      "ob_range": "146-141",
-      "sl": 140,
-      "sl_pct": 3.5,
-      "tp": 163.0,
-      "tp_pct": 11.6,
-      "rr": 3.34,
-      "distance": 4.11,
-      "bos_age": 3,
-      "ob_size": 3.29,
-      "score": 86.11
-    },
-    {
-      "ticker": "ANJT.JK",
-      "ob_range": "1525-1495",
-      "sl": 1494,
-      "sl_pct": 2.0,
-      "tp": 1610.0,
+      "ticker": "SKLT.JK",
+      "ob_range": "216-212",
+      "sl": 211,
+      "sl_pct": 1.9,
+      "tp": 228.0,
       "tp_pct": 5.6,
-      "rr": 2.77,
-      "distance": 4.59,
-      "bos_age": 10,
-      "ob_size": 1.88,
-      "score": 73.23
+      "rr": 2.94,
+      "distance": 0.93,
+      "bos_age": 1,
+      "ob_size": 1.83,
+      "score": 86.03
     }
   ]
 }

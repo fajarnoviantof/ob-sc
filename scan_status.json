@@ -1,7 +1,7 @@
 {
-  "status": "running",
+  "status": "success",
   "started_at": "2026-09-07 14:27:27",
-  "finished_at": "2026-09-06 13:00:30",
+  "finished_at": "2026-09-07 14:30:41",
   "duration_seconds": null,
   "duration_text": null,
   "total_tickers": 0,
