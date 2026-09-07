@@ -1,6 +1,6 @@
 // =========================================================
-// SMC OB SCANNER - FRONTEND
-// AUTO UPDATE + MANUAL REFRESH
+// MARKET SCANNER - FRONTEND
+// SMC OB + MACD + 31-DAY HISTORY
 // =========================================================
 
 
@@ -9,50 +9,151 @@
 // =========================================================
 
 const RESULTS_URL = "results.json";
+
+const MACD_RESULTS_URL = "macd_results.json";
+
 const STATUS_URL = "scan_status.json";
 
-// Cek otomatis setiap 30 detik
+const HISTORY_URL = "history.json";
+
+// Auto refresh setiap 30 detik
 const AUTO_REFRESH_INTERVAL = 30 * 1000;
+
+
+// =========================================================
+// STATE
+// =========================================================
+
+let currentPage = "ob";
+
+let historyFilter = "ALL";
+
+let historyData = [];
 
 
 // =========================================================
 // INIT
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    // Tombol Scan Now sudah tidak digunakan
-    const scanButton = document.getElementById("scanButton");
+        // Load data pertama kali
+        refreshAll();
 
-    if (scanButton) {
-        scanButton.style.display = "none";
+        // Auto refresh setiap 30 detik
+        setInterval(
+            function () {
+
+                refreshAll();
+
+            },
+            AUTO_REFRESH_INTERVAL
+        );
+
+    }
+);
+
+
+// =========================================================
+// PAGE SWITCH
+// =========================================================
+
+function switchPage(page) {
+
+    currentPage = page;
+
+
+    // -----------------------------------------------------
+    // SEMBUNYIKAN SEMUA PAGE
+    // -----------------------------------------------------
+
+    const pages =
+        document.querySelectorAll(".page");
+
+
+    pages.forEach(
+        function (element) {
+
+            element.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    // -----------------------------------------------------
+    // NONAKTIFKAN SEMUA TAB
+    // -----------------------------------------------------
+
+    const tabs =
+        document.querySelectorAll(".nav-tab");
+
+
+    tabs.forEach(
+        function (element) {
+
+            element.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    // -----------------------------------------------------
+    // AKTIFKAN PAGE
+    // -----------------------------------------------------
+
+    const pageElement =
+        document.getElementById(
+            "page-" + page
+        );
+
+
+    if (pageElement) {
+
+        pageElement.classList.add(
+            "active"
+        );
+
     }
 
 
-    // Load pertama kali
-    refreshAll();
+    // -----------------------------------------------------
+    // AKTIFKAN TAB
+    // -----------------------------------------------------
+
+    const tab =
+        document.querySelector(
+            '.nav-tab[data-page="' +
+            page +
+            '"]'
+        );
 
 
-    // =====================================================
-    // AUTO UPDATE
-    // =====================================================
-    //
-    // Setiap 30 detik website akan mengecek:
-    //
-    // scan_status.json
-    // results.json
-    //
-    // Jika ada hasil scan baru,
-    // tampilan otomatis diperbarui.
-    //
+    if (tab) {
 
-    setInterval(() => {
+        tab.classList.add(
+            "active"
+        );
 
-        refreshAll();
+    }
 
-    }, AUTO_REFRESH_INTERVAL);
 
-});
+    // -----------------------------------------------------
+    // RENDER HISTORY
+    // -----------------------------------------------------
+
+    if (page === "history") {
+
+        renderHistory();
+
+    }
+
+}
 
 
 // =========================================================
@@ -63,9 +164,13 @@ async function refreshAll() {
 
     try {
 
-        await loadStatus();
+        await Promise.all([
+            loadStatus(),
+            loadResults(),
+            loadMacdResults(),
+            loadHistory()
+        ]);
 
-        await loadResults();
 
     } catch (error) {
 
@@ -73,6 +178,7 @@ async function refreshAll() {
             "Refresh error:",
             error
         );
+
 
         setStatus(
             "offline",
@@ -85,15 +191,18 @@ async function refreshAll() {
 
 
 // =========================================================
-// LOAD STATUS
+// FETCH JSON
 // =========================================================
 
-async function loadStatus() {
+async function fetchJson(
+    baseUrl
+) {
 
     const url =
-        STATUS_URL +
+        baseUrl +
         "?t=" +
         Date.now();
+
 
     const response =
         await fetch(
@@ -107,34 +216,53 @@ async function loadStatus() {
     if (!response.ok) {
 
         throw new Error(
-            "Status HTTP " +
+            baseUrl +
+            " HTTP " +
             response.status
         );
 
     }
 
 
-    const data =
-        await response.json();
-
-
-    updateStatusUI(data);
+    return await response.json();
 
 }
 
 
 // =========================================================
-// UPDATE STATUS UI
+// LOAD STATUS
 // =========================================================
 
-function updateStatusUI(data) {
+async function loadStatus() {
+
+    const data =
+        await fetchJson(
+            STATUS_URL
+        );
+
+
+    updateStatusUI(
+        data
+    );
+
+}
+
+
+// =========================================================
+// UPDATE STATUS
+// =========================================================
+
+function updateStatusUI(
+    data
+) {
 
     const status =
-        data.status || "unknown";
+        data.status ||
+        "unknown";
 
 
     // -----------------------------------------------------
-    // STATUS
+    // RUNNING
     // -----------------------------------------------------
 
     if (status === "running") {
@@ -144,49 +272,144 @@ function updateStatusUI(data) {
             "Scanner sedang berjalan..."
         );
 
+        return;
+
     }
 
-    else if (status === "success") {
+
+    // -----------------------------------------------------
+    // SUCCESS
+    // -----------------------------------------------------
+
+    if (status === "success") {
 
         setStatus(
             "online",
             "Scanner aktif"
         );
 
+        return;
+
     }
 
-    else if (status === "failed") {
+
+    // -----------------------------------------------------
+    // PARTIAL
+    // -----------------------------------------------------
+
+    if (status === "partial") {
+
+        setStatus(
+            "running",
+            "Scanner selesai sebagian"
+        );
+
+        return;
+
+    }
+
+
+    // -----------------------------------------------------
+    // FAILED
+    // -----------------------------------------------------
+
+    if (status === "failed") {
 
         setStatus(
             "error",
             "Scan terakhir gagal"
         );
 
+        return;
+
     }
 
-    else {
 
-        setStatus(
-            "offline",
-            "Status tidak diketahui"
+    // -----------------------------------------------------
+    // UNKNOWN
+    // -----------------------------------------------------
+
+    setStatus(
+        "offline",
+        "Status tidak diketahui"
+    );
+
+}
+
+
+// =========================================================
+// LOAD SMC OB
+// =========================================================
+
+async function loadResults() {
+
+    const data =
+        await fetchJson(
+            RESULTS_URL
         );
 
-    }
 
+    renderOB(
+        data
+    );
+
+}
+
+
+// =========================================================
+// RENDER SMC OB
+// =========================================================
+
+function renderOB(
+    data
+) {
 
     // -----------------------------------------------------
-    // LAST SCAN
+    // SUMMARY
     // -----------------------------------------------------
 
-    const finishedAt =
-        data.finished_at ||
-        data.generated_at ||
-        "-";
+    setText(
+        "obCandidateCount",
+        formatNumber(
+            data.candidates
+        )
+    );
 
 
     setText(
-        "lastScan",
-        finishedAt
+        "obTotalTickers",
+        formatNumber(
+            data.total_tickers
+        )
+    );
+
+
+    setText(
+        "obDuration",
+        data.duration_text ||
+        "-"
+    );
+
+
+    setText(
+        "obErrors",
+        data.errors ??
+        0
+    );
+
+
+    setText(
+        "obLastScan",
+        data.finished_at ||
+        data.generated_at ||
+        "-"
+    );
+
+
+    setText(
+        "obGeneratedAt",
+        data.generated_at ||
+        "-"
     );
 
 
@@ -196,153 +419,55 @@ function updateStatusUI(data) {
 
     const processed =
         Number(
-            data.processed || 0
+            data.processed ||
+            0
         );
+
 
     const total =
         Number(
-            data.total_tickers || 0
+            data.total_tickers ||
+            0
         );
 
 
     let progress = 0;
 
+
     if (total > 0) {
 
         progress =
             Math.round(
-                (processed / total) * 100
+                (
+                    processed /
+                    total
+                ) *
+                100
             );
 
     }
 
 
+    if (progress > 100) {
+
+        progress = 100;
+
+    }
+
+
     setText(
-        "scanProgress",
+        "obProgress",
         total > 0
-            ? `${processed} / ${total}`
+            ? processed +
+              " / " +
+              total
             : "-"
     );
 
 
-    // Progress bar
-    const progressFill =
-        document.getElementById(
-            "progressFill"
-        );
-
-
-    if (progressFill) {
-
-        progressFill.style.width =
-            progress + "%";
-
-    }
-
-
-    // -----------------------------------------------------
-    // DURATION
-    // -----------------------------------------------------
-
-    const duration =
-        data.duration_text || "-";
-
-
-    setText(
-        "scanDuration",
-        duration
-    );
-
-
-    // -----------------------------------------------------
-    // ERRORS
-    // -----------------------------------------------------
-
-    setText(
-        "scanErrors",
-        data.errors ?? 0
-    );
-
-}
-
-
-// =========================================================
-// LOAD RESULTS
-// =========================================================
-
-async function loadResults() {
-
-    const url =
-        RESULTS_URL +
-        "?t=" +
-        Date.now();
-
-
-    const response =
-        await fetch(
-            url,
-            {
-                cache: "no-store"
-            }
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Results HTTP " +
-            response.status
-        );
-
-    }
-
-
-    const data =
-        await response.json();
-
-
-    renderResults(data);
-
-}
-
-
-// =========================================================
-// RENDER RESULTS
-// =========================================================
-
-function renderResults(data) {
-
-    // -----------------------------------------------------
-    // TOTAL TICKERS
-    // -----------------------------------------------------
-
-    setText(
-        "totalTickers",
-        formatNumber(
-            data.total_tickers
-        )
-    );
-
-
-    // -----------------------------------------------------
-    // CANDIDATE COUNT
-    // -----------------------------------------------------
-
-    setText(
-        "candidateCount",
-        formatNumber(
-            data.candidates
-        )
-    );
-
-
-    // -----------------------------------------------------
-    // GENERATED AT
-    // -----------------------------------------------------
-
-    setText(
-        "generatedAt",
-        data.generated_at || "-"
+    setWidth(
+        "obProgressFill",
+        progress
     );
 
 
@@ -352,12 +477,14 @@ function renderResults(data) {
 
     const tbody =
         document.getElementById(
-            "resultBody"
+            "obResultBody"
         );
 
 
     if (!tbody) {
+
         return;
+
     }
 
 
@@ -365,26 +492,26 @@ function renderResults(data) {
 
 
     const rows =
-        Array.isArray(data.data)
+        Array.isArray(
+            data.data
+        )
             ? data.data
             : [];
 
 
-    // Tidak ada kandidat
+    // -----------------------------------------------------
+    // NO DATA
+    // -----------------------------------------------------
+
     if (rows.length === 0) {
 
-        const tr =
-            document.createElement("tr");
-
-
-        tr.innerHTML = `
-            <td colspan="100%">
-                Tidak ada kandidat
-            </td>
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="11">
+                    Tidak ada kandidat
+                </td>
+            </tr>
         `;
-
-
-        tbody.appendChild(tr);
 
         return;
 
@@ -395,64 +522,786 @@ function renderResults(data) {
     // RENDER ROW
     // -----------------------------------------------------
 
-    rows.forEach(row => {
+    rows.forEach(
+        function (row) {
 
-        const tr =
-            document.createElement("tr");
+            const tr =
+                document.createElement(
+                    "tr"
+                );
 
 
-        tr.innerHTML = `
+            tr.innerHTML = `
 
-            <td>
-                ${safe(row.ticker)}
-            </td>
+                <td>
+                    ${safe(row.ticker)}
+                </td>
 
-            <td>
-                ${safe(row.ob_range)}
-            </td>
+                <td>
+                    ${safe(row.ob_range)}
+                </td>
 
-            <td>
-                ${formatNumber(row.sl)}
-            </td>
+                <td>
+                    ${formatNumber(row.sl)}
+                </td>
 
-            <td>
-                ${formatPercent(row.sl_pct)}
-            </td>
+                <td>
+                    ${formatPercent(row.sl_pct)}
+                </td>
 
-            <td>
-                ${formatNumber(row.tp)}
-            </td>
+                <td>
+                    ${formatNumber(row.tp)}
+                </td>
 
-            <td>
-                ${formatPercent(row.tp_pct)}
-            </td>
+                <td>
+                    ${formatPercent(row.tp_pct)}
+                </td>
 
-            <td>
-                ${safe(row.rr)}
-            </td>
+                <td>
+                    ${safe(row.rr)}
+                </td>
 
-            <td>
-                ${formatPercent(row.distance)}
-            </td>
+                <td>
+                    ${formatPercent(row.distance)}
+                </td>
 
-            <td>
-                ${safe(row.bos_age)}
-            </td>
+                <td>
+                    ${safe(row.bos_age)}
+                </td>
 
-            <td>
-                ${formatPercent(row.ob_size)}
-            </td>
+                <td>
+                    ${formatPercent(row.ob_size)}
+                </td>
 
-            <td>
-                ${safe(row.score)}
-            </td>
+                <td>
+                    ${safe(row.score)}
+                </td>
 
+            `;
+
+
+            tbody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// LOAD MACD
+// =========================================================
+
+async function loadMacdResults() {
+
+    const data =
+        await fetchJson(
+            MACD_RESULTS_URL
+        );
+
+
+    renderMACD(
+        data
+    );
+
+}
+
+
+// =========================================================
+// RENDER MACD
+// =========================================================
+
+function renderMACD(
+    data
+) {
+
+    // -----------------------------------------------------
+    // SUMMARY
+    // -----------------------------------------------------
+
+    setText(
+        "macdCandidateCount",
+        formatNumber(
+            data.candidates
+        )
+    );
+
+
+    setText(
+        "macdTotalTickers",
+        formatNumber(
+            data.total_tickers
+        )
+    );
+
+
+    setText(
+        "macdDuration",
+        data.duration_text ||
+        "-"
+    );
+
+
+    setText(
+        "macdErrors",
+        data.errors ??
+        0
+    );
+
+
+    setText(
+        "macdLastScan",
+        data.finished_at ||
+        data.generated_at ||
+        "-"
+    );
+
+
+    setText(
+        "macdGeneratedAt",
+        data.generated_at ||
+        "-"
+    );
+
+
+    // -----------------------------------------------------
+    // PROGRESS
+    // -----------------------------------------------------
+
+    const processed =
+        Number(
+            data.processed ||
+            0
+        );
+
+
+    const total =
+        Number(
+            data.total_tickers ||
+            0
+        );
+
+
+    let progress = 0;
+
+
+    if (total > 0) {
+
+        progress =
+            Math.round(
+                (
+                    processed /
+                    total
+                ) *
+                100
+            );
+
+    }
+
+
+    if (progress > 100) {
+
+        progress = 100;
+
+    }
+
+
+    setText(
+        "macdProgress",
+        total > 0
+            ? processed +
+              " / " +
+              total
+            : "-"
+    );
+
+
+    setWidth(
+        "macdProgressFill",
+        progress
+    );
+
+
+    // -----------------------------------------------------
+    // TABLE
+    // -----------------------------------------------------
+
+    const tbody =
+        document.getElementById(
+            "macdResultBody"
+        );
+
+
+    if (!tbody) {
+
+        return;
+
+    }
+
+
+    tbody.innerHTML = "";
+
+
+    const rows =
+        Array.isArray(
+            data.data
+        )
+            ? data.data
+            : [];
+
+
+    // -----------------------------------------------------
+    // NO DATA
+    // -----------------------------------------------------
+
+    if (rows.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9">
+                    Tidak ada kandidat
+                </td>
+            </tr>
         `;
 
+        return;
 
-        tbody.appendChild(tr);
+    }
 
-    });
+
+    // -----------------------------------------------------
+    // RENDER ROW
+    // -----------------------------------------------------
+
+    rows.forEach(
+        function (row) {
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const quality =
+                String(
+                    row.quality ||
+                    ""
+                ).toUpperCase();
+
+
+            let qualityClass =
+                quality.toLowerCase();
+
+
+            if (
+                qualityClass !== "high" &&
+                qualityClass !== "med" &&
+                qualityClass !== "low"
+            ) {
+
+                qualityClass = "low";
+
+            }
+
+
+            tr.innerHTML = `
+
+                <td>
+                    ${safe(row.ticker)}
+                </td>
+
+                <td>
+                    ${formatNumber(row.price)}
+                </td>
+
+                <td>
+                    ${formatNumber(row.spike_ratio)}x
+                </td>
+
+                <td>
+                    ${safe(row.hist_age)}
+                </td>
+
+                <td>
+                    ${formatNumber(row.macd_hist)}
+                </td>
+
+                <td>
+                    ${safe(row.value)}
+                </td>
+
+                <td>
+                    ${formatNumber(row.ema20)}
+                </td>
+
+                <td>
+                    ${safe(row.ema20_break_age)}
+                </td>
+
+                <td>
+
+                    <span
+                        class="
+                            quality
+                            ${qualityClass}
+                        "
+                    >
+                        ${safe(quality)}
+                    </span>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// LOAD HISTORY
+// =========================================================
+
+async function loadHistory() {
+
+    const data =
+        await fetchJson(
+            HISTORY_URL
+        );
+
+
+    if (
+        !data ||
+        typeof data !== "object"
+    ) {
+
+        historyData = [];
+
+        renderHistory();
+
+        return;
+
+    }
+
+
+    if (
+        Array.isArray(
+            data.history
+        )
+    ) {
+
+        historyData =
+            data.history;
+
+    } else {
+
+        historyData = [];
+
+    }
+
+
+    setText(
+        "historyUpdated",
+        data.updated_at
+            ? "Update " +
+              data.updated_at
+            : "-"
+    );
+
+
+    renderHistory();
+
+}
+
+
+// =========================================================
+// HISTORY FILTER
+// =========================================================
+
+function setHistoryFilter(
+    filter
+) {
+
+    historyFilter =
+        filter;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".filter-btn"
+        );
+
+
+    buttons.forEach(
+        function (button) {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.filter ===
+                filter
+            );
+
+        }
+    );
+
+
+    renderHistory();
+
+}
+
+
+// =========================================================
+// RENDER HISTORY
+// =========================================================
+
+function renderHistory() {
+
+    const container =
+        document.getElementById(
+            "historyList"
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    let rows =
+        Array.isArray(historyData)
+            ? historyData
+            : [];
+
+
+    // -----------------------------------------------------
+    // FILTER
+    // -----------------------------------------------------
+
+    if (
+        historyFilter !== "ALL"
+    ) {
+
+        rows =
+            rows.filter(
+                function (row) {
+
+                    return (
+                        row.scanner ===
+                        historyFilter
+                    );
+
+                }
+            );
+
+    }
+
+
+    // -----------------------------------------------------
+    // NO DATA
+    // -----------------------------------------------------
+
+    if (!rows.length) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Belum ada riwayat scan.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    // -----------------------------------------------------
+    // HISTORY ROW
+    // -----------------------------------------------------
+
+    rows.forEach(
+        function (row) {
+
+            const item =
+                document.createElement(
+                    "article"
+                );
+
+
+            item.className =
+                "history-item";
+
+
+            // -------------------------------------------------
+            // DATE / TIME
+            // -------------------------------------------------
+
+            const generated =
+                String(
+                    row.generated_at ||
+                    "-"
+                );
+
+
+            const parts =
+                generated.split(
+                    " "
+                );
+
+
+            const date =
+                parts[0] ||
+                "-";
+
+
+            const time =
+                parts[1] ||
+                "-";
+
+
+            // -------------------------------------------------
+            // SCANNER CLASS
+            // -------------------------------------------------
+
+            const scannerClass =
+                row.scanner === "MACD"
+                    ? "macd"
+                    : "ob";
+
+
+            // -------------------------------------------------
+            // CANDIDATES
+            // -------------------------------------------------
+
+            const candidates =
+                Array.isArray(
+                    row.data
+                )
+                    ? row.data
+                    : [];
+
+
+            // -------------------------------------------------
+            // TICKER LIST
+            // -------------------------------------------------
+
+            let tickerHtml = "";
+
+
+            if (
+                candidates.length > 0
+            ) {
+
+                tickerHtml =
+                    candidates
+                        .map(
+                            function (
+                                candidate
+                            ) {
+
+                                return `
+                                    <span
+                                        class="ticker-chip"
+                                    >
+                                        ${safe(
+                                            candidate.ticker
+                                        )}
+                                    </span>
+                                `;
+
+                            }
+                        )
+                        .join("");
+
+            } else {
+
+                tickerHtml = `
+                    <span
+                        class="ticker-chip"
+                    >
+                        Tidak ada kandidat
+                    </span>
+                `;
+
+            }
+
+
+            // -------------------------------------------------
+            // HTML
+            // -------------------------------------------------
+
+            item.innerHTML = `
+
+                <div
+                    class="history-main"
+                >
+
+                    <div>
+
+                        <div
+                            class="history-date"
+                        >
+                            ${safe(date)}
+                        </div>
+
+                        <div
+                            class="history-time"
+                        >
+                            ${safe(time)}
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div
+                            class="history-scanner"
+                        >
+                            ${safe(
+                                row.scanner
+                            )}
+                        </div>
+
+                        <div
+                            class="history-meta"
+                        >
+                            ${formatNumber(
+                                row.total_tickers
+                            )}
+                            ticker
+                            ·
+                            ${safe(
+                                row.duration_text ||
+                                "-"
+                            )}
+                            · error
+                            ${safe(
+                                row.errors ??
+                                0
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            history-count
+                            ${scannerClass}
+                        "
+                    >
+
+                        ${formatNumber(
+                            row.candidates
+                        )}
+                        kandidat
+
+                    </div>
+
+
+                    <button
+                        class="history-toggle"
+                        onclick="toggleHistory(this)"
+                        aria-label="Lihat kandidat"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="history-data"
+                >
+
+                    <div
+                        class="
+                            history-ticker-list
+                        "
+                    >
+
+                        ${tickerHtml}
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// TOGGLE HISTORY
+// =========================================================
+
+function toggleHistory(
+    button
+) {
+
+    if (!button) {
+
+        return;
+
+    }
+
+
+    const item =
+        button.closest(
+            ".history-item"
+        );
+
+
+    if (!item) {
+
+        return;
+
+    }
+
+
+    const data =
+        item.querySelector(
+            ".history-data"
+        );
+
+
+    if (!data) {
+
+        return;
+
+    }
+
+
+    const isOpen =
+        data.classList.toggle(
+            "open"
+        );
+
+
+    button.textContent =
+        isOpen
+            ? "−"
+            : "+";
 
 }
 
@@ -466,24 +1315,16 @@ function setStatus(
     text
 ) {
 
-    const statusText =
-        document.getElementById(
-            "statusText"
-        );
-
-
     const statusDot =
         document.getElementById(
             "statusDot"
         );
 
 
-    if (statusText) {
-
-        statusText.textContent =
-            text;
-
-    }
+    const statusText =
+        document.getElementById(
+            "statusText"
+        );
 
 
     if (statusDot) {
@@ -491,6 +1332,14 @@ function setStatus(
         statusDot.className =
             "status-dot " +
             type;
+
+    }
+
+
+    if (statusText) {
+
+        statusText.textContent =
+            text;
 
     }
 
@@ -507,15 +1356,76 @@ function setText(
 ) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
 
-    if (element) {
+    if (!element) {
 
-        element.textContent =
-            value;
+        return;
 
     }
+
+
+    element.textContent =
+        value;
+
+}
+
+
+// =========================================================
+// SET WIDTH
+// =========================================================
+
+function setWidth(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    let width =
+        Number(value);
+
+
+    if (
+        Number.isNaN(width)
+    ) {
+
+        width = 0;
+
+    }
+
+
+    if (width < 0) {
+
+        width = 0;
+
+    }
+
+
+    if (width > 100) {
+
+        width = 100;
+
+    }
+
+
+    element.style.width =
+        width +
+        "%";
 
 }
 
@@ -524,7 +1434,9 @@ function setText(
 // FORMAT NUMBER
 // =========================================================
 
-function formatNumber(value) {
+function formatNumber(
+    value
+) {
 
     if (
         value === null ||
@@ -551,7 +1463,10 @@ function formatNumber(value) {
 
 
     return number.toLocaleString(
-        "id-ID"
+        "id-ID",
+        {
+            maximumFractionDigits: 2
+        }
     );
 
 }
@@ -561,7 +1476,9 @@ function formatNumber(value) {
 // FORMAT PERCENT
 // =========================================================
 
-function formatPercent(value) {
+function formatPercent(
+    value
+) {
 
     if (
         value === null ||
@@ -593,7 +1510,8 @@ function formatPercent(value) {
             minimumFractionDigits: 0,
             maximumFractionDigits: 2
         }
-    ) + "%";
+    ) +
+    "%";
 
 }
 
@@ -602,7 +1520,9 @@ function formatPercent(value) {
 // SAFE HTML
 // =========================================================
 
-function safe(value) {
+function safe(
+    value
+) {
 
     if (
         value === null ||
@@ -615,10 +1535,25 @@ function safe(value) {
 
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
