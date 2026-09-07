@@ -1,0 +1,96 @@
+{
+  "updated_at": "2026-09-08 00:09:47",
+  "keep_days": 31,
+  "history": [
+    {
+      "scanner": "MACD",
+      "generated_at": "2026-09-08 00:09:47",
+      "candidates": 4,
+      "total_tickers": 957,
+      "errors": 0,
+      "duration_text": "1m 9s",
+      "data": [
+        {
+          "ticker": "NTBK.JK",
+          "price": 88.0,
+          "spike_ratio": 2.52,
+          "hist_age": "+1",
+          "macd_hist": 0.36,
+          "value": "6.79B",
+          "ema20": 83.84,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "DATA.JK",
+          "price": 1940.0,
+          "spike_ratio": 4.35,
+          "hist_age": "+1",
+          "macd_hist": 3.34,
+          "value": "14.35B",
+          "ema20": 1892.57,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "PPRI.JK",
+          "price": 163.0,
+          "spike_ratio": 9.63,
+          "hist_age": "+1",
+          "macd_hist": 0.9,
+          "value": "12.43B",
+          "ema20": 144.51,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "IMPC.JK",
+          "price": 1500.0,
+          "spike_ratio": 2.35,
+          "hist_age": "+3",
+          "macd_hist": 11.24,
+          "value": "93.53B",
+          "ema20": 1432.2,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "generated_at": "2026-09-08 00:08:37",
+      "candidates": 2,
+      "total_tickers": 957,
+      "errors": 1,
+      "duration_text": "2m 44s",
+      "data": [
+        {
+          "ticker": "NASI.JK",
+          "ob_range": "146-141",
+          "sl": 140,
+          "sl_pct": 3.5,
+          "tp": 163.0,
+          "tp_pct": 11.6,
+          "rr": 3.34,
+          "distance": 4.11,
+          "bos_age": 3,
+          "ob_size": 3.29,
+          "score": 86.11
+        },
+        {
+          "ticker": "ANJT.JK",
+          "ob_range": "1525-1495",
+          "sl": 1494,
+          "sl_pct": 2.0,
+          "tp": 1610.0,
+          "tp_pct": 5.6,
+          "rr": 2.77,
+          "distance": 4.59,
+          "bos_age": 10,
+          "ob_size": 1.88,
+          "score": 73.23
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "status": "success",
+  "generated_at": "2026-09-08 00:09:47",
+  "started_at": "2026-09-08 00:08:38",
+  "finished_at": "2026-09-08 00:09:47",
+  "duration_seconds": 69.3,
+  "duration_text": "1m 9s",
+  "total_tickers": 957,
+  "processed": 957,
+  "errors": 0,
+  "candidates": 4,
+  "data": [
+    {
+      "ticker": "NTBK.JK",
+      "price": 88.0,
+      "spike_ratio": 2.52,
+      "hist_age": "+1",
+      "macd_hist": 0.36,
+      "value": "6.79B",
+      "ema20": 83.84,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "DATA.JK",
+      "price": 1940.0,
+      "spike_ratio": 4.35,
+      "hist_age": "+1",
+      "macd_hist": 3.34,
+      "value": "14.35B",
+      "ema20": 1892.57,
+      "ema20_break_age": "+1",
+      "quality": "LOW"
+    },
+    {
+      "ticker": "PPRI.JK",
+      "price": 163.0,
+      "spike_ratio": 9.63,
+      "hist_age": "+1",
+      "macd_hist": 0.9,
+      "value": "12.43B",
+      "ema20": 144.51,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "IMPC.JK",
+      "price": 1500.0,
+      "spike_ratio": 2.35,
+      "hist_age": "+3",
+      "macd_hist": 11.24,
+      "value": "93.53B",
+      "ema20": 1432.2,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    }
+  ]
+}
