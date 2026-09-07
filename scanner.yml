@@ -1,0 +1,270 @@
+name: SMC + MACD Scanner
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    # 09:00 WIB = 02:00 UTC
+    - cron: "0 2 * * 1-5"
+
+    # 10:00 WIB = 03:00 UTC
+    - cron: "0 3 * * 1-5"
+
+    # 11:00 WIB = 04:00 UTC
+    - cron: "0 4 * * 1-5"
+
+    # 13:00 WIB = 06:00 UTC
+    - cron: "0 6 * * 1-5"
+
+    # 14:00 WIB = 07:00 UTC
+    - cron: "0 7 * * 1-5"
+
+    # 15:00 WIB = 08:00 UTC
+    - cron: "0 8 * * 1-5"
+
+    # 16:00 WIB = 09:00 UTC
+    - cron: "0 9 * * 1-5"
+
+    # 17:00 WIB = 10:00 UTC
+    - cron: "0 10 * * 1-5"
+
+
+permissions:
+  contents: write
+
+
+concurrency:
+  group: smc-macd-scanner
+  cancel-in-progress: false
+
+
+jobs:
+
+  scan:
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 15
+
+
+    steps:
+
+      # =====================================================
+      # CHECKOUT
+      # =====================================================
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+
+      # =====================================================
+      # PYTHON
+      # =====================================================
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+
+      # =====================================================
+      # INSTALL
+      # =====================================================
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install yfinance pandas numpy tqdm
+
+
+      # =====================================================
+      # STATUS RUNNING
+      # =====================================================
+
+      - name: Set scanner status RUNNING
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          TZ = ZoneInfo("Asia/Jakarta")
+          now = datetime.now(TZ).strftime("%Y-%m-%d %H:%M:%S")
+
+          try:
+              with open("scan_status.json", "r", encoding="utf-8") as f:
+                  old = json.load(f)
+          except Exception:
+              old = {}
+
+          data = {
+              "status": "running",
+              "started_at": now,
+              "finished_at": old.get("finished_at"),
+              "duration_text": None,
+
+              "ob": {
+                  "status": "waiting",
+                  "processed": 0,
+                  "total_tickers": old.get("ob", {}).get("total_tickers", 0),
+                  "candidates": 0,
+                  "errors": 0
+              },
+
+              "macd": {
+                  "status": "waiting",
+                  "processed": 0,
+                  "total_tickers": old.get("macd", {}).get("total_tickers", 0),
+                  "candidates": 0,
+                  "errors": 0
+              }
+          }
+
+          with open("scan_status.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+          PY
+
+
+      # =====================================================
+      # COMMIT RUNNING STATUS
+      # =====================================================
+
+      - name: Commit RUNNING status
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scan_status.json
+          git diff --cached --quiet || git commit -m "scanner running"
+          git push
+
+
+      # =====================================================
+      # RUN SMC OB
+      # =====================================================
+
+      - name: Run SMC OB scanner
+        id: ob
+        continue-on-error: true
+        run: |
+          python scanner.py
+
+
+      # =====================================================
+      # RUN MACD
+      # =====================================================
+
+      - name: Run MACD scanner
+        id: macd
+        continue-on-error: true
+        run: |
+          python scanner_macd.py
+
+
+      # =====================================================
+      # ARCHIVE HISTORY
+      # =====================================================
+
+      - name: Update 31-day history
+        run: |
+          python archive_history.py \
+            --ob "${{ steps.ob.outcome }}" \
+            --macd "${{ steps.macd.outcome }}"
+
+
+      # =====================================================
+      # FINAL STATUS
+      # =====================================================
+
+      - name: Set final scanner status
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          TZ = ZoneInfo("Asia/Jakarta")
+          now = datetime.now(TZ).strftime("%Y-%m-%d %H:%M:%S")
+
+          try:
+              with open("scan_status.json", "r", encoding="utf-8") as f:
+                  data = json.load(f)
+          except Exception:
+              data = {}
+
+          ob_outcome = "${{ steps.ob.outcome }}"
+          macd_outcome = "${{ steps.macd.outcome }}"
+
+          try:
+              with open("results.json", "r", encoding="utf-8") as f:
+                  ob = json.load(f)
+          except Exception:
+              ob = {}
+
+          try:
+              with open("macd_results.json", "r", encoding="utf-8") as f:
+                  macd = json.load(f)
+          except Exception:
+              macd = {}
+
+          data["status"] = (
+              "success"
+              if ob_outcome == "success" and macd_outcome == "success"
+              else "partial"
+          )
+
+          data["finished_at"] = now
+
+          data["ob"] = {
+              "status": ob_outcome,
+              "processed": ob.get("processed", 0),
+              "total_tickers": ob.get("total_tickers", 0),
+              "candidates": ob.get("candidates", 0),
+              "errors": ob.get("errors", 0),
+              "duration_text": ob.get("duration_text")
+          }
+
+          data["macd"] = {
+              "status": macd_outcome,
+              "processed": macd.get("processed", 0),
+              "total_tickers": macd.get("total_tickers", 0),
+              "candidates": macd.get("candidates", 0),
+              "errors": macd.get("errors", 0),
+              "duration_text": macd.get("duration_text")
+          }
+
+          with open("scan_status.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+          PY
+
+
+      # =====================================================
+      # SAVE RESULTS
+      # =====================================================
+
+      - name: Commit scanner results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add results.json
+          git add macd_results.json
+          git add history.json
+          git add scan_status.json
+
+          git diff --cached --quiet || git commit -m "update scanner results"
+          git push
+
+
+      # =====================================================
+      # FAIL WORKFLOW ONLY IF BOTH FAILED
+      # =====================================================
+
+      - name: Fail workflow if both scanners failed
+        if: steps.ob.outcome == 'failure' && steps.macd.outcome == 'failure'
+        run: |
+          echo "SMC OB dan MACD sama-sama gagal."
+          exit 1
