@@ -1,27 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-09-07 14:30:41",
-  "started_at": "2026-09-07 14:27:29",
-  "finished_at": "2026-09-07 14:30:41",
-  "duration_seconds": 192.0,
-  "duration_text": "3m 12s",
+  "generated_at": "2026-09-07 20:17:02",
+  "started_at": "2026-09-07 20:11:44",
+  "finished_at": "2026-09-07 20:17:02",
+  "duration_seconds": 317.6,
+  "duration_text": "5m 17s",
   "total_tickers": 957,
   "processed": 957,
   "errors": 1,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "SKLT.JK",
-      "ob_range": "216-212",
-      "sl": 211,
-      "sl_pct": 1.9,
-      "tp": 228.0,
-      "tp_pct": 5.6,
-      "rr": 2.94,
-      "distance": 0.93,
-      "bos_age": 1,
-      "ob_size": 1.83,
-      "score": 86.03
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
