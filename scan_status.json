@@ -1,11 +1,20 @@
 {
-  "status": "success",
-  "started_at": "2026-09-07 23:50:32",
+  "status": "running",
+  "started_at": "2026-09-08 00:05:51",
   "finished_at": "2026-09-07 23:53:32",
-  "duration_seconds": null,
   "duration_text": null,
-  "total_tickers": 0,
-  "processed": 0,
-  "errors": 0,
-  "candidates": 0
+  "ob": {
+    "status": "waiting",
+    "processed": 0,
+    "total_tickers": 0,
+    "candidates": 0,
+    "errors": 0
+  },
+  "macd": {
+    "status": "waiting",
+    "processed": 0,
+    "total_tickers": 0,
+    "candidates": 0,
+    "errors": 0
+  }
 }
