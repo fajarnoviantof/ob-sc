@@ -1,12 +1,11 @@
 // =========================================================
 // SMC OB SCANNER
-// FRONTEND
-// DIRECT GITHUB ACTIONS
+// FRONTEND ONLY
 // =========================================================
 
 
 // =========================================================
-// CONFIG
+// FILE
 // =========================================================
 
 const RESULTS_URL =
@@ -16,138 +15,48 @@ const STATUS_URL =
     "scan_status.json";
 
 
-// Repository GitHub
-const GITHUB_OWNER =
-    "fajarnoviantof";
-
-const GITHUB_REPO =
-    "ob-sc";
-
-const GITHUB_WORKFLOW =
-    "scanner.yml";
-
-const GITHUB_BRANCH =
-    "main";
-
-
 // =========================================================
-// GITHUB TOKEN
-// =========================================================
-//
-// ISI TOKEN GITHUB DI SINI
-//
-// Contoh:
-// const GITHUB_TOKEN = "github_pat_xxxxxxxxxxxxxxxxx";
-//
-// JANGAN tambahkan < >
-//
+// ELEMENT
 // =========================================================
 
-const GITHUB_TOKEN =
-    "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";
-
-
-const GITHUB_DISPATCH_URL =
-    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW}/dispatches`;
-
-
-// =========================================================
-// GLOBAL
-// =========================================================
-
-let scanRunning =
-    false;
-
-let statusTimer =
-    null;
-
-let resultTimer =
-    null;
-
-
-// =========================================================
-// DOM HELPER
-// =========================================================
-
-function el(id) {
-
-    return document.getElementById(id);
-
-}
-
-
-// =========================================================
-// TOKEN CHECK
-// =========================================================
-
-function tokenIsConfigured() {
-
-    return (
-        GITHUB_TOKEN &&
-        GITHUB_TOKEN !==
-            "ISI_TOKEN_GITHUB_DI_SINI"
+const scanButton =
+    document.getElementById(
+        "scanButton"
     );
 
-}
-
 
 // =========================================================
-// LOAD JSON
+// INIT
 // =========================================================
 
-async function loadJson(url) {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    const response =
-        await fetch(
-            `${url}?t=${Date.now()}`,
-            {
-                cache: "no-store"
-            }
-        );
+        // Hilangkan tombol scan manual
+        if (scanButton) {
 
-    if (!response.ok) {
+            scanButton.style.display =
+                "none";
 
-        throw new Error(
-            `HTTP ${response.status}`
-        );
+        }
+
+
+        refreshAll();
 
     }
-
-    return await response.json();
-
-}
+);
 
 
 // =========================================================
-// LOAD RESULTS
+// REFRESH ALL
 // =========================================================
 
-async function loadResults() {
+async function refreshAll() {
 
-    try {
+    await loadStatus();
 
-        const data =
-            await loadJson(
-                RESULTS_URL
-            );
-
-        updateResults(
-            data
-        );
-
-        return data;
-
-    }
-    catch (error) {
-
-        console.error(
-            "Gagal membaca results.json:",
-            error
-        );
-
-        return null;
-
-    }
+    await loadResults();
 
 }
 
@@ -160,26 +69,45 @@ async function loadStatus() {
 
     try {
 
-        const data =
-            await loadJson(
-                STATUS_URL
+        const response =
+            await fetch(
+                STATUS_URL +
+                "?t=" +
+                Date.now()
             );
 
-        updateStatus(
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Status HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        updateStatusUI(
             data
         );
 
-        return data;
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(
-            "Gagal membaca scan_status.json:",
+            "Gagal membaca status:",
             error
         );
 
-        return null;
+
+        setStatus(
+            "offline",
+            "STATUS ERROR"
+        );
 
     }
 
@@ -187,115 +115,80 @@ async function loadStatus() {
 
 
 // =========================================================
-// UPDATE STATUS
+// UPDATE STATUS UI
 // =========================================================
 
-function updateStatus(data) {
+function updateStatusUI(data) {
 
     if (!data) {
+
         return;
+
     }
 
 
     const status =
         String(
-            data.status || ""
+            data.status ||
+            ""
         ).toLowerCase();
-
-
-    const dot =
-        el("statusDot");
-
-    const statusText =
-        el("statusText");
 
 
     if (status === "running") {
 
-        if (dot) {
-
-            dot.className =
-                "dot active";
-
-        }
-
-        if (statusText) {
-
-            statusText.textContent =
-                "Scanner Running";
-
-        }
+        setStatus(
+            "running",
+            "SCANNING..."
+        );
 
     }
-    else if (status === "success") {
 
-        if (dot) {
+    else if (
+        status === "success"
+    ) {
 
-            dot.className =
-                "dot";
-
-        }
-
-        if (statusText) {
-
-            statusText.textContent =
-                "Scanner Ready";
-
-        }
+        setStatus(
+            "success",
+            "SCAN SELESAI"
+        );
 
     }
-    else if (status === "failed") {
 
-        if (dot) {
+    else if (
+        status === "failed"
+    ) {
 
-            dot.className =
-                "dot error";
-
-        }
-
-        if (statusText) {
-
-            statusText.textContent =
-                "Scanner Error";
-
-        }
+        setStatus(
+            "error",
+            "SCAN GAGAL"
+        );
 
     }
+
     else {
 
-        if (dot) {
-
-            dot.className =
-                "dot";
-
-        }
-
-        if (statusText) {
-
-            statusText.textContent =
-                "Scanner Ready";
-
-        }
+        setStatus(
+            "idle",
+            "READY"
+        );
 
     }
 
 
     // -----------------------------------------
-    // Last Scan
+    // LAST SCAN
     // -----------------------------------------
 
-    if (el("lastScan")) {
-
-        el("lastScan").textContent =
-            data.finished_at ||
-            data.generated_at ||
-            "-";
-
-    }
+    setText(
+        "lastScan",
+        data.finished_at ||
+        data.generated_at ||
+        "-"
+    );
 
 
     // -----------------------------------------
-    // Progress
+    // PROGRESS
     // -----------------------------------------
 
     const processed =
@@ -309,108 +202,128 @@ function updateStatus(data) {
         );
 
 
-    if (
-        el("scanProgress")
-    ) {
+    let progress = 0;
 
-        if (total > 0) {
 
-            el("scanProgress").textContent =
-                `${processed} / ${total}`;
+    if (total > 0) {
 
-        }
-        else {
-
-            el("scanProgress").textContent =
-                "-";
-
-        }
+        progress =
+            Math.round(
+                (
+                    processed /
+                    total
+                ) * 100
+            );
 
     }
 
 
-    // -----------------------------------------
-    // Duration
-    // -----------------------------------------
+    setText(
+        "scanProgress",
+        total > 0
+            ? `${processed} / ${total}`
+            : "-"
+    );
 
-    if (
-        el("scanDuration")
-    ) {
-
-        el("scanDuration").textContent =
-            data.duration_text ||
-            "-";
-
-    }
-
-
-    // -----------------------------------------
-    // Errors
-    // -----------------------------------------
-
-    if (
-        el("scanErrors")
-    ) {
-
-        el("scanErrors").textContent =
-            data.errors ??
-            "-";
-
-    }
-
-
-    // -----------------------------------------
-    // Progress bar
-    // -----------------------------------------
 
     const progressFill =
-        el("progressFill");
+        document.getElementById(
+            "progressFill"
+        );
 
 
     if (progressFill) {
 
-        if (total > 0) {
-
-            const percent =
-                Math.min(
-                    100,
-                    Math.max(
-                        0,
-                        (processed / total) * 100
-                    )
-                );
-
-            progressFill.style.width =
-                `${percent}%`;
-
-        }
-        else {
-
-            progressFill.style.width =
-                "0%";
-
-        }
+        progressFill.style.width =
+            progress + "%";
 
     }
 
 
     // -----------------------------------------
-    // LIVE PANEL
+    // DURATION
     // -----------------------------------------
 
-    if (status === "running") {
+    setText(
+        "scanDuration",
+        data.duration_text ||
+        "-"
+    );
 
-        setLiveRunning();
 
-    }
-    else if (status === "success") {
+    // -----------------------------------------
+    // ERRORS
+    // -----------------------------------------
 
-        setLiveReady();
+    setText(
+        "scanErrors",
+        data.errors ??
+        "-"
+    );
 
-    }
-    else if (status === "failed") {
+}
 
-        setLiveFailed();
+
+// =========================================================
+// LOAD RESULTS
+// =========================================================
+
+async function loadResults() {
+
+    try {
+
+        const response =
+            await fetch(
+                RESULTS_URL +
+                "?t=" +
+                Date.now()
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Results HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        renderResults(
+            data
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Gagal membaca results:",
+            error
+        );
+
+
+        const body =
+            document.getElementById(
+                "resultBody"
+            );
+
+
+        if (body) {
+
+            body.innerHTML = `
+                <tr>
+                    <td colspan="10">
+                        Gagal membaca hasil scanner
+                    </td>
+                </tr>
+            `;
+
+        }
 
     }
 
@@ -418,13 +331,15 @@ function updateStatus(data) {
 
 
 // =========================================================
-// UPDATE RESULTS
+// RENDER RESULTS
 // =========================================================
 
-function updateResults(data) {
+function renderResults(data) {
 
     if (!data) {
+
         return;
+
     }
 
 
@@ -432,37 +347,25 @@ function updateResults(data) {
     // SUMMARY
     // -----------------------------------------
 
-    if (
-        el("totalTickers")
-    ) {
-
-        el("totalTickers").textContent =
-            data.total_tickers ??
-            "-";
-
-    }
+    setText(
+        "totalTickers",
+        data.total_tickers ??
+        "-"
+    );
 
 
-    if (
-        el("candidateCount")
-    ) {
-
-        el("candidateCount").textContent =
-            data.candidates ??
-            "-";
-
-    }
+    setText(
+        "candidateCount",
+        data.candidates ??
+        0
+    );
 
 
-    if (
-        el("generatedAt")
-    ) {
-
-        el("generatedAt").textContent =
-            data.generated_at ??
-            "-";
-
-    }
+    setText(
+        "generatedAt",
+        data.generated_at ??
+        "-"
+    );
 
 
     // -----------------------------------------
@@ -470,37 +373,37 @@ function updateResults(data) {
     // -----------------------------------------
 
     const body =
-        el("resultBody");
+        document.getElementById(
+            "resultBody"
+        );
 
 
     if (!body) {
+
         return;
+
     }
 
 
+    body.innerHTML = "";
+
+
     const rows =
-        Array.isArray(data.data)
+        Array.isArray(
+            data.data
+        )
             ? data.data
             : [];
 
 
-    if (
-        rows.length === 0
-    ) {
+    if (rows.length === 0) {
 
         body.innerHTML = `
-
             <tr>
-
-                <td
-                    colspan="10"
-                    class="loading"
-                >
+                <td colspan="10">
                     Tidak ada kandidat
                 </td>
-
             </tr>
-
         `;
 
         return;
@@ -508,89 +411,151 @@ function updateResults(data) {
     }
 
 
-    body.innerHTML =
-        rows.map(
-            (row, index) => {
+    rows.forEach(
+        row => {
 
-                return `
+            const tr =
+                document.createElement(
+                    "tr"
+                );
 
-                    <tr>
 
-                        <td>
-                            ${index + 1}
-                        </td>
+            tr.innerHTML = `
 
-                        <td>
-                            <strong>
-                                ${safe(row.ticker)}
-                            </strong>
-                        </td>
+                <td>
+                    ${safe(
+                        row.ticker
+                    )}
+                </td>
 
-                        <td>
-                            ${safe(row.ob_range)}
-                        </td>
+                <td>
+                    ${safe(
+                        row.ob_range
+                    )}
+                </td>
 
-                        <td>
-                            ${formatNumber(row.sl)}
-                        </td>
+                <td>
+                    ${formatNumber(
+                        row.sl
+                    )}
+                </td>
 
-                        <td>
-                            ${formatNumber(row.tp)}
-                        </td>
+                <td>
+                    ${formatPercent(
+                        row.sl_pct
+                    )}
+                </td>
 
-                        <td>
-                            ${formatNumber(row.rr)}
-                        </td>
+                <td>
+                    ${formatNumber(
+                        row.tp
+                    )}
+                </td>
 
-                        <td>
-                            ${formatPercent(row.distance)}
-                        </td>
+                <td>
+                    ${formatPercent(
+                        row.tp_pct
+                    )}
+                </td>
 
-                        <td>
-                            ${safe(row.bos_age)}
-                        </td>
+                <td>
+                    ${formatNumber(
+                        row.rr
+                    )}
+                </td>
 
-                        <td>
-                            ${formatPercent(row.ob_size)}
-                        </td>
+                <td>
+                    ${formatPercent(
+                        row.distance
+                    )}
+                </td>
 
-                        <td>
-                            <strong>
-                                ${formatNumber(row.score)}
-                            </strong>
-                        </td>
+                <td>
+                    ${safe(
+                        row.bos_age
+                    )}
+                </td>
 
-                    </tr>
+                <td>
+                    ${formatNumber(
+                        row.ob_size
+                    )}
+                </td>
 
-                `;
+            `;
 
-            }
-        ).join("");
+
+            body.appendChild(
+                tr
+            );
+
+        }
+    );
 
 }
 
 
 // =========================================================
-// SAFE TEXT
+// STATUS
 // =========================================================
 
-function safe(value) {
+function setStatus(
+    type,
+    text
+) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
+    const statusText =
+        document.getElementById(
+            "statusText"
+        );
 
-        return "-";
+
+    const statusDot =
+        document.getElementById(
+            "statusDot"
+        );
+
+
+    if (statusText) {
+
+        statusText.textContent =
+            text;
 
     }
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+
+    if (statusDot) {
+
+        statusDot.className =
+            "status-dot " +
+            type;
+
+    }
+
+}
+
+
+// =========================================================
+// SET TEXT
+// =========================================================
+
+function setText(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+
+    }
 
 }
 
@@ -620,7 +585,9 @@ function formatNumber(value) {
         Number.isNaN(number)
     ) {
 
-        return safe(value);
+        return safe(
+            value
+        );
 
     }
 
@@ -660,709 +627,61 @@ function formatPercent(value) {
         Number.isNaN(number)
     ) {
 
-        return safe(value);
-
-    }
-
-
-    return `${number}%`;
-
-}
-
-
-// =========================================================
-// LIVE STATE
-// =========================================================
-
-function setLiveStarting() {
-
-    const liveStatus =
-        el("liveStatus");
-
-    const scanMessage =
-        el("scanMessage");
-
-    const liveDot =
-        el("liveDot");
-
-
-    if (liveStatus) {
-
-        liveStatus.textContent =
-            "STARTING SCAN";
-
-    }
-
-
-    if (scanMessage) {
-
-        scanMessage.textContent =
-            "Mengirim perintah ke GitHub Actions...";
-
-    }
-
-
-    if (liveDot) {
-
-        liveDot.classList.add(
-            "active"
+        return safe(
+            value
         );
 
     }
 
-}
 
-
-function setLiveRunning() {
-
-    const liveStatus =
-        el("liveStatus");
-
-    const scanMessage =
-        el("scanMessage");
-
-    const liveDot =
-        el("liveDot");
-
-
-    if (liveStatus) {
-
-        liveStatus.textContent =
-            "LIVE SCAN";
-
-    }
-
-
-    if (scanMessage) {
-
-        scanMessage.textContent =
-            "Scanner sedang menjalankan proses...";
-
-    }
-
-
-    if (liveDot) {
-
-        liveDot.classList.add(
-            "active"
-        );
-
-    }
-
-}
-
-
-function setLiveReady() {
-
-    const liveStatus =
-        el("liveStatus");
-
-    const scanMessage =
-        el("scanMessage");
-
-    const liveDot =
-        el("liveDot");
-
-
-    if (liveStatus) {
-
-        liveStatus.textContent =
-            "READY";
-
-    }
-
-
-    if (scanMessage) {
-
-        scanMessage.textContent =
-            "Scanner siap digunakan";
-
-    }
-
-
-    if (liveDot) {
-
-        liveDot.classList.remove(
-            "active"
-        );
-
-    }
-
-}
-
-
-function setLiveFailed() {
-
-    const liveStatus =
-        el("liveStatus");
-
-    const scanMessage =
-        el("scanMessage");
-
-    const liveDot =
-        el("liveDot");
-
-
-    if (liveStatus) {
-
-        liveStatus.textContent =
-            "SCAN FAILED";
-
-    }
-
-
-    if (scanMessage) {
-
-        scanMessage.textContent =
-            "Scanner gagal menjalankan proses.";
-
-    }
-
-
-    if (liveDot) {
-
-        liveDot.classList.remove(
-            "active"
-        );
-
-    }
+    return number.toLocaleString(
+        "id-ID",
+        {
+            maximumFractionDigits: 2
+        }
+    ) + "%";
 
 }
 
 
 // =========================================================
-// BUTTON STATE
+// SAFE HTML
 // =========================================================
 
-function setButtonRunning(running) {
-
-    const button =
-        el("scanButton");
-
-
-    if (!button) {
-        return;
-    }
-
-
-    if (running) {
-
-        button.disabled =
-            true;
-
-        button.textContent =
-            "⏳ SCAN BERJALAN...";
-
-    }
-    else {
-
-        button.disabled =
-            false;
-
-        button.textContent =
-            "🚀 SCAN SEKARANG";
-
-    }
-
-}
-
-
-// =========================================================
-// START SCAN
-// =========================================================
-
-async function startScan() {
-
-    console.log(
-        "START SCAN DIPANGGIL"
-    );
-
-
-    if (scanRunning) {
-
-        alert(
-            "Scan masih berjalan."
-        );
-
-        return;
-
-    }
-
-
-    // -----------------------------------------
-    // CHECK TOKEN
-    // -----------------------------------------
+function safe(value) {
 
     if (
-        !tokenIsConfigured()
+        value === null ||
+        value === undefined
     ) {
 
-        alert(
-            "Token GitHub belum diisi di app.js."
-        );
-
-        return;
+        return "-";
 
     }
 
 
-    scanRunning =
-        true;
-
-    setButtonRunning(
-        true
-    );
-
-    setLiveStarting();
-
-
-    try {
-
-        // -------------------------------------
-        // Ambil status sebelum scan
-        // -------------------------------------
-
-        const oldStatus =
-            await loadJson(
-                STATUS_URL
-            );
-
-
-        const oldStartedAt =
-            oldStatus.started_at ||
-            null;
-
-
-        const oldFinishedAt =
-            oldStatus.finished_at ||
-            null;
-
-
-        // -------------------------------------
-        // Jika memang sedang running
-        // -------------------------------------
-
-        if (
-            String(
-                oldStatus.status || ""
-            ).toLowerCase()
-            === "running"
-        ) {
-
-            alert(
-                "Scanner sedang berjalan. Tunggu sampai selesai."
-            );
-
-            return;
-
-        }
-
-
-        // -------------------------------------
-        // POST GitHub API
-        // -------------------------------------
-
-        const response =
-            await fetch(
-                GITHUB_DISPATCH_URL,
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Accept":
-                            "application/vnd.github+json",
-
-                        "Authorization":
-                            `Bearer ${GITHUB_TOKEN}`,
-
-                        "Content-Type":
-                            "application/json",
-
-                        "X-GitHub-Api-Version":
-                            "2022-11-28"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            ref:
-                                GITHUB_BRANCH
-
-                        })
-
-                }
-            );
-
-
-        // GitHub Actions dispatch
-        // sukses = HTTP 204
-
-        if (
-            response.status !== 204
-        ) {
-
-            let message =
-                `HTTP ${response.status}`;
-
-
-            try {
-
-                const errorData =
-                    await response.json();
-
-                if (
-                    errorData.message
-                ) {
-
-                    message +=
-                        ` - ${errorData.message}`;
-
-                }
-
-            }
-            catch (e) {
-                // Tidak ada JSON error
-            }
-
-
-            throw new Error(
-                message
-            );
-
-        }
-
-
-        console.log(
-            "GitHub Actions berhasil dipanggil."
+    return String(
+        value
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
         );
-
-
-        setLiveStarting();
-
-
-        // -------------------------------------
-        // Tunggu workflow benar-benar running
-        // -------------------------------------
-
-        await waitForScanStart(
-            oldStartedAt,
-            oldFinishedAt
-        );
-
-
-        // -------------------------------------
-        // Tunggu sampai selesai
-        // -------------------------------------
-
-        await waitForScanFinish();
-
-
-        // -------------------------------------
-        // Load hasil terbaru
-        // -------------------------------------
-
-        await loadResults();
-
-
-        await loadStatus();
-
-
-    }
-    catch (error) {
-
-        console.error(
-            "START SCAN ERROR:",
-            error
-        );
-
-
-        setLiveFailed();
-
-
-        alert(
-            "Gagal menjalankan scanner.\n\n" +
-            error.message
-        );
-
-    }
-    finally {
-
-        scanRunning =
-            false;
-
-        setButtonRunning(
-            false
-        );
-
-    }
 
 }
-
-
-// =========================================================
-// WAIT SCAN START
-// =========================================================
-
-async function waitForScanStart(
-    oldStartedAt,
-    oldFinishedAt
-) {
-
-    const timeout =
-        90000;
-
-    const start =
-        Date.now();
-
-
-    while (
-        Date.now() - start
-        < timeout
-    ) {
-
-        const status =
-            await loadJson(
-                STATUS_URL
-            );
-
-
-        const currentStatus =
-            String(
-                status.status || ""
-            ).toLowerCase();
-
-
-        const currentStartedAt =
-            status.started_at ||
-            null;
-
-
-        // Workflow baru sudah mulai
-
-        if (
-            currentStatus === "running"
-            &&
-            currentStartedAt
-            &&
-            currentStartedAt !==
-                oldStartedAt
-        ) {
-
-            updateStatus(
-                status
-            );
-
-            return;
-
-        }
-
-
-        // Kalau file status belum berubah
-        setLiveStarting();
-
-
-        await sleep(
-            3000
-        );
-
-    }
-
-
-    throw new Error(
-        "GitHub Actions belum terlihat mulai setelah 90 detik."
-    );
-
-}
-
-
-// =========================================================
-// WAIT SCAN FINISH
-// =========================================================
-
-async function waitForScanFinish() {
-
-    const timeout =
-        12 * 60 * 1000;
-
-    const start =
-        Date.now();
-
-
-    while (
-        Date.now() - start
-        < timeout
-    ) {
-
-        const status =
-            await loadJson(
-                STATUS_URL
-            );
-
-
-        const currentStatus =
-            String(
-                status.status || ""
-            ).toLowerCase();
-
-
-        updateStatus(
-            status
-        );
-
-
-        if (
-            currentStatus ===
-                "success"
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            currentStatus ===
-                "failed"
-        ) {
-
-            throw new Error(
-                "GitHub Actions menjalankan scanner tetapi hasil akhirnya FAILED."
-            );
-
-        }
-
-
-        setLiveRunning();
-
-
-        await sleep(
-            3000
-        );
-
-    }
-
-
-    throw new Error(
-        "Timeout. Scanner belum selesai setelah 12 menit."
-    );
-
-}
-
-
-// =========================================================
-// SLEEP
-// =========================================================
-
-function sleep(ms) {
-
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                ms
-            )
-    );
-
-}
-
-
-// =========================================================
-// REFRESH ALL
-// =========================================================
-
-async function refreshAll() {
-
-    console.log(
-        "REFRESH"
-    );
-
-
-    await loadStatus();
-
-    await loadResults();
-
-}
-
-
-// =========================================================
-// INITIAL LOAD
-// =========================================================
-
-async function init() {
-
-    console.log(
-        "SMC OB Scanner START"
-    );
-
-
-    try {
-
-        await loadStatus();
-
-        await loadResults();
-
-    }
-    catch (error) {
-
-        console.error(
-            "INIT ERROR:",
-            error
-        );
-
-    }
-
-}
-
-
-// =========================================================
-// AUTO REFRESH STATUS
-// =========================================================
-
-setInterval(
-    async function () {
-
-        if (
-            !scanRunning
-        ) {
-
-            await loadStatus();
-
-        }
-
-    },
-    10000
-);
-
-
-// =========================================================
-// AUTO REFRESH RESULTS
-// =========================================================
-
-setInterval(
-    async function () {
-
-        if (
-            !scanRunning
-        ) {
-
-            await loadResults();
-
-        }
-
-    },
-    30000
-);
-
-
-// =========================================================
-// START
-// =========================================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    init
-);
