@@ -1,7 +1,81 @@
 {
-  "updated_at": "2026-09-08 13:57:08",
+  "updated_at": "2026-09-08 14:58:59",
   "keep_days": 31,
   "history": [
+    {
+      "scanner": "MACD",
+      "generated_at": "2026-09-08 14:58:58",
+      "candidates": 5,
+      "total_tickers": 957,
+      "errors": 0,
+      "duration_text": "1m 27s",
+      "data": [
+        {
+          "ticker": "PGAS.JK",
+          "price": 1540.0,
+          "spike_ratio": 1.43,
+          "hist_age": "+1",
+          "macd_hist": 0.35,
+          "value": "22.42B",
+          "ema20": 1523.59,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ESIP.JK",
+          "price": 130.0,
+          "spike_ratio": 6.5,
+          "hist_age": "+1",
+          "macd_hist": 0.52,
+          "value": "28.62B",
+          "ema20": 123.41,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "POLA.JK",
+          "price": 70.0,
+          "spike_ratio": 19.3,
+          "hist_age": "+1",
+          "macd_hist": 0.96,
+          "value": "14.18B",
+          "ema20": 56.26,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "BBHI.JK",
+          "price": 905.0,
+          "spike_ratio": 1.1,
+          "hist_age": "+4",
+          "macd_hist": 1.28,
+          "value": "10.56B",
+          "ema20": 902.51,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "RATU.JK",
+          "price": 4700.0,
+          "spike_ratio": 1.79,
+          "hist_age": "+4",
+          "macd_hist": 49.16,
+          "value": "113.09B",
+          "ema20": 4534.31,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "generated_at": "2026-09-08 14:57:30",
+      "candidates": 0,
+      "total_tickers": 957,
+      "errors": 1,
+      "duration_text": "5m 57s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "generated_at": "2026-09-08 13:57:08",
