@@ -2,86 +2,81 @@ name: SMC + MACD Scanner
 
 on:
   workflow_dispatch:
+    inputs:
+      slot:
+        description: "Slot WIB untuk manual test, misalnya 09:00. Kosong = tidak masuk history."
+        required: false
+        type: string
+        default: ""
 
+  # Sengaja dijalankan 5 menit lewat jam bulat.
+  # Offset ini menghindari menit 00 yang merupakan periode beban tinggi.
+  # Zona waktu langsung memakai Asia/Jakarta.
   schedule:
-    # 09:00 WIB = 02:00 UTC
-    - cron: "0 2 * * 1-5"
-
-    # 10:00 WIB = 03:00 UTC
-    - cron: "0 3 * * 1-5"
-
-    # 11:00 WIB = 04:00 UTC
-    - cron: "0 4 * * 1-5"
-
-    # 13:00 WIB = 06:00 UTC
-    - cron: "0 6 * * 1-5"
-
-    # 14:00 WIB = 07:00 UTC
-    - cron: "0 7 * * 1-5"
-
-    # 15:00 WIB = 08:00 UTC
-    - cron: "0 8 * * 1-5"
-
-    # 16:00 WIB = 09:00 UTC
-    - cron: "0 9 * * 1-5"
-
-    # 17:00 WIB = 10:00 UTC
-    - cron: "0 10 * * 1-5"
-
+    - cron: "5 9 * * 1-5"
+      timezone: "Asia/Jakarta"
+    - cron: "5 10 * * 1-5"
+      timezone: "Asia/Jakarta"
+    - cron: "5 11 * * 1-5"
+      timezone: "Asia/Jakarta"
+    - cron: "5 13 * * 1-5"
+      timezone: "Asia/Jakarta"
+    - cron: "5 14 * * 1-5"
+      timezone: "Asia/Jakarta"
+    - cron: "5 15 * * 1-5"
+      timezone: "Asia/Jakarta"
+    - cron: "5 16 * * 1-5"
+      timezone: "Asia/Jakarta"
+    - cron: "5 17 * * 1-5"
+      timezone: "Asia/Jakarta"
 
 permissions:
   contents: write
-
 
 concurrency:
   group: smc-macd-scanner
   cancel-in-progress: false
 
-
 jobs:
-
   scan:
-
     runs-on: ubuntu-latest
-
     timeout-minutes: 15
 
-
     steps:
-
-      # =====================================================
-      # CHECKOUT
-      # =====================================================
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-
-      # =====================================================
-      # PYTHON
-      # =====================================================
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-
-      # =====================================================
-      # INSTALL
-      # =====================================================
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install yfinance pandas numpy tqdm
 
-
-      # =====================================================
-      # STATUS RUNNING
-      # =====================================================
+      - name: Determine intended slot
+        id: slot
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "slot=${{ github.event.inputs.slot }}" >> "$GITHUB_OUTPUT"
+          else
+            case "${{ github.event.schedule }}" in
+              "5 9 * * 1-5")  echo "slot=09:00" >> "$GITHUB_OUTPUT" ;;
+              "5 10 * * 1-5")  echo "slot=10:00" >> "$GITHUB_OUTPUT" ;;
+              "5 11 * * 1-5")  echo "slot=11:00" >> "$GITHUB_OUTPUT" ;;
+              "5 13 * * 1-5")  echo "slot=13:00" >> "$GITHUB_OUTPUT" ;;
+              "5 14 * * 1-5")  echo "slot=14:00" >> "$GITHUB_OUTPUT" ;;
+              "5 15 * * 1-5")  echo "slot=15:00" >> "$GITHUB_OUTPUT" ;;
+              "5 16 * * 1-5")  echo "slot=16:00" >> "$GITHUB_OUTPUT" ;;
+              "5 17 * * 1-5") echo "slot=17:00" >> "$GITHUB_OUTPUT" ;;
+              *) echo "slot=" >> "$GITHUB_OUTPUT" ;;
+            esac
+          fi
 
       - name: Set scanner status RUNNING
         run: |
@@ -92,6 +87,7 @@ jobs:
 
           TZ = ZoneInfo("Asia/Jakarta")
           now = datetime.now(TZ).strftime("%Y-%m-%d %H:%M:%S")
+          slot = "${{ steps.slot.outputs.slot }}"
 
           try:
               with open("scan_status.json", "r", encoding="utf-8") as f:
@@ -103,8 +99,8 @@ jobs:
               "status": "running",
               "started_at": now,
               "finished_at": old.get("finished_at"),
-              "duration_text": None,
-
+              "expected_slot": slot or None,
+              "trigger": "${{ github.event_name }}",
               "ob": {
                   "status": "waiting",
                   "processed": 0,
@@ -112,7 +108,6 @@ jobs:
                   "candidates": 0,
                   "errors": 0
               },
-
               "macd": {
                   "status": "waiting",
                   "processed": 0,
@@ -126,11 +121,6 @@ jobs:
               json.dump(data, f, ensure_ascii=False, indent=2)
           PY
 
-
-      # =====================================================
-      # COMMIT RUNNING STATUS
-      # =====================================================
-
       - name: Commit RUNNING status
         run: |
           git config user.name "github-actions[bot]"
@@ -139,21 +129,11 @@ jobs:
           git diff --cached --quiet || git commit -m "scanner running"
           git push
 
-
-      # =====================================================
-      # RUN SMC OB
-      # =====================================================
-
       - name: Run SMC OB scanner
         id: ob
         continue-on-error: true
         run: |
           python scanner.py
-
-
-      # =====================================================
-      # RUN MACD
-      # =====================================================
 
       - name: Run MACD scanner
         id: macd
@@ -161,21 +141,13 @@ jobs:
         run: |
           python scanner_macd.py
 
-
-      # =====================================================
-      # ARCHIVE HISTORY
-      # =====================================================
-
       - name: Update 31-day history
         run: |
           python archive_history.py \
             --ob "${{ steps.ob.outcome }}" \
-            --macd "${{ steps.macd.outcome }}"
-
-
-      # =====================================================
-      # FINAL STATUS
-      # =====================================================
+            --macd "${{ steps.macd.outcome }}" \
+            --schedule "${{ github.event.schedule }}" \
+            --slot "${{ steps.slot.outputs.slot }}"
 
       - name: Set final scanner status
         if: always()
@@ -239,11 +211,6 @@ jobs:
               json.dump(data, f, ensure_ascii=False, indent=2)
           PY
 
-
-      # =====================================================
-      # SAVE RESULTS
-      # =====================================================
-
       - name: Commit scanner results
         if: always()
         run: |
@@ -257,11 +224,6 @@ jobs:
 
           git diff --cached --quiet || git commit -m "update scanner results"
           git push
-
-
-      # =====================================================
-      # FAIL WORKFLOW ONLY IF BOTH FAILED
-      # =====================================================
 
       - name: Fail workflow if both scanners failed
         if: steps.ob.outcome == 'failure' && steps.macd.outcome == 'failure'
