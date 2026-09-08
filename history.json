@@ -1,7 +1,59 @@
 {
-  "updated_at": "2026-09-08 11:19:40",
+  "updated_at": "2026-09-08 13:57:08",
   "keep_days": 31,
   "history": [
+    {
+      "scanner": "MACD",
+      "generated_at": "2026-09-08 13:57:08",
+      "candidates": 3,
+      "total_tickers": 957,
+      "errors": 0,
+      "duration_text": "0m 58s",
+      "data": [
+        {
+          "ticker": "ESIP.JK",
+          "price": 132.0,
+          "spike_ratio": 7.69,
+          "hist_age": "+1",
+          "macd_hist": 0.65,
+          "value": "28.20B",
+          "ema20": 123.6,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "POLA.JK",
+          "price": 70.0,
+          "spike_ratio": 19.3,
+          "hist_age": "+1",
+          "macd_hist": 0.96,
+          "value": "14.15B",
+          "ema20": 56.26,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "RATU.JK",
+          "price": 4730.0,
+          "spike_ratio": 2.06,
+          "hist_age": "+4",
+          "macd_hist": 51.07,
+          "value": "106.84B",
+          "ema20": 4537.17,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "generated_at": "2026-09-08 13:56:09",
+      "candidates": 0,
+      "total_tickers": 957,
+      "errors": 1,
+      "duration_text": "2m 48s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "generated_at": "2026-09-08 11:19:39",
