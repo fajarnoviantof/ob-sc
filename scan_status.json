@@ -1,22 +1,20 @@
 {
-  "status": "success",
-  "started_at": "2026-09-08 00:05:51",
+  "status": "running",
+  "started_at": "2026-09-08 11:12:27",
   "finished_at": "2026-09-08 00:09:47",
   "duration_text": null,
   "ob": {
-    "status": "success",
-    "processed": 957,
+    "status": "waiting",
+    "processed": 0,
     "total_tickers": 957,
-    "candidates": 2,
-    "errors": 1,
-    "duration_text": "2m 44s"
+    "candidates": 0,
+    "errors": 0
   },
   "macd": {
-    "status": "success",
-    "processed": 957,
+    "status": "waiting",
+    "processed": 0,
     "total_tickers": 957,
-    "candidates": 4,
-    "errors": 0,
-    "duration_text": "1m 9s"
+    "candidates": 0,
+    "errors": 0
   }
 }
