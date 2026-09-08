@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-09-08 14:58:58",
-  "started_at": "2026-09-08 14:57:31",
-  "finished_at": "2026-09-08 14:58:58",
-  "duration_seconds": 87.8,
-  "duration_text": "1m 27s",
+  "generated_at": "2026-09-08 15:30:05",
+  "started_at": "2026-09-08 15:28:59",
+  "finished_at": "2026-09-08 15:30:05",
+  "duration_seconds": 66.2,
+  "duration_text": "1m 6s",
   "total_tickers": 957,
   "processed": 957,
   "errors": 0,
@@ -16,7 +16,7 @@
       "spike_ratio": 1.43,
       "hist_age": "+1",
       "macd_hist": 0.35,
-      "value": "22.42B",
+      "value": "24.96B",
       "ema20": 1523.59,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -27,7 +27,7 @@
       "spike_ratio": 6.5,
       "hist_age": "+1",
       "macd_hist": 0.52,
-      "value": "28.62B",
+      "value": "28.88B",
       "ema20": 123.41,
       "ema20_break_age": "+1",
       "quality": "LOW"
@@ -38,7 +38,7 @@
       "spike_ratio": 19.3,
       "hist_age": "+1",
       "macd_hist": 0.96,
-      "value": "14.18B",
+      "value": "14.19B",
       "ema20": 56.26,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -49,19 +49,19 @@
       "spike_ratio": 1.1,
       "hist_age": "+4",
       "macd_hist": 1.28,
-      "value": "10.56B",
+      "value": "11.93B",
       "ema20": 902.51,
       "ema20_break_age": "+1",
       "quality": "HIGH"
     },
     {
       "ticker": "RATU.JK",
-      "price": 4700.0,
-      "spike_ratio": 1.79,
+      "price": 4690.0,
+      "spike_ratio": 1.7,
       "hist_age": "+4",
-      "macd_hist": 49.16,
-      "value": "113.09B",
-      "ema20": 4534.31,
+      "macd_hist": 48.52,
+      "value": "114.89B",
+      "ema20": 4533.36,
       "ema20_break_age": "+1",
       "quality": "HIGH"
     }

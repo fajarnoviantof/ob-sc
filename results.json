@@ -1,13 +1,27 @@
 {
   "status": "success",
-  "generated_at": "2026-09-08 14:57:30",
-  "started_at": "2026-09-08 14:51:33",
-  "finished_at": "2026-09-08 14:57:30",
-  "duration_seconds": 357.1,
-  "duration_text": "5m 57s",
+  "generated_at": "2026-09-08 15:28:58",
+  "started_at": "2026-09-08 15:26:32",
+  "finished_at": "2026-09-08 15:28:58",
+  "duration_seconds": 146.6,
+  "duration_text": "2m 26s",
   "total_tickers": 957,
   "processed": 957,
   "errors": 1,
-  "candidates": 0,
-  "data": []
+  "candidates": 1,
+  "data": [
+    {
+      "ticker": "PNGO.JK",
+      "ob_range": "3470-3460",
+      "sl": 3459,
+      "sl_pct": 0.3,
+      "tp": 3560.0,
+      "tp_pct": 2.6,
+      "rr": 8.93,
+      "distance": 3.46,
+      "bos_age": 1,
+      "ob_size": 0.28,
+      "score": 77.74
+    }
+  ]
 }
