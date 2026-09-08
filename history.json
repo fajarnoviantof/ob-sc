@@ -1,7 +1,84 @@
 {
-  "updated_at": "2026-09-08 17:39:28",
+  "updated_at": "2026-09-08 19:06:56",
   "keep_days": 31,
   "history": [
+    {
+      "scanner": "MACD",
+      "generated_at": "2026-09-08 19:06:56",
+      "candidates": 4,
+      "total_tickers": 957,
+      "errors": 0,
+      "duration_text": "2m 7s",
+      "data": [
+        {
+          "ticker": "PGAS.JK",
+          "price": 1540.0,
+          "spike_ratio": 1.43,
+          "hist_age": "+1",
+          "macd_hist": 0.35,
+          "value": "45.41B",
+          "ema20": 1523.59,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ESIP.JK",
+          "price": 137.0,
+          "spike_ratio": 10.64,
+          "hist_age": "+1",
+          "macd_hist": 0.97,
+          "value": "36.39B",
+          "ema20": 124.08,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "POLA.JK",
+          "price": 70.0,
+          "spike_ratio": 19.3,
+          "hist_age": "+1",
+          "macd_hist": 0.96,
+          "value": "14.21B",
+          "ema20": 56.26,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "RATU.JK",
+          "price": 4690.0,
+          "spike_ratio": 1.7,
+          "hist_age": "+4",
+          "macd_hist": 48.52,
+          "value": "124.15B",
+          "ema20": 4533.36,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "generated_at": "2026-09-08 19:04:49",
+      "candidates": 1,
+      "total_tickers": 957,
+      "errors": 1,
+      "duration_text": "5m 10s",
+      "data": [
+        {
+          "ticker": "PNGO.JK",
+          "ob_range": "3470-3460",
+          "sl": 3459,
+          "sl_pct": 0.3,
+          "tp": 3560.0,
+          "tp_pct": 2.6,
+          "rr": 8.93,
+          "distance": 3.46,
+          "bos_age": 1,
+          "ob_size": 0.28,
+          "score": 77.74
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "generated_at": "2026-09-08 17:39:28",
