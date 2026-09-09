@@ -1,1559 +1,1250 @@
-// =========================================================
-// MARKET SCANNER - FRONTEND
-// SMC OB + MACD + 31-DAY HISTORY
-// =========================================================
+/* =========================================================
+   MARKET SCANNER - app.js
+   SMC OB + MACD + SECTOR HISTORY
+========================================================= */
 
+const FILES = {
+    ob: "results.json",
+    macd: "macd_results.json",
+    status: "scan_status.json",
+    history: "history.json",
+    sectors: "sector_map.json"
+};
 
-// =========================================================
-// CONFIG
-// =========================================================
+const REFRESH_MS = 30000;
 
-const RESULTS_URL = "results.json";
-
-const MACD_RESULTS_URL = "macd_results.json";
-
-const STATUS_URL = "scan_status.json";
-
-const HISTORY_URL = "history.json";
-
-// Auto refresh setiap 30 detik
-const AUTO_REFRESH_INTERVAL = 30 * 1000;
-
-
-// =========================================================
-// STATE
-// =========================================================
-
-let currentPage = "ob";
+let state = {
+    ob: null,
+    macd: null,
+    status: null,
+    history: null,
+    sectorMap: {}
+};
 
 let historyFilter = "ALL";
 
-let historyData = [];
+/* =========================================================
+   INIT
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+    initTabs();
+    initHistoryFilters();
+    loadAll();
+
+    setInterval(loadAll, REFRESH_MS);
+});
 
 
-// =========================================================
-// INIT
-// =========================================================
+/* =========================================================
+   FETCH JSON
+========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        // Load data pertama kali
-        refreshAll();
-
-        // Auto refresh setiap 30 detik
-        setInterval(
-            function () {
-
-                refreshAll();
-
-            },
-            AUTO_REFRESH_INTERVAL
-        );
-
-    }
-);
-
-
-// =========================================================
-// PAGE SWITCH
-// =========================================================
-
-function switchPage(page) {
-
-    currentPage = page;
-
-
-    // -----------------------------------------------------
-    // SEMBUNYIKAN SEMUA PAGE
-    // -----------------------------------------------------
-
-    const pages =
-        document.querySelectorAll(".page");
-
-
-    pages.forEach(
-        function (element) {
-
-            element.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    // -----------------------------------------------------
-    // NONAKTIFKAN SEMUA TAB
-    // -----------------------------------------------------
-
-    const tabs =
-        document.querySelectorAll(".nav-tab");
-
-
-    tabs.forEach(
-        function (element) {
-
-            element.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    // -----------------------------------------------------
-    // AKTIFKAN PAGE
-    // -----------------------------------------------------
-
-    const pageElement =
-        document.getElementById(
-            "page-" + page
-        );
-
-
-    if (pageElement) {
-
-        pageElement.classList.add(
-            "active"
-        );
-
-    }
-
-
-    // -----------------------------------------------------
-    // AKTIFKAN TAB
-    // -----------------------------------------------------
-
-    const tab =
-        document.querySelector(
-            '.nav-tab[data-page="' +
-            page +
-            '"]'
-        );
-
-
-    if (tab) {
-
-        tab.classList.add(
-            "active"
-        );
-
-    }
-
-
-    // -----------------------------------------------------
-    // RENDER HISTORY
-    // -----------------------------------------------------
-
-    if (page === "history") {
-
-        renderHistory();
-
-    }
-
-}
-
-
-// =========================================================
-// REFRESH ALL
-// =========================================================
-
-async function refreshAll() {
-
+async function fetchJson(file) {
     try {
+        const url = `${file}?t=${Date.now()}`;
 
-        await Promise.all([
-            loadStatus(),
-            loadResults(),
-            loadMacdResults(),
-            loadHistory()
-        ]);
+        const response = await fetch(url, {
+            cache: "no-store"
+        });
 
+        if (!response.ok) {
+            throw new Error(`${file}: HTTP ${response.status}`);
+        }
+
+        return await response.json();
 
     } catch (error) {
-
-        console.error(
-            "Refresh error:",
-            error
-        );
-
-
-        setStatus(
-            "offline",
-            "Gagal mengambil data"
-        );
-
+        console.error(`Gagal membaca ${file}`, error);
+        return null;
     }
-
 }
 
 
-// =========================================================
-// FETCH JSON
-// =========================================================
-
-async function fetchJson(
-    baseUrl
-) {
-
-    const url =
-        baseUrl +
-        "?t=" +
-        Date.now();
-
-
-    const response =
-        await fetch(
-            url,
-            {
-                cache: "no-store"
-            }
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            baseUrl +
-            " HTTP " +
-            response.status
-        );
-
-    }
-
-
-    return await response.json();
-
-}
-
-
-// =========================================================
-// LOAD STATUS
-// =========================================================
-
-async function loadStatus() {
-
-    const data =
-        await fetchJson(
-            STATUS_URL
-        );
-
-
-    updateStatusUI(
-        data
-    );
-
-}
-
-
-// =========================================================
-// UPDATE STATUS
-// =========================================================
-
-function updateStatusUI(
-    data
-) {
-
-    const status =
-        data.status ||
-        "unknown";
-
-
-    // -----------------------------------------------------
-    // RUNNING
-    // -----------------------------------------------------
-
-    if (status === "running") {
-
-        setStatus(
-            "running",
-            "Scanner sedang berjalan..."
-        );
-
-        return;
-
-    }
-
-
-    // -----------------------------------------------------
-    // SUCCESS
-    // -----------------------------------------------------
-
-    if (status === "success") {
-
-        setStatus(
-            "online",
-            "Scanner aktif"
-        );
-
-        return;
-
-    }
-
-
-    // -----------------------------------------------------
-    // PARTIAL
-    // -----------------------------------------------------
-
-    if (status === "partial") {
-
-        setStatus(
-            "running",
-            "Scanner selesai sebagian"
-        );
-
-        return;
-
-    }
-
-
-    // -----------------------------------------------------
-    // FAILED
-    // -----------------------------------------------------
-
-    if (status === "failed") {
-
-        setStatus(
-            "error",
-            "Scan terakhir gagal"
-        );
-
-        return;
-
-    }
-
-
-    // -----------------------------------------------------
-    // UNKNOWN
-    // -----------------------------------------------------
-
-    setStatus(
-        "offline",
-        "Status tidak diketahui"
-    );
-
-}
-
-
-// =========================================================
-// LOAD SMC OB
-// =========================================================
-
-async function loadResults() {
-
-    const data =
-        await fetchJson(
-            RESULTS_URL
-        );
-
-
-    renderOB(
-        data
-    );
-
-}
-
-
-// =========================================================
-// RENDER SMC OB
-// =========================================================
-
-function renderOB(
-    data
-) {
-
-    // -----------------------------------------------------
-    // SUMMARY
-    // -----------------------------------------------------
-
-    setText(
-        "obCandidateCount",
-        formatNumber(
-            data.candidates
-        )
-    );
-
-
-    setText(
-        "obTotalTickers",
-        formatNumber(
-            data.total_tickers
-        )
-    );
-
-
-    setText(
-        "obDuration",
-        data.duration_text ||
-        "-"
-    );
-
-
-    setText(
-        "obErrors",
-        data.errors ??
-        0
-    );
-
-
-    setText(
-        "obLastScan",
-        data.finished_at ||
-        data.generated_at ||
-        "-"
-    );
-
-
-    setText(
-        "obGeneratedAt",
-        data.generated_at ||
-        "-"
-    );
-
-
-    // -----------------------------------------------------
-    // PROGRESS
-    // -----------------------------------------------------
-
-    const processed =
-        Number(
-            data.processed ||
-            0
-        );
-
-
-    const total =
-        Number(
-            data.total_tickers ||
-            0
-        );
-
-
-    let progress = 0;
-
-
-    if (total > 0) {
-
-        progress =
-            Math.round(
-                (
-                    processed /
-                    total
-                ) *
-                100
-            );
-
-    }
-
-
-    if (progress > 100) {
-
-        progress = 100;
-
-    }
-
-
-    setText(
-        "obProgress",
-        total > 0
-            ? processed +
-              " / " +
-              total
-            : "-"
-    );
-
-
-    setWidth(
-        "obProgressFill",
-        progress
-    );
-
-
-    // -----------------------------------------------------
-    // TABLE
-    // -----------------------------------------------------
-
-    const tbody =
-        document.getElementById(
-            "obResultBody"
-        );
-
-
-    if (!tbody) {
-
-        return;
-
-    }
-
-
-    tbody.innerHTML = "";
-
-
-    const rows =
-        Array.isArray(
-            data.data
-        )
-            ? data.data
-            : [];
-
-
-    // -----------------------------------------------------
-    // NO DATA
-    // -----------------------------------------------------
-
-    if (rows.length === 0) {
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="11">
-                    Tidak ada kandidat
-                </td>
-            </tr>
-        `;
-
-        return;
-
-    }
-
-
-    // -----------------------------------------------------
-    // RENDER ROW
-    // -----------------------------------------------------
-
-    rows.forEach(
-        function (row) {
-
-            const tr =
-                document.createElement(
-                    "tr"
-                );
-
-
-            tr.innerHTML = `
-
-                <td>
-                    ${safe(row.ticker)}
-                </td>
-
-                <td>
-                    ${safe(row.ob_range)}
-                </td>
-
-                <td>
-                    ${formatNumber(row.sl)}
-                </td>
-
-                <td>
-                    ${formatPercent(row.sl_pct)}
-                </td>
-
-                <td>
-                    ${formatNumber(row.tp)}
-                </td>
-
-                <td>
-                    ${formatPercent(row.tp_pct)}
-                </td>
-
-                <td>
-                    ${safe(row.rr)}
-                </td>
-
-                <td>
-                    ${formatPercent(row.distance)}
-                </td>
-
-                <td>
-                    ${safe(row.bos_age)}
-                </td>
-
-                <td>
-                    ${formatPercent(row.ob_size)}
-                </td>
-
-                <td>
-                    ${safe(row.score)}
-                </td>
-
-            `;
-
-
-            tbody.appendChild(
-                tr
-            );
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// LOAD MACD
-// =========================================================
-
-async function loadMacdResults() {
-
-    const data =
-        await fetchJson(
-            MACD_RESULTS_URL
-        );
-
-
-    renderMACD(
-        data
-    );
-
-}
-
-
-// =========================================================
-// RENDER MACD
-// =========================================================
-
-function renderMACD(
-    data
-) {
-
-    // -----------------------------------------------------
-    // SUMMARY
-    // -----------------------------------------------------
-
-    setText(
-        "macdCandidateCount",
-        formatNumber(
-            data.candidates
-        )
-    );
-
-
-    setText(
-        "macdTotalTickers",
-        formatNumber(
-            data.total_tickers
-        )
-    );
-
-
-    setText(
-        "macdDuration",
-        data.duration_text ||
-        "-"
-    );
-
-
-    setText(
-        "macdErrors",
-        data.errors ??
-        0
-    );
-
-
-    setText(
-        "macdLastScan",
-        data.finished_at ||
-        data.generated_at ||
-        "-"
-    );
-
-
-    setText(
-        "macdGeneratedAt",
-        data.generated_at ||
-        "-"
-    );
-
-
-    // -----------------------------------------------------
-    // PROGRESS
-    // -----------------------------------------------------
-
-    const processed =
-        Number(
-            data.processed ||
-            0
-        );
-
-
-    const total =
-        Number(
-            data.total_tickers ||
-            0
-        );
-
-
-    let progress = 0;
-
-
-    if (total > 0) {
-
-        progress =
-            Math.round(
-                (
-                    processed /
-                    total
-                ) *
-                100
-            );
-
-    }
-
-
-    if (progress > 100) {
-
-        progress = 100;
-
-    }
-
-
-    setText(
-        "macdProgress",
-        total > 0
-            ? processed +
-              " / " +
-              total
-            : "-"
-    );
-
-
-    setWidth(
-        "macdProgressFill",
-        progress
-    );
-
-
-    // -----------------------------------------------------
-    // TABLE
-    // -----------------------------------------------------
-
-    const tbody =
-        document.getElementById(
-            "macdResultBody"
-        );
-
-
-    if (!tbody) {
-
-        return;
-
-    }
-
-
-    tbody.innerHTML = "";
-
-
-    const rows =
-        Array.isArray(
-            data.data
-        )
-            ? data.data
-            : [];
-
-
-    // -----------------------------------------------------
-    // NO DATA
-    // -----------------------------------------------------
-
-    if (rows.length === 0) {
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="9">
-                    Tidak ada kandidat
-                </td>
-            </tr>
-        `;
-
-        return;
-
-    }
-
-
-    // -----------------------------------------------------
-    // RENDER ROW
-    // -----------------------------------------------------
-
-    rows.forEach(
-        function (row) {
-
-            const tr =
-                document.createElement(
-                    "tr"
-                );
-
-
-            const quality =
-                String(
-                    row.quality ||
-                    ""
-                ).toUpperCase();
-
-
-            let qualityClass =
-                quality.toLowerCase();
-
-
-            if (
-                qualityClass !== "high" &&
-                qualityClass !== "med" &&
-                qualityClass !== "low"
-            ) {
-
-                qualityClass = "low";
-
-            }
-
-
-            tr.innerHTML = `
-
-                <td>
-                    ${safe(row.ticker)}
-                </td>
-
-                <td>
-                    ${formatNumber(row.price)}
-                </td>
-
-                <td>
-                    ${formatNumber(row.spike_ratio)}x
-                </td>
-
-                <td>
-                    ${safe(row.hist_age)}
-                </td>
-
-                <td>
-                    ${formatNumber(row.macd_hist)}
-                </td>
-
-                <td>
-                    ${safe(row.value)}
-                </td>
-
-                <td>
-                    ${formatNumber(row.ema20)}
-                </td>
-
-                <td>
-                    ${safe(row.ema20_break_age)}
-                </td>
-
-                <td>
-
-                    <span
-                        class="
-                            quality
-                            ${qualityClass}
-                        "
-                    >
-                        ${safe(quality)}
-                    </span>
-
-                </td>
-
-            `;
-
-
-            tbody.appendChild(
-                tr
-            );
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// LOAD HISTORY
-// =========================================================
-
-async function loadHistory() {
-
-    const data =
-        await fetchJson(
-            HISTORY_URL
-        );
-
-
-    if (
-        !data ||
-        typeof data !== "object"
-    ) {
-
-        historyData = [];
-
-        renderHistory();
-
-        return;
-
-    }
-
-
-    if (
-        Array.isArray(
-            data.history
-        )
-    ) {
-
-        historyData =
-            data.history;
-
-    } else {
-
-        historyData = [];
-
-    }
-
-
-    setText(
-        "historyUpdated",
-        data.updated_at
-            ? "Update " +
-              data.updated_at
-            : "-"
-    );
-
-
+/* =========================================================
+   LOAD ALL
+========================================================= */
+
+async function loadAll() {
+
+    const [
+        status,
+        ob,
+        macd,
+        history,
+        sectorMap
+    ] = await Promise.all([
+        fetchJson(FILES.status),
+        fetchJson(FILES.ob),
+        fetchJson(FILES.macd),
+        fetchJson(FILES.history),
+        fetchJson(FILES.sectors)
+    ]);
+
+    state.status = status;
+    state.ob = ob;
+    state.macd = macd;
+    state.history = history;
+    state.sectorMap = sectorMap?.map || {};
+
+    renderDashboard();
+    renderOB();
+    renderMACD();
     renderHistory();
 
+    updateLastRefresh();
 }
 
 
-// =========================================================
-// HISTORY FILTER
-// =========================================================
+/* =========================================================
+   TAB
+========================================================= */
 
-function setHistoryFilter(
-    filter
-) {
+function initTabs() {
 
-    historyFilter =
-        filter;
+    document.querySelectorAll("[data-page]").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const page = button.dataset.page;
+
+            document.querySelectorAll("[data-page]").forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            document.querySelectorAll(".page").forEach(section => {
+                section.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            const target = document.getElementById(page);
+
+            if (target) {
+                target.classList.add("active");
+            }
+        });
+
+    });
+}
 
 
-    const buttons =
-        document.querySelectorAll(
-            ".filter-btn"
-        );
+/* =========================================================
+   HISTORY FILTER
+========================================================= */
+
+function initHistoryFilters() {
+
+    document.querySelectorAll("[data-history-filter]").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            historyFilter = button.dataset.historyFilter;
+
+            document.querySelectorAll("[data-history-filter]").forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            renderHistory();
+        });
+
+    });
+}
 
 
-    buttons.forEach(
-        function (button) {
+/* =========================================================
+   DASHBOARD
+========================================================= */
 
-            button.classList.toggle(
-                "active",
-                button.dataset.filter ===
-                filter
-            );
+function renderDashboard() {
 
-        }
+    renderCurrentScanner(
+        "current-ob",
+        state.ob,
+        "SMC OB"
     );
 
+    renderCurrentScanner(
+        "current-macd",
+        state.macd,
+        "MACD"
+    );
 
-    renderHistory();
-
+    renderQuickStatus();
 }
 
 
-// =========================================================
-// RENDER HISTORY
-// =========================================================
+/* =========================================================
+   CURRENT SCANNER
+========================================================= */
 
-function renderHistory() {
+function renderCurrentScanner(containerId, payload, scannerName) {
 
-    const container =
-        document.getElementById(
-            "historyList"
-        );
+    const container = document.getElementById(containerId);
 
+    if (!container) return;
 
-    if (!container) {
-
-        return;
-
-    }
-
-
-    let rows =
-        Array.isArray(historyData)
-            ? historyData
-            : [];
-
-
-    // -----------------------------------------------------
-    // FILTER
-    // -----------------------------------------------------
-
-    if (
-        historyFilter !== "ALL"
-    ) {
-
-        rows =
-            rows.filter(
-                function (row) {
-
-                    return (
-                        row.scanner ===
-                        historyFilter
-                    );
-
-                }
-            );
-
-    }
-
-
-    // -----------------------------------------------------
-    // NO DATA
-    // -----------------------------------------------------
-
-    if (!rows.length) {
+    if (!payload) {
 
         container.innerHTML = `
             <div class="empty-state">
-                Belum ada riwayat scan.
+                Data ${scannerName} belum tersedia
             </div>
         `;
 
         return;
-
     }
 
+    const data = Array.isArray(payload.data)
+        ? payload.data
+        : [];
 
-    container.innerHTML = "";
+    const candidates = Number(payload.candidates || data.length || 0);
 
+    let html = "";
 
-    // -----------------------------------------------------
-    // HISTORY ROW
-    // -----------------------------------------------------
+    if (data.length === 0) {
 
-    rows.forEach(
-        function (row) {
+        html = `
+            <div class="empty-state">
+                Tidak ada kandidat
+            </div>
+        `;
 
-            const item =
-                document.createElement(
-                    "article"
-                );
+    } else {
 
+        html = `
+            <div class="candidate-list">
+                ${data.map(item => renderCandidateChip(item)).join("")}
+            </div>
+        `;
+    }
 
-            item.className =
-                "history-item";
+    container.innerHTML = `
+        <div class="scanner-current-header">
+            <div>
+                <div class="scanner-current-title">
+                    ${escapeHtml(scannerName)}
+                </div>
 
+                <div class="scanner-current-count">
+                    ${candidates} kandidat
+                </div>
+            </div>
 
-            // -------------------------------------------------
-            // DATE / TIME
-            // -------------------------------------------------
+            <div class="scanner-current-time">
+                ${formatDateTime(
+                    payload.generated_at ||
+                    payload.finished_at
+                )}
+            </div>
+        </div>
 
-            const generated =
-                String(
-                    row.generated_at ||
-                    "-"
-                );
-
-
-            const parts =
-                generated.split(
-                    " "
-                );
-
-
-            const date =
-                parts[0] ||
-                "-";
-
-
-            const time =
-                parts[1] ||
-                "-";
-
-
-            // -------------------------------------------------
-            // SCANNER CLASS
-            // -------------------------------------------------
-
-            const scannerClass =
-                row.scanner === "MACD"
-                    ? "macd"
-                    : "ob";
+        ${html}
+    `;
+}
 
 
-            // -------------------------------------------------
-            // CANDIDATES
-            // -------------------------------------------------
+/* =========================================================
+   CANDIDATE CHIP
+========================================================= */
 
-            const candidates =
-                Array.isArray(
-                    row.data
-                )
-                    ? row.data
-                    : [];
+function renderCandidateChip(item) {
+
+    const ticker = getTicker(item);
+
+    if (!ticker) {
+        return "";
+    }
+
+    const sector = getSector(ticker);
+
+    return `
+        <div class="candidate-chip">
+
+            <div class="candidate-ticker">
+                ${escapeHtml(ticker)}
+            </div>
+
+            <div class="candidate-sector">
+                ${escapeHtml(shortSector(sector))}
+            </div>
+
+        </div>
+    `;
+}
 
 
-            // -------------------------------------------------
-            // TICKER LIST
-            // -------------------------------------------------
+/* =========================================================
+   QUICK STATUS
+========================================================= */
 
-            let tickerHtml = "";
+function renderQuickStatus() {
+
+    const container = document.getElementById("quick-status");
+
+    if (!container) return;
+
+    const status = state.status;
+
+    if (!status) {
+        container.innerHTML = "";
+        return;
+    }
+
+    const ob = status.ob || {};
+    const macd = status.macd || {};
+
+    container.innerHTML = `
+        <div class="status-item">
+            <span>OB</span>
+            <strong>${statusLabel(ob.status)}</strong>
+            <small>${ob.progress || 0}/${ob.total || 0}</small>
+        </div>
+
+        <div class="status-item">
+            <span>MACD</span>
+            <strong>${statusLabel(macd.status)}</strong>
+            <small>${macd.progress || 0}/${macd.total || 0}</small>
+        </div>
+
+        <div class="status-item">
+            <span>Update</span>
+            <strong>
+                ${formatDateTime(
+                    status.finished_at ||
+                    status.updated_at
+                )}
+            </strong>
+        </div>
+    `;
+}
 
 
-            if (
-                candidates.length > 0
-            ) {
+/* =========================================================
+   SMC OB PAGE
+========================================================= */
 
-                tickerHtml =
-                    candidates
-                        .map(
-                            function (
-                                candidate
-                            ) {
+function renderOB() {
 
-                                return `
-                                    <span
-                                        class="ticker-chip"
-                                    >
-                                        ${safe(
-                                            candidate.ticker
-                                        )}
-                                    </span>
-                                `;
+    const payload = state.ob;
 
-                            }
-                        )
-                        .join("");
+    renderMetric(
+        "ob-total",
+        payload?.total_tickers
+    );
 
-            } else {
+    renderMetric(
+        "ob-processed",
+        payload?.processed
+    );
 
-                tickerHtml = `
-                    <span
-                        class="ticker-chip"
-                    >
-                        Tidak ada kandidat
+    renderMetric(
+        "ob-candidates",
+        payload?.candidates
+    );
+
+    renderMetric(
+        "ob-errors",
+        payload?.errors
+    );
+
+    renderMetric(
+        "ob-duration",
+        payload?.duration_text
+    );
+
+    renderScannerTable(
+        "ob-table",
+        payload,
+        "SMC OB"
+    );
+}
+
+
+/* =========================================================
+   MACD PAGE
+========================================================= */
+
+function renderMACD() {
+
+    const payload = state.macd;
+
+    renderMetric(
+        "macd-total",
+        payload?.total_tickers
+    );
+
+    renderMetric(
+        "macd-processed",
+        payload?.processed
+    );
+
+    renderMetric(
+        "macd-candidates",
+        payload?.candidates
+    );
+
+    renderMetric(
+        "macd-errors",
+        payload?.errors
+    );
+
+    renderMetric(
+        "macd-duration",
+        payload?.duration_text
+    );
+
+    renderScannerTable(
+        "macd-table",
+        payload,
+        "MACD"
+    );
+}
+
+
+/* =========================================================
+   METRIC
+========================================================= */
+
+function renderMetric(id, value) {
+
+    const element = document.getElementById(id);
+
+    if (!element) return;
+
+    if (
+        value === undefined ||
+        value === null ||
+        value === ""
+    ) {
+        element.textContent = "-";
+        return;
+    }
+
+    element.textContent = value;
+}
+
+
+/* =========================================================
+   SCANNER TABLE
+========================================================= */
+
+function renderScannerTable(
+    containerId,
+    payload,
+    scannerName
+) {
+
+    const container = document.getElementById(containerId);
+
+    if (!container) return;
+
+    if (!payload) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Data ${escapeHtml(scannerName)} belum tersedia.
+            </div>
+        `;
+
+        return;
+    }
+
+    const data = Array.isArray(payload.data)
+        ? payload.data
+        : [];
+
+    if (data.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Tidak ada kandidat ${escapeHtml(scannerName)}.
+            </div>
+        `;
+
+        return;
+    }
+
+    const columns = getTableColumns(data);
+
+    let html = `
+        <div class="table-wrapper">
+            <table class="scanner-table">
+
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        ${columns.map(column =>
+                            `<th>${escapeHtml(formatColumnName(column))}</th>`
+                        ).join("")}
+                        <th>Sektor</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+    `;
+
+    data.forEach((item, index) => {
+
+        const ticker = getTicker(item);
+
+        html += `
+            <tr>
+
+                <td>${index + 1}</td>
+
+                ${columns.map(column => `
+                    <td>
+                        ${formatCellValue(item[column])}
+                    </td>
+                `).join("")}
+
+                <td>
+                    <span class="sector-badge">
+                        ${escapeHtml(
+                            shortSector(getSector(ticker))
+                        )}
                     </span>
-                `;
+                </td>
+
+            </tr>
+        `;
+    });
+
+    html += `
+                </tbody>
+
+            </table>
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+
+
+/* =========================================================
+   TABLE COLUMNS
+========================================================= */
+
+function getTableColumns(data) {
+
+    if (!Array.isArray(data) || data.length === 0) {
+        return [];
+    }
+
+    const excluded = new Set([
+        "ticker",
+        "symbol",
+        "code",
+        "kode",
+        "sector",
+        "sektor"
+    ]);
+
+    const columns = [];
+
+    data.forEach(item => {
+
+        if (!item || typeof item !== "object") {
+            return;
+        }
+
+        Object.keys(item).forEach(key => {
+
+            if (!excluded.has(key.toLowerCase())) {
+
+                if (!columns.includes(key)) {
+                    columns.push(key);
+                }
 
             }
+        });
+
+    });
+
+    return columns.slice(0, 12);
+}
 
 
-            // -------------------------------------------------
-            // HTML
-            // -------------------------------------------------
+/* =========================================================
+   HISTORY
+========================================================= */
 
-            item.innerHTML = `
+function renderHistory() {
 
-                <div
-                    class="history-main"
-                >
-
-                    <div>
-
-                        <div
-                            class="history-date"
-                        >
-                            ${safe(date)}
-                        </div>
-
-                        <div
-                            class="history-time"
-                        >
-                            ${safe(time)}
-                        </div>
-
-                    </div>
+    renderHeatmap();
+    renderRecap();
+}
 
 
-                    <div>
+/* =========================================================
+   HEATMAP
+========================================================= */
 
-                        <div
-                            class="history-scanner"
-                        >
-                            ${safe(
-                                row.scanner
-                            )}
-                        </div>
+function renderHeatmap() {
 
-                        <div
-                            class="history-meta"
-                        >
-                            ${formatNumber(
-                                row.total_tickers
-                            )}
-                            ticker
-                            ·
-                            ${safe(
-                                row.duration_text ||
-                                "-"
-                            )}
-                            · error
-                            ${safe(
-                                row.errors ??
-                                0
-                            )}
-                        </div>
+    const container = document.getElementById("sector-heatmap");
 
-                    </div>
+    if (!container) return;
 
+    const history = Array.isArray(state.history?.history)
+        ? state.history.history
+        : [];
 
-                    <div
-                        class="
-                            history-count
-                            ${scannerClass}
-                        "
-                    >
+    const slots = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00"
+    ];
 
-                        ${formatNumber(
-                            row.candidates
-                        )}
-                        kandidat
+    const sectors = [
+        "BASIC MATERIALS",
+        "ENERGY",
+        "FINANCIALS",
+        "INDUSTRIALS",
+        "CONSUMER NON-CYCLICALS",
+        "CONSUMER CYCLICALS",
+        "HEALTHCARE",
+        "PROPERTIES & REAL ESTATE",
+        "TECHNOLOGY",
+        "INFRASTRUCTURES",
+        "TRANSPORTATION & LOGISTIC"
+    ];
 
-                    </div>
+    const dates = getHistoryDates(history);
 
+    if (dates.length === 0) {
 
-                    <button
-                        class="history-toggle"
-                        onclick="toggleHistory(this)"
-                        aria-label="Lihat kandidat"
-                    >
-                        +
-                    </button>
+        container.innerHTML = `
+            <div class="empty-state">
+                Belum ada data history dengan slot yang valid.
+            </div>
+        `;
 
-                </div>
+        return;
+    }
 
+    let html = `
+        <div class="heatmap-wrapper">
 
-                <div
-                    class="history-data"
-                >
+            <table class="heatmap">
 
-                    <div
-                        class="
-                            history-ticker-list
-                        "
-                    >
+                <thead>
+                    <tr>
+                        <th>Sektor</th>
+                        ${slots.map(slot =>
+                            `<th>${slot.replace(":00", "")}</th>`
+                        ).join("")}
+                    </tr>
+                </thead>
 
-                        ${tickerHtml}
+                <tbody>
+    `;
 
-                    </div>
+    sectors.forEach(sector => {
 
-                </div>
+        html += `
+            <tr>
 
-            `;
+                <td class="sector-name">
+                    ${escapeHtml(shortSector(sector))}
+                </td>
+        `;
 
+        slots.forEach(slot => {
 
-            container.appendChild(
-                item
+            const result = calculateSectorActivity(
+                history,
+                sector,
+                slot,
+                dates
             );
 
+            const percent = result.available > 0
+                ? result.active / result.available
+                : 0;
+
+            html += `
+                <td
+                    class="heat-cell"
+                    title="${result.active}/${result.available} hari"
+                    data-level="${getHeatLevel(percent)}"
+                >
+                    ${result.available > 0
+                        ? `${Math.round(percent * 100)}%`
+                        : "-"
+                    }
+                </td>
+            `;
+        });
+
+        html += `
+            </tr>
+        `;
+    });
+
+    html += `
+                </tbody>
+
+            </table>
+
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+
+
+/* =========================================================
+   SECTOR ACTIVITY
+========================================================= */
+
+function calculateSectorActivity(
+    history,
+    sector,
+    slot,
+    dates
+) {
+
+    let active = 0;
+    let available = 0;
+
+    dates.forEach(date => {
+
+        const snapshots = history.filter(item => {
+
+            if (!item) return false;
+
+            if (item.slot !== slot) return false;
+
+            if (
+                historyFilter !== "ALL" &&
+                item.scanner !== historyFilter
+            ) {
+                return false;
+            }
+
+            return String(item.generated_at || "")
+                .startsWith(date);
+        });
+
+        if (snapshots.length === 0) {
+            return;
         }
+
+        available++;
+
+        let found = false;
+
+        snapshots.forEach(snapshot => {
+
+            const data = Array.isArray(snapshot.data)
+                ? snapshot.data
+                : [];
+
+            data.forEach(item => {
+
+                const ticker = getTicker(item);
+
+                if (
+                    ticker &&
+                    getSector(ticker) === sector
+                ) {
+                    found = true;
+                }
+
+            });
+
+        });
+
+        if (found) {
+            active++;
+        }
+    });
+
+    return {
+        active,
+        available
+    };
+}
+
+
+/* =========================================================
+   HEAT LEVEL
+========================================================= */
+
+function getHeatLevel(value) {
+
+    if (value <= 0) return "0";
+    if (value < 0.25) return "1";
+    if (value < 0.50) return "2";
+    if (value < 0.75) return "3";
+
+    return "4";
+}
+
+
+/* =========================================================
+   RECAP
+========================================================= */
+
+function renderRecap() {
+
+    const container = document.getElementById("history-recap");
+
+    if (!container) return;
+
+    const history = Array.isArray(state.history?.history)
+        ? state.history.history
+        : [];
+
+    if (history.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Belum ada history scanner.
+            </div>
+        `;
+
+        return;
+    }
+
+    const grouped = {};
+
+    history.forEach(item => {
+
+        if (!item || !item.generated_at) {
+            return;
+        }
+
+        if (
+            historyFilter !== "ALL" &&
+            item.scanner !== historyFilter
+        ) {
+            return;
+        }
+
+        const date = String(item.generated_at).slice(0, 10);
+
+        if (!grouped[date]) {
+            grouped[date] = {
+                ob: [],
+                macd: []
+            };
+        }
+
+        if (item.scanner === "SMC OB") {
+            grouped[date].ob.push(item);
+        }
+
+        if (item.scanner === "MACD") {
+            grouped[date].macd.push(item);
+        }
+    });
+
+    const dates = Object.keys(grouped)
+        .sort()
+        .reverse();
+
+    if (dates.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Tidak ada data untuk filter ini.
+            </div>
+        `;
+
+        return;
+    }
+
+    let html = `
+        <div class="recap-wrapper">
+
+            <table class="recap-table">
+
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>SMC OB</th>
+                        <th>MACD</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+    `;
+
+    dates.forEach(date => {
+
+        const group = grouped[date];
+
+        html += `
+            <tr>
+
+                <td class="recap-date">
+                    ${formatDateShort(date)}
+                </td>
+
+                <td>
+                    ${renderHistoryScannerCell(group.ob)}
+                </td>
+
+                <td>
+                    ${renderHistoryScannerCell(group.macd)}
+                </td>
+
+            </tr>
+        `;
+    });
+
+    html += `
+                </tbody>
+
+            </table>
+
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+
+
+/* =========================================================
+   HISTORY SCANNER CELL
+========================================================= */
+
+function renderHistoryScannerCell(snapshots) {
+
+    if (!snapshots || snapshots.length === 0) {
+        return `<span class="muted">—</span>`;
+    }
+
+    snapshots.sort((a, b) => {
+        return String(a.slot || "")
+            .localeCompare(String(b.slot || ""));
+    });
+
+    return snapshots.map(snapshot => {
+
+        const data = Array.isArray(snapshot.data)
+            ? snapshot.data
+            : [];
+
+        const tickers = data
+            .map(item => getTicker(item))
+            .filter(Boolean);
+
+        return `
+            <div class="recap-slot">
+
+                <span class="time-badge">
+                    ${escapeHtml(snapshot.slot || "--:--")}
+                </span>
+
+                <div class="recap-tickers">
+
+                    ${
+                        tickers.length
+                            ? tickers.map(ticker => `
+                                <span class="ticker-chip">
+                                    ${escapeHtml(ticker)}
+                                </span>
+                            `).join("")
+                            : `<span class="muted">Tidak ada kandidat</span>`
+                    }
+
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+/* =========================================================
+   HISTORY DATES
+========================================================= */
+
+function getHistoryDates(history) {
+
+    const dates = new Set();
+
+    history.forEach(item => {
+
+        if (!item?.generated_at) return;
+
+        if (
+            historyFilter !== "ALL" &&
+            item.scanner !== historyFilter
+        ) {
+            return;
+        }
+
+        dates.add(
+            String(item.generated_at).slice(0, 10)
+        );
+    });
+
+    return Array.from(dates).sort();
+}
+
+
+/* =========================================================
+   TICKER DETECTION
+========================================================= */
+
+function getTicker(item) {
+
+    if (!item || typeof item !== "object") {
+        return "";
+    }
+
+    const keys = [
+        "ticker",
+        "symbol",
+        "code",
+        "kode",
+        "Ticker",
+        "Symbol"
+    ];
+
+    for (const key of keys) {
+
+        if (
+            item[key] !== undefined &&
+            item[key] !== null &&
+            String(item[key]).trim() !== ""
+        ) {
+            return String(item[key]).trim().toUpperCase();
+        }
+    }
+
+    return "";
+}
+
+
+/* =========================================================
+   SECTOR
+========================================================= */
+
+function getSector(ticker) {
+
+    if (!ticker) {
+        return "UNKNOWN";
+    }
+
+    const cleanTicker = ticker
+        .toUpperCase()
+        .replace(/\s+/g, "");
+
+    return (
+        state.sectorMap[cleanTicker] ||
+        state.sectorMap[`${cleanTicker}.JK`] ||
+        "UNKNOWN"
     );
-
 }
 
 
-// =========================================================
-// TOGGLE HISTORY
-// =========================================================
+/* =========================================================
+   SHORT SECTOR
+========================================================= */
 
-function toggleHistory(
-    button
-) {
+function shortSector(sector) {
 
-    if (!button) {
-
-        return;
-
+    if (!sector || sector === "UNKNOWN") {
+        return "Unknown";
     }
 
+    const map = {
+        "BASIC MATERIALS": "Basic Materials",
+        "CONSUMER CYCLICALS": "Consumer Cyclicals",
+        "CONSUMER NON-CYCLICALS": "Consumer Non-Cyclicals",
+        "ENERGY": "Energy",
+        "FINANCIALS": "Financials",
+        "HEALTHCARE": "Healthcare",
+        "INDUSTRIALS": "Industrials",
+        "INFRASTRUCTURES": "Infrastructure",
+        "PROPERTIES & REAL ESTATE": "Properties & Real Estate",
+        "TECHNOLOGY": "Technology",
+        "TRANSPORTATION & LOGISTIC": "Transportation & Logistic"
+    };
 
-    const item =
-        button.closest(
-            ".history-item"
-        );
-
-
-    if (!item) {
-
-        return;
-
-    }
-
-
-    const data =
-        item.querySelector(
-            ".history-data"
-        );
-
-
-    if (!data) {
-
-        return;
-
-    }
-
-
-    const isOpen =
-        data.classList.toggle(
-            "open"
-        );
-
-
-    button.textContent =
-        isOpen
-            ? "−"
-            : "+";
-
+    return map[sector] || sector;
 }
 
 
-// =========================================================
-// STATUS
-// =========================================================
+/* =========================================================
+   DATE FORMAT
+========================================================= */
 
-function setStatus(
-    type,
-    text
-) {
+function formatDateShort(date) {
 
-    const statusDot =
-        document.getElementById(
-            "statusDot"
-        );
-
-
-    const statusText =
-        document.getElementById(
-            "statusText"
-        );
-
-
-    if (statusDot) {
-
-        statusDot.className =
-            "status-dot " +
-            type;
-
-    }
-
-
-    if (statusText) {
-
-        statusText.textContent =
-            text;
-
-    }
-
-}
-
-
-// =========================================================
-// SET TEXT
-// =========================================================
-
-function setText(
-    id,
-    value
-) {
-
-    const element =
-        document.getElementById(
-            id
-        );
-
-
-    if (!element) {
-
-        return;
-
-    }
-
-
-    element.textContent =
-        value;
-
-}
-
-
-// =========================================================
-// SET WIDTH
-// =========================================================
-
-function setWidth(
-    id,
-    value
-) {
-
-    const element =
-        document.getElementById(
-            id
-        );
-
-
-    if (!element) {
-
-        return;
-
-    }
-
-
-    let width =
-        Number(value);
-
-
-    if (
-        Number.isNaN(width)
-    ) {
-
-        width = 0;
-
-    }
-
-
-    if (width < 0) {
-
-        width = 0;
-
-    }
-
-
-    if (width > 100) {
-
-        width = 100;
-
-    }
-
-
-    element.style.width =
-        width +
-        "%";
-
-}
-
-
-// =========================================================
-// FORMAT NUMBER
-// =========================================================
-
-function formatNumber(
-    value
-) {
-
-    if (
-        value === null ||
-        value === undefined ||
-        value === ""
-    ) {
-
+    if (!date) {
         return "-";
-
     }
 
+    const d = new Date(`${date}T00:00:00`);
 
-    const number =
-        Number(value);
-
-
-    if (
-        Number.isNaN(number)
-    ) {
-
-        return safe(value);
-
+    if (Number.isNaN(d.getTime())) {
+        return date;
     }
 
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "Mei",
+        "Jun",
+        "Jul",
+        "Agu",
+        "Sep",
+        "Okt",
+        "Nov",
+        "Des"
+    ];
 
-    return number.toLocaleString(
-        "id-ID",
-        {
-            maximumFractionDigits: 2
-        }
-    );
-
+    return `
+        ${String(d.getDate()).padStart(2, "0")}
+        ${months[d.getMonth()]}
+    `;
 }
 
 
-// =========================================================
-// FORMAT PERCENT
-// =========================================================
+/* =========================================================
+   DATETIME FORMAT
+========================================================= */
 
-function formatPercent(
-    value
-) {
+function formatDateTime(value) {
 
-    if (
-        value === null ||
-        value === undefined ||
-        value === ""
-    ) {
-
+    if (!value) {
         return "-";
-
     }
-
-
-    const number =
-        Number(value);
-
-
-    if (
-        Number.isNaN(number)
-    ) {
-
-        return safe(value);
-
-    }
-
-
-    return number.toLocaleString(
-        "id-ID",
-        {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-        }
-    ) +
-    "%";
-
-}
-
-
-// =========================================================
-// SAFE HTML
-// =========================================================
-
-function safe(
-    value
-) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "-";
-
-    }
-
 
     return String(value)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replace("T", " ")
+        .replace("Z", "");
+}
 
+
+/* =========================================================
+   COLUMN NAME
+========================================================= */
+
+function formatColumnName(value) {
+
+    if (!value) return "";
+
+    return String(value)
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, char => char.toUpperCase());
+}
+
+
+/* =========================================================
+   CELL VALUE
+========================================================= */
+
+function formatCellValue(value) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+        return "-";
+    }
+
+    if (typeof value === "number") {
+
+        return Number.isInteger(value)
+            ? value.toLocaleString("id-ID")
+            : value.toLocaleString("id-ID", {
+                maximumFractionDigits: 4
+            });
+    }
+
+    if (typeof value === "boolean") {
+        return value ? "Ya" : "Tidak";
+    }
+
+    if (typeof value === "object") {
+        return escapeHtml(
+            JSON.stringify(value)
+        );
+    }
+
+    return escapeHtml(String(value));
+}
+
+
+/* =========================================================
+   STATUS LABEL
+========================================================= */
+
+function statusLabel(status) {
+
+    if (!status) {
+        return "-";
+    }
+
+    const map = {
+        running: "Running",
+        success: "Selesai",
+        failed: "Gagal",
+        error: "Error",
+        pending: "Menunggu",
+        skipped: "Skip"
+    };
+
+    return map[String(status).toLowerCase()] ||
+        String(status);
+}
+
+
+/* =========================================================
+   LAST REFRESH
+========================================================= */
+
+function updateLastRefresh() {
+
+    const element = document.getElementById("last-refresh");
+
+    if (!element) return;
+
+    const now = new Date();
+
+    element.textContent =
+        `Update halaman: ${now.toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        })}`;
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
