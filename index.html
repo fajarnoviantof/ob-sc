@@ -1,274 +1,36 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0b1020">
-    <title>Market Scanner</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0b1020">
+<title>Market Scanner</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="app-shell">
-
-    <header class="topbar">
-        <div class="brand">
-            <div class="brand-mark">↗</div>
-            <div>
-                <div class="eyebrow">MARKET TOOLS</div>
-                <h1>Market Scanner</h1>
-            </div>
-        </div>
-        <div class="top-status">
-            <span id="statusDot" class="status-dot"></span>
-            <span id="statusText">Menghubungkan...</span>
-        </div>
-    </header>
-
-    <nav class="nav-tabs">
-        <button class="nav-tab active" data-page="dashboard" onclick="switchPage('dashboard')">⌂ SCANNER</button>
-        <button class="nav-tab" data-page="ob" onclick="switchPage('ob')">◈ SMC OB</button>
-        <button class="nav-tab" data-page="macd" onclick="switchPage('macd')">⌁ MACD</button>
-        <button class="nav-tab" data-page="history" onclick="switchPage('history')">◷ REKAP</button>
-    </nav>
-
-    <main>
-
-        <!-- DASHBOARD -->
-        <section id="page-dashboard" class="page active">
-            <div class="page-heading">
-                <div>
-                    <div class="eyebrow">HASIL TERBARU</div>
-                    <h2>SCANNER TERKINI</h2>
-                    <p>Hasil terbaru langsung dikelompokkan berdasarkan screener.</p>
-                </div>
-                <button class="refresh-button" onclick="refreshAll()">↻ Refresh</button>
-            </div>
-
-            <div class="current-grid">
-
-                <article class="current-card current-ob">
-                    <div class="current-head">
-                        <div>
-                            <span class="panel-kicker">SCREENER 01</span>
-                            <h3>SMC OB</h3>
-                        </div>
-                        <strong id="dashboardObCount">-</strong>
-                    </div>
-                    <div id="dashboardObTime" class="current-time">-</div>
-                    <div id="dashboardObList" class="current-tickers">
-                        <span class="empty-state">Memuat...</span>
-                    </div>
-                </article>
-
-                <article class="current-card current-macd">
-                    <div class="current-head">
-                        <div>
-                            <span class="panel-kicker">SCREENER 02</span>
-                            <h3>MACD</h3>
-                        </div>
-                        <strong id="dashboardMacdCount">-</strong>
-                    </div>
-                    <div id="dashboardMacdTime" class="current-time">-</div>
-                    <div id="dashboardMacdList" class="current-tickers">
-                        <span class="empty-state">Memuat...</span>
-                    </div>
-                </article>
-
-            </div>
-
-            <div class="quick-status">
-                <div>
-                    <span class="panel-kicker">SCAN STATUS</span>
-                    <strong id="dashboardStatus">-</strong>
-                </div>
-                <div>
-                    <span class="panel-kicker">SLOT</span>
-                    <strong id="dashboardSlot">-</strong>
-                </div>
-                <div>
-                    <span class="panel-kicker">SELESAI</span>
-                    <strong id="dashboardFinished">-</strong>
-                </div>
-            </div>
-        </section>
-
-        <!-- SMC OB -->
-        <section id="page-ob" class="page">
-            <div class="page-heading">
-                <div>
-                    <div class="eyebrow">SMART MONEY CONCEPT</div>
-                    <h2>SMC Order Block</h2>
-                    <p>Kandidat demand berdasarkan struktur, BOS, OB dan RR.</p>
-                </div>
-                <button class="refresh-button" onclick="refreshAll()">↻ Refresh</button>
-            </div>
-
-            <div class="hero-grid">
-                <div class="hero-card accent-ob">
-                    <div class="hero-label">Kandidat ditemukan</div>
-                    <div id="obCandidateCount" class="hero-number">-</div>
-                    <div class="hero-foot">SMC OB</div>
-                </div>
-                <div class="stat-card"><span>Total ticker</span><strong id="obTotalTickers">-</strong></div>
-                <div class="stat-card"><span>Durasi scan</span><strong id="obDuration">-</strong></div>
-                <div class="stat-card"><span>Error</span><strong id="obErrors">-</strong></div>
-            </div>
-
-            <div class="scan-panel">
-                <div class="panel-head">
-                    <div><span class="panel-kicker">LAST SCAN</span><strong id="obLastScan">-</strong></div>
-                    <div class="mini-progress"><div id="obProgressFill" class="mini-progress-fill"></div></div>
-                    <span id="obProgress" class="progress-text">-</span>
-                </div>
-            </div>
-
-            <div class="table-card">
-                <div class="table-head">
-                    <div><span class="panel-kicker">WATCHLIST</span><h3>Kandidat SMC OB</h3></div>
-                    <span id="obGeneratedAt" class="generated">-</span>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Ticker</th><th>OB Range</th><th>SL</th><th>SL %</th>
-                                <th>TP</th><th>TP %</th><th>RR</th><th>Dist.</th>
-                                <th>BOS</th><th>OB Size</th><th>Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="obResultBody">
-                            <tr><td colspan="11">Memuat data...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- MACD -->
-        <section id="page-macd" class="page">
-            <div class="page-heading">
-                <div>
-                    <div class="eyebrow">MOMENTUM SCANNER</div>
-                    <h2>MACD Breakout</h2>
-                    <p>Kandidat momentum berdasarkan EMA20, MACD histogram dan volume value.</p>
-                </div>
-                <button class="refresh-button" onclick="refreshAll()">↻ Refresh</button>
-            </div>
-
-            <div class="hero-grid">
-                <div class="hero-card accent-macd">
-                    <div class="hero-label">Kandidat ditemukan</div>
-                    <div id="macdCandidateCount" class="hero-number">-</div>
-                    <div class="hero-foot">MACD</div>
-                </div>
-                <div class="stat-card"><span>Total ticker</span><strong id="macdTotalTickers">-</strong></div>
-                <div class="stat-card"><span>Durasi scan</span><strong id="macdDuration">-</strong></div>
-                <div class="stat-card"><span>Error</span><strong id="macdErrors">-</strong></div>
-            </div>
-
-            <div class="scan-panel">
-                <div class="panel-head">
-                    <div><span class="panel-kicker">LAST SCAN</span><strong id="macdLastScan">-</strong></div>
-                    <div class="mini-progress"><div id="macdProgressFill" class="mini-progress-fill"></div></div>
-                    <span id="macdProgress" class="progress-text">-</span>
-                </div>
-            </div>
-
-            <div class="table-card">
-                <div class="table-head">
-                    <div><span class="panel-kicker">MOMENTUM LIST</span><h3>Kandidat MACD</h3></div>
-                    <span id="macdGeneratedAt" class="generated">-</span>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Ticker</th><th>Price</th><th>Spike</th><th>Hist Age</th>
-                                <th>MACD Hist</th><th>Value</th><th>EMA20</th><th>EMA Break</th><th>Quality</th>
-                            </tr>
-                        </thead>
-                        <tbody id="macdResultBody">
-                            <tr><td colspan="9">Memuat data...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- REKAP -->
-        <section id="page-history" class="page">
-            <div class="page-heading">
-                <div>
-                    <div class="eyebrow">31 DAYS</div>
-                    <h2>Rekap & Pola Sektor</h2>
-                    <p>Data historis tetap lengkap, tetapi ditampilkan ringkas berdasarkan screener dan tanggal.</p>
-                </div>
-                <button class="refresh-button" onclick="refreshAll()">↻ Refresh</button>
-            </div>
-
-            <div class="filter-bar">
-                <button class="filter-btn active" data-filter="ALL" onclick="setHistoryFilter('ALL')">Semua</button>
-                <button class="filter-btn" data-filter="SMC OB" onclick="setHistoryFilter('SMC OB')">SMC OB</button>
-                <button class="filter-btn" data-filter="MACD" onclick="setHistoryFilter('MACD')">MACD</button>
-                <span id="historyUpdated" class="history-updated">-</span>
-            </div>
-
-            <div class="section-card">
-                <div class="section-title">
-                    <div>
-                        <span class="panel-kicker">PATTERN</span>
-                        <h3>POLA SEKTOR — 31 HARI</h3>
-                    </div>
-                    <span class="muted">Jumlah hari aktif / hari scan tersedia</span>
-                </div>
-
-                <div class="heatmap-wrap">
-                    <table class="heatmap-table">
-                        <thead id="heatmapHead"></thead>
-                        <tbody id="heatmapBody"></tbody>
-                    </table>
-                </div>
-
-                <div class="heat-legend">
-                    <span>Rendah</span>
-                    <i class="heat h0"></i><i class="heat h1"></i><i class="heat h2"></i><i class="heat h3"></i><i class="heat h4"></i>
-                    <span>Tinggi</span>
-                </div>
-            </div>
-
-            <div class="section-card">
-                <div class="section-title">
-                    <div>
-                        <span class="panel-kicker">OUTPUT</span>
-                        <h3>REKAP EMITEN PER TANGGAL</h3>
-                    </div>
-                </div>
-
-                <div class="table-wrap recap-wrap">
-                    <table class="recap-table">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th class="th-ob">SMC OB</th>
-                                <th class="th-macd">MACD</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recapBody">
-                            <tr><td colspan="3">Memuat rekap...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <span>Automatic scan • Monday–Friday</span>
-        <span>09:00 · 10:00 · 11:00 · 13:00 · 14:00 · 15:00 · 16:00 · 17:00 WIB</span>
-    </footer>
+<header class="topbar"><div class="brand"><div class="brand-mark">↗</div><div><div class="eyebrow">MARKET TOOLS</div><h1>Market Scanner</h1></div></div><div class="top-status"><span id="statusDot" class="status-dot"></span><span id="statusText">Menghubungkan...</span></div></header>
+<nav class="nav-tabs">
+<button class="nav-tab active" data-page="dashboard">⌂ SCANNER</button><button class="nav-tab" data-page="ob">◈ SMC OB</button><button class="nav-tab" data-page="macd">⌁ MACD</button><button class="nav-tab" data-page="history">◷ REKAP</button>
+</nav>
+<main>
+<section id="page-dashboard" class="page active"><div class="page-heading"><div><div class="eyebrow">HASIL TERBARU</div><h2>SCANNER TERKINI</h2><p>Hasil terbaru langsung dikelompokkan berdasarkan screener.</p></div><button class="refresh-button" onclick="refreshAll()">↻ Refresh</button></div>
+<div class="current-grid">
+<article class="current-card"><div class="current-head"><div><span class="panel-kicker">SCREENER 01</span><h3>SMC OB</h3></div><strong id="dashboardObCount">-</strong></div><div id="dashboardObTime" class="current-time">-</div><div id="dashboardObList" class="current-tickers"><span class="empty-state">Memuat...</span></div></article>
+<article class="current-card"><div class="current-head"><div><span class="panel-kicker">SCREENER 02</span><h3>MACD</h3></div><strong id="dashboardMacdCount">-</strong></div><div id="dashboardMacdTime" class="current-time">-</div><div id="dashboardMacdList" class="current-tickers"><span class="empty-state">Memuat...</span></div></article>
 </div>
-
-<script src="app.js"></script>
-</body>
-</html>
+<div class="quick-status"><div><span class="panel-kicker">SCAN STATUS</span><strong id="dashboardStatus">-</strong></div><div><span class="panel-kicker">SLOT</span><strong id="dashboardSlot">-</strong></div><div><span class="panel-kicker">SELESAI</span><strong id="dashboardFinished">-</strong></div></div></section>
+<section id="page-ob" class="page"><div class="page-heading"><div><div class="eyebrow">SMART MONEY CONCEPT</div><h2>SMC Order Block</h2><p>Kandidat demand berdasarkan struktur, BOS, OB dan RR.</p></div><button class="refresh-button" onclick="refreshAll()">↻ Refresh</button></div>
+<div class="hero-grid"><div class="hero-card"><div class="hero-label">Kandidat ditemukan</div><div id="obCandidateCount" class="hero-number">-</div><div class="hero-foot">SMC OB</div></div><div class="stat-card"><span>Total ticker</span><strong id="obTotalTickers">-</strong></div><div class="stat-card"><span>Durasi scan</span><strong id="obDuration">-</strong></div><div class="stat-card"><span>Error</span><strong id="obErrors">-</strong></div></div>
+<div class="scan-panel"><div><span class="panel-kicker">LAST SCAN</span><strong id="obLastScan">-</strong></div><div class="progress-row"><div class="mini-progress"><div id="obProgressFill" class="mini-progress-fill"></div></div><span id="obProgress">-</span></div></div>
+<div class="table-card"><div class="table-head"><div><span class="panel-kicker">WATCHLIST</span><h3>Kandidat SMC OB</h3></div><span id="obGeneratedAt" class="generated">-</span></div><div class="table-wrap"><table><thead><tr><th>Ticker</th><th>Sektor</th><th>OB Range</th><th>SL</th><th>SL %</th><th>TP</th><th>TP %</th><th>RR</th><th>Dist.</th><th>BOS</th><th>OB Size</th><th>Score</th></tr></thead><tbody id="obResultBody"><tr><td colspan="12">Memuat data...</td></tr></tbody></table></div></div></section>
+<section id="page-macd" class="page"><div class="page-heading"><div><div class="eyebrow">MOMENTUM SCANNER</div><h2>MACD Breakout</h2><p>Kandidat momentum berdasarkan EMA20, MACD histogram dan volume value.</p></div><button class="refresh-button" onclick="refreshAll()">↻ Refresh</button></div>
+<div class="hero-grid"><div class="hero-card"><div class="hero-label">Kandidat ditemukan</div><div id="macdCandidateCount" class="hero-number">-</div><div class="hero-foot">MACD</div></div><div class="stat-card"><span>Total ticker</span><strong id="macdTotalTickers">-</strong></div><div class="stat-card"><span>Durasi scan</span><strong id="macdDuration">-</strong></div><div class="stat-card"><span>Error</span><strong id="macdErrors">-</strong></div></div>
+<div class="scan-panel"><div><span class="panel-kicker">LAST SCAN</span><strong id="macdLastScan">-</strong></div><div class="progress-row"><div class="mini-progress"><div id="macdProgressFill" class="mini-progress-fill"></div></div><span id="macdProgress">-</span></div></div>
+<div class="table-card"><div class="table-head"><div><span class="panel-kicker">MOMENTUM LIST</span><h3>Kandidat MACD</h3></div><span id="macdGeneratedAt" class="generated">-</span></div><div class="table-wrap"><table><thead><tr><th>Ticker</th><th>Sektor</th><th>Price</th><th>Spike</th><th>Hist Age</th><th>MACD Hist</th><th>Value</th><th>EMA20</th><th>EMA Break</th><th>Quality</th></tr></thead><tbody id="macdResultBody"><tr><td colspan="10">Memuat data...</td></tr></tbody></table></div></div></section>
+<section id="page-history" class="page"><div class="page-heading"><div><div class="eyebrow">31 DAYS</div><h2>Rekap & Pola Sektor</h2><p>Ringkasan output berdasarkan tanggal, screener dan sektor.</p></div><button class="refresh-button" onclick="refreshAll()">↻ Refresh</button></div>
+<div class="filter-bar"><button class="filter-btn active" data-filter="ALL" onclick="setHistoryFilter('ALL')">Semua</button><button class="filter-btn" data-filter="SMC OB" onclick="setHistoryFilter('SMC OB')">SMC OB</button><button class="filter-btn" data-filter="MACD" onclick="setHistoryFilter('MACD')">MACD</button><span id="historyUpdated" class="history-updated">-</span></div>
+<div class="section-card"><div class="section-title"><div><span class="panel-kicker">PATTERN</span><h3>POLA SEKTOR — 31 HARI</h3></div><span class="muted">aktif / hari scan tersedia</span></div><div class="heatmap-wrap"><table class="heatmap-table"><thead id="heatmapHead"></thead><tbody id="heatmapBody"></tbody></table></div></div>
+<div class="section-card"><div class="section-title"><div><span class="panel-kicker">OUTPUT</span><h3>REKAP EMITEN PER TANGGAL</h3></div></div><div class="table-wrap"><table class="recap-table"><thead><tr><th>Tanggal</th><th>SMC OB</th><th>MACD</th></tr></thead><tbody id="recapBody"><tr><td colspan="3">Memuat rekap...</td></tr></tbody></table></div></div></section>
+</main><footer><span>Automatic scan • Monday–Friday</span><span>09:00 · 10:00 · 11:00 · 13:00 · 14:00 · 15:00 · 16:00 · 17:00 WIB</span></footer>
+</div><script src="app.js"></script></body></html>
