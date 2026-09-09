@@ -1,13 +1,8 @@
-/* =========================================================
-   MARKET SCANNER
-   app.js
-   SMC OB + MACD + HISTORY + SECTOR
-========================================================= */
-
 "use strict";
 
 /* =========================================================
-   FILE DATA
+   MARKET TOOLS - SMC OB + MACD
+   FRONTEND
 ========================================================= */
 
 const DATA_FILES = {
@@ -18,133 +13,23 @@ const DATA_FILES = {
     sector: "sector_map.json"
 };
 
+let APP_DATA = {
+    ob: null,
+    macd: null,
+    status: null,
+    history: null,
+    sector: { map: {} }
+};
+
+let historyFilter = "ALL";
 
 /* =========================================================
-   GLOBAL DATA
+   DOM
 ========================================================= */
 
-let OB = null;
-let MACD = null;
-let STATUS = null;
-let HISTORY = null;
-let SECTOR_MAP = {};
-
-
-/* =========================================================
-   START APP
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    console.log("=================================");
-    console.log("MARKET SCANNER app.js AKTIF");
-    console.log("=================================");
-
-    aktifkanHalamanPertama();
-
-    setupTabs();
-
-    setupHistoryFilter();
-
-    loadData();
-
-    /*
-       Refresh data setiap 30 detik
-    */
-    setInterval(function () {
-        loadData();
-    }, 30000);
-
-});
-
-
-/* =========================================================
-   LOAD SEMUA DATA
-========================================================= */
-
-async function loadData() {
-
-    setConnection("Menghubungkan...");
-
-    try {
-
-        const hasil = await Promise.all([
-
-            getJSON(DATA_FILES.ob),
-            getJSON(DATA_FILES.macd),
-            getJSON(DATA_FILES.status),
-            getJSON(DATA_FILES.history),
-            getJSON(DATA_FILES.sector)
-
-        ]);
-
-        OB = hasil[0];
-        MACD = hasil[1];
-        STATUS = hasil[2];
-        HISTORY = hasil[3];
-
-        /*
-           sector_map.json bisa berbentuk:
-
-           {
-               "map": {
-                   "ANTM.JK": "BASIC MATERIALS"
-               }
-           }
-
-           atau langsung:
-
-           {
-               "ANTM.JK": "BASIC MATERIALS"
-           }
-        */
-
-        if (
-            hasil[4] &&
-            hasil[4].map &&
-            typeof hasil[4].map === "object"
-        ) {
-
-            SECTOR_MAP = hasil[4].map;
-
-        } else {
-
-            SECTOR_MAP = hasil[4] || {};
-
-        }
-
-
-        console.log("OB DATA:", OB);
-        console.log("MACD DATA:", MACD);
-        console.log("STATUS:", STATUS);
-        console.log("HISTORY:", HISTORY);
-        console.log("SECTOR MAP:", SECTOR_MAP);
-
-
-        setConnection("Terhubung");
-
-
-        renderAll();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "GAGAL MEMUAT DATA:",
-            error
-        );
-
-        setConnection(
-            "Gagal menghubungkan"
-        );
-
-        tampilkanError(error);
-
-    }
-
+function $(id) {
+    return document.getElementById(id);
 }
-
 
 /* =========================================================
    FETCH JSON
@@ -152,321 +37,184 @@ async function loadData() {
 
 async function getJSON(file) {
 
-    const url =
-        file +
-        "?v=" +
-        Date.now();
+    const url = `${file}?t=${Date.now()}`;
 
-
-    const response =
-        await fetch(
-            url,
-            {
-                method: "GET",
-                cache: "no-store"
-            }
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            file +
-            " HTTP " +
-            response.status
-        );
-
-    }
-
-
-    return await response.json();
-
-}
-
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-function tampilkanError(error) {
-
-    const containers = [
-
-        "current-ob",
-        "current-macd",
-        "history-recap",
-        "history-table",
-        "recap-table"
-
-    ];
-
-
-    containers.forEach(function (id) {
-
-        const el =
-            document.getElementById(id);
-
-
-        if (!el) {
-            return;
+    const response = await fetch(url, {
+        cache: "no-store",
+        headers: {
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache"
         }
-
-
-        el.innerHTML = `
-            <div class="empty-state">
-                Data belum dapat dimuat.
-                <br>
-                <small>
-                    ${esc(error.message)}
-                </small>
-            </div>
-        `;
-
     });
 
+    if (!response.ok) {
+        throw new Error(`${file}: HTTP ${response.status}`);
+    }
+
+    return await response.json();
 }
 
+/* =========================================================
+   LOAD ALL DATA
+========================================================= */
+
+async function loadData() {
+
+    setText("dashboardStatus", "Memuat data...");
+
+    const results = await Promise.allSettled([
+        getJSON(DATA_FILES.ob),
+        getJSON(DATA_FILES.macd),
+        getJSON(DATA_FILES.status),
+        getJSON(DATA_FILES.history),
+        getJSON(DATA_FILES.sector)
+    ]);
+
+    APP_DATA.ob =
+        results[0].status === "fulfilled"
+            ? results[0].value
+            : null;
+
+    APP_DATA.macd =
+        results[1].status === "fulfilled"
+            ? results[1].value
+            : null;
+
+    APP_DATA.status =
+        results[2].status === "fulfilled"
+            ? results[2].value
+            : null;
+
+    APP_DATA.history =
+        results[3].status === "fulfilled"
+            ? results[3].value
+            : null;
+
+    APP_DATA.sector =
+        results[4].status === "fulfilled"
+            ? results[4].value
+            : { map: {} };
+
+    renderAll();
+}
 
 /* =========================================================
-   RENDER SEMUA
+   RENDER ALL
 ========================================================= */
 
 function renderAll() {
 
-    renderCurrentOB();
-
-    renderCurrentMACD();
-
+    renderDashboard();
     renderOBPage();
-
     renderMACDPage();
-
     renderStatus();
-
     renderHistory();
 
-    aktifkanHalamanPertama();
-
+    setText(
+        "dashboardStatus",
+        getStatusText()
+    );
 }
 
-
 /* =========================================================
-   CONNECTION STATUS
+   DASHBOARD
 ========================================================= */
 
-function setConnection(text) {
+function renderDashboard() {
 
-    const ids = [
+    const ob = APP_DATA.ob || {};
+    const macd = APP_DATA.macd || {};
 
-        "connection-status",
-        "connection",
-        "status-connection"
+    const obData = getCandidateArray(ob);
+    const macdData = getCandidateArray(macd);
 
-    ];
+    setText(
+        "dashboardObCount",
+        obData.length
+    );
 
+    setText(
+        "dashboardMacdCount",
+        macdData.length
+    );
 
-    ids.forEach(function (id) {
+    setText(
+        "dashboardObTime",
+        getDuration(ob)
+    );
 
-        const el =
-            document.getElementById(id);
+    setText(
+        "dashboardMacdTime",
+        getDuration(macd)
+    );
 
+    renderCandidateList(
+        "dashboardObList",
+        obData
+    );
 
-        if (el) {
+    renderCandidateList(
+        "dashboardMacdList",
+        macdData
+    );
 
-            el.textContent = text;
+    const slot =
+        getValue(APP_DATA.status, [
+            "slot",
+            "current_slot",
+            "schedule_slot"
+        ]) ||
+        getValue(ob, [
+            "slot"
+        ]) ||
+        "-";
 
-        }
+    const finished =
+        getValue(APP_DATA.status, [
+            "finished_at",
+            "completed_at"
+        ]) ||
+        getValue(ob, [
+            "finished_at",
+            "generated_at"
+        ]) ||
+        "-";
 
-    });
-
-
-    document
-        .querySelectorAll(
-            ".connection-status"
-        )
-        .forEach(function (el) {
-
-            el.textContent = text;
-
-        });
-
+    setText("dashboardSlot", slot);
+    setText("dashboardFinished", formatDateTime(finished));
 }
 
-
 /* =========================================================
-   CURRENT SMC OB
+   CANDIDATE LIST
 ========================================================= */
 
-function renderCurrentOB() {
+function renderCandidateList(id, data) {
 
-    const data =
-        getData(OB);
+    const el = $(id);
 
+    if (!el) return;
 
-    const container =
-        findElement([
-
-            "current-ob",
-            "ob-current",
-            "smc-ob-current",
-            "current-ob-list",
-            "ob-current-list"
-
-        ]);
-
-
-    if (!container) {
-
-        console.warn(
-            "Container SMC OB tidak ditemukan"
-        );
-
+    if (!Array.isArray(data) || data.length === 0) {
+        el.innerHTML = `<div class="empty">Tidak ada kandidat</div>`;
         return;
-
     }
 
+    el.innerHTML = data.map(item => {
 
-    if (!data.length) {
+        const ticker = getTicker(item);
+        const sector = getSector(ticker);
 
-        container.innerHTML = `
-            <div class="empty-state">
-                Tidak ada kandidat SMC OB
+        return `
+            <div class="candidate-row">
+                <div class="candidate-main">
+                    <strong>${escapeHTML(ticker)}</strong>
+                    <span>${escapeHTML(shortSector(sector))}</span>
+                </div>
             </div>
         `;
 
-        return;
-
-    }
-
-
-    container.innerHTML = `
-
-        <div class="candidate-list">
-
-            ${data
-                .map(function (item) {
-
-                    const ticker =
-                        getTicker(item);
-
-                    const sector =
-                        getSector(ticker);
-
-
-                    return `
-
-                        <div class="candidate-chip">
-
-                            <div class="candidate-ticker">
-                                ${esc(ticker)}
-                            </div>
-
-                            <div class="candidate-sector">
-                                ${esc(
-                                    shortSector(sector)
-                                )}
-                            </div>
-
-                        </div>
-
-                    `;
-
-                })
-                .join("")}
-
-        </div>
-
-    `;
-
+    }).join("");
 }
-
-
-/* =========================================================
-   CURRENT MACD
-========================================================= */
-
-function renderCurrentMACD() {
-
-    const data =
-        getData(MACD);
-
-
-    const container =
-        findElement([
-
-            "current-macd",
-            "macd-current",
-            "current-macd-list",
-            "macd-current-list"
-
-        ]);
-
-
-    if (!container) {
-
-        console.warn(
-            "Container MACD tidak ditemukan"
-        );
-
-        return;
-
-    }
-
-
-    if (!data.length) {
-
-        container.innerHTML = `
-            <div class="empty-state">
-                Tidak ada kandidat MACD
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML = `
-
-        <div class="candidate-list">
-
-            ${data
-                .map(function (item) {
-
-                    const ticker =
-                        getTicker(item);
-
-                    const sector =
-                        getSector(ticker);
-
-
-                    return `
-
-                        <div class="candidate-chip">
-
-                            <div class="candidate-ticker">
-                                ${esc(ticker)}
-                            </div>
-
-                            <div class="candidate-sector">
-                                ${esc(
-                                    shortSector(sector)
-                                )}
-                            </div>
-
-                        </div>
-
-                    `;
-
-                })
-                .join("")}
-
-        </div>
-
-    `;
-
-}
-
 
 /* =========================================================
    SMC OB PAGE
@@ -474,47 +222,70 @@ function renderCurrentMACD() {
 
 function renderOBPage() {
 
-    renderMetric(
-        "ob-total",
-        OB?.total_tickers
+    const data = APP_DATA.ob || {};
+    const candidates = getCandidateArray(data);
+
+    setText(
+        "obCandidateCount",
+        candidates.length
     );
 
-
-    renderMetric(
-        "ob-processed",
-        OB?.processed
+    setText(
+        "obTotalTickers",
+        getValue(data, [
+            "total_tickers",
+            "total"
+        ]) || "-"
     );
 
-
-    renderMetric(
-        "ob-candidates",
-        OB?.candidates
+    setText(
+        "obDuration",
+        getDuration(data)
     );
 
-
-    renderMetric(
-        "ob-errors",
-        OB?.errors
+    setText(
+        "obErrors",
+        getValue(data, [
+            "errors",
+            "error_count"
+        ]) ?? "-"
     );
 
-
-    renderMetric(
-        "ob-duration",
-        OB?.duration_text
+    setText(
+        "obLastScan",
+        formatDateTime(
+            getValue(data, [
+                "finished_at",
+                "generated_at"
+            ])
+        )
     );
 
-
-    renderTable(
-        [
-            "ob-table",
-            "smc-ob-table",
-            "ob-results"
-        ],
-        OB
+    setText(
+        "obGeneratedAt",
+        formatDateTime(
+            getValue(data, [
+                "generated_at",
+                "finished_at"
+            ])
+        )
     );
 
+    const progress =
+        getProgress(data);
+
+    setProgress(
+        "obProgressFill",
+        "obProgress",
+        progress
+    );
+
+    renderResultTable(
+        "obResultBody",
+        candidates,
+        "SMC OB"
+    );
 }
-
 
 /* =========================================================
    MACD PAGE
@@ -522,318 +293,165 @@ function renderOBPage() {
 
 function renderMACDPage() {
 
-    renderMetric(
-        "macd-total",
-        MACD?.total_tickers
+    const data = APP_DATA.macd || {};
+    const candidates = getCandidateArray(data);
+
+    setText(
+        "macdCandidateCount",
+        candidates.length
     );
 
-
-    renderMetric(
-        "macd-processed",
-        MACD?.processed
+    setText(
+        "macdTotalTickers",
+        getValue(data, [
+            "total_tickers",
+            "total"
+        ]) || "-"
     );
 
-
-    renderMetric(
-        "macd-candidates",
-        MACD?.candidates
+    setText(
+        "macdDuration",
+        getDuration(data)
     );
 
-
-    renderMetric(
-        "macd-errors",
-        MACD?.errors
+    setText(
+        "macdErrors",
+        getValue(data, [
+            "errors",
+            "error_count"
+        ]) ?? "-"
     );
 
-
-    renderMetric(
-        "macd-duration",
-        MACD?.duration_text
+    setText(
+        "macdLastScan",
+        formatDateTime(
+            getValue(data, [
+                "finished_at",
+                "generated_at"
+            ])
+        )
     );
 
-
-    renderTable(
-        [
-            "macd-table",
-            "macd-results"
-        ],
-        MACD
+    setText(
+        "macdGeneratedAt",
+        formatDateTime(
+            getValue(data, [
+                "generated_at",
+                "finished_at"
+            ])
+        )
     );
 
+    const progress =
+        getProgress(data);
+
+    setProgress(
+        "macdProgressFill",
+        "macdProgress",
+        progress
+    );
+
+    renderResultTable(
+        "macdResultBody",
+        candidates,
+        "MACD"
+    );
 }
 
-
 /* =========================================================
-   METRIC
+   RESULT TABLE
 ========================================================= */
 
-function renderMetric(id, value) {
+function renderResultTable(id, data, scanner) {
 
-    const el =
-        document.getElementById(id);
+    const el = $(id);
 
+    if (!el) return;
 
-    if (!el) {
-        return;
-    }
-
-
-    if (
-        value === undefined ||
-        value === null ||
-        value === ""
-    ) {
-
-        el.textContent = "-";
-
-    }
-
-    else {
-
-        el.textContent = value;
-
-    }
-
-}
-
-
-/* =========================================================
-   TABLE SCANNER
-========================================================= */
-
-function renderTable(ids, payload) {
-
-    const container =
-        findElement(ids);
-
-
-    if (!container) {
-
-        console.warn(
-            "Table container tidak ditemukan:",
-            ids
-        );
-
-        return;
-
-    }
-
-
-    const data =
-        getData(payload);
-
-
-    if (!data.length) {
-
-        container.innerHTML = `
-            <div class="empty-state">
-                Tidak ada kandidat
-            </div>
+    if (!Array.isArray(data) || data.length === 0) {
+        el.innerHTML = `
+            <tr>
+                <td colspan="20" class="empty">
+                    Tidak ada kandidat
+                </td>
+            </tr>
         `;
-
         return;
-
     }
 
+    el.innerHTML = data.map(item => {
 
-    const keys =
-        getExtraKeys(data);
+        const ticker = getTicker(item);
+        const sector = getSector(ticker);
 
+        if (scanner === "MACD") {
 
-    let html = `
-
-        <div class="table-wrapper">
-
-            <table class="scanner-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>No</th>
-
-                        <th>Emiten</th>
-
-                        <th>Sektor</th>
-
-    `;
-
-
-    keys.forEach(function (key) {
-
-        html += `
-
-            <th>
-                ${esc(formatKey(key))}
-            </th>
-
-        `;
-
-    });
-
-
-    html += `
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-    `;
-
-
-    data.forEach(
-        function (item, index) {
-
-            const ticker =
-                getTicker(item);
-
-
-            const sector =
-                getSector(ticker);
-
-
-            html += `
-
+            return `
                 <tr>
-
-                    <td>
-                        ${index + 1}
-                    </td>
-
-                    <td>
-                        <strong>
-                            ${esc(ticker)}
-                        </strong>
-                    </td>
-
-                    <td>
-
-                        <span class="sector-badge">
-
-                            ${esc(
-                                shortSector(
-                                    sector
-                                )
-                            )}
-
-                        </span>
-
-                    </td>
-
-            `;
-
-
-            keys.forEach(
-                function (key) {
-
-                    html += `
-
-                        <td>
-                            ${formatValue(
-                                item[key]
-                            )}
-                        </td>
-
-                    `;
-
-                }
-            );
-
-
-            html += `
-
+                    <td><strong>${escapeHTML(ticker)}</strong></td>
+                    <td>${escapeHTML(shortSector(sector))}</td>
+                    <td>${escapeHTML(
+                        valueToString(item, [
+                            "signal",
+                            "Signal",
+                            "macd_signal"
+                        ])
+                    )}</td>
+                    <td>${escapeHTML(
+                        valueToString(item, [
+                            "macd",
+                            "MACD"
+                        ])
+                    )}</td>
+                    <td>${escapeHTML(
+                        valueToString(item, [
+                            "histogram",
+                            "Histogram",
+                            "hist"
+                        ])
+                    )}</td>
                 </tr>
-
             `;
 
         }
-    );
 
+        return `
+            <tr>
+                <td><strong>${escapeHTML(ticker)}</strong></td>
+                <td>${escapeHTML(shortSector(sector))}</td>
+                <td>${escapeHTML(
+                    valueToString(item, [
+                        "ob_range",
+                        "range",
+                        "zone",
+                        "order_block"
+                    ])
+                )}</td>
+                <td>${escapeHTML(
+                    valueToString(item, [
+                        "entry",
+                        "Entry"
+                    ])
+                )}</td>
+                <td>${escapeHTML(
+                    valueToString(item, [
+                        "sl",
+                        "stop_loss",
+                        "Stop Loss"
+                    ])
+                )}</td>
+                <td>${escapeHTML(
+                    valueToString(item, [
+                        "tp",
+                        "take_profit",
+                        "Take Profit"
+                    ])
+                )}</td>
+            </tr>
+        `;
 
-    html += `
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    `;
-
-
-    container.innerHTML = html;
-
+    }).join("");
 }
-
-
-/* =========================================================
-   EXTRA KEYS
-========================================================= */
-
-function getExtraKeys(data) {
-
-    if (!data.length) {
-        return [];
-    }
-
-
-    const excluded = [
-
-        "ticker",
-        "symbol",
-        "code",
-        "kode",
-        "sector",
-        "sektor"
-
-    ];
-
-
-    const result = [];
-
-
-    data.forEach(function (item) {
-
-        if (
-            !item ||
-            typeof item !== "object"
-        ) {
-
-            return;
-
-        }
-
-
-        Object.keys(item)
-            .forEach(function (key) {
-
-                if (
-                    excluded.indexOf(
-                        key.toLowerCase()
-                    ) === -1
-                ) {
-
-                    if (
-                        result.indexOf(key) === -1
-                    ) {
-
-                        result.push(key);
-
-                    }
-
-                }
-
-            });
-
-    });
-
-
-    return result.slice(0, 10);
-
-}
-
 
 /* =========================================================
    STATUS
@@ -841,109 +459,41 @@ function getExtraKeys(data) {
 
 function renderStatus() {
 
-    const container =
-        findElement([
+    const status = APP_DATA.status || {};
+    const ob = APP_DATA.ob || {};
+    const macd = APP_DATA.macd || {};
 
-            "quick-status",
-            "scanner-status",
-            "status"
+    const statusText =
+        getValue(status, ["status"]) ||
+        getValue(ob, ["status"]) ||
+        "unknown";
 
-        ]);
+    setText(
+        "dashboardStatus",
+        statusText
+    );
 
+    setText(
+        "dashboardSlot",
+        getValue(status, [
+            "slot",
+            "current_slot"
+        ]) || "-"
+    );
 
-    if (!container || !STATUS) {
-        return;
-    }
-
-
-    const ob =
-        STATUS.ob || {};
-
-
-    const macd =
-        STATUS.macd || {};
-
-
-    const obProgress =
-        ob.progress ?? 0;
-
-
-    const obTotal =
-        ob.total ??
-        ob.total_tickers ??
-        0;
-
-
-    const macdProgress =
-        macd.progress ?? 0;
-
-
-    const macdTotal =
-        macd.total ??
-        macd.total_tickers ??
-        0;
-
-
-    container.innerHTML = `
-
-        <div class="status-item">
-
-            <span>SMC OB</span>
-
-            <strong>
-                ${esc(
-                    statusText(
-                        ob.status
-                    )
-                )}
-            </strong>
-
-            <small>
-                ${obProgress}/${obTotal}
-            </small>
-
-        </div>
-
-
-        <div class="status-item">
-
-            <span>MACD</span>
-
-            <strong>
-                ${esc(
-                    statusText(
-                        macd.status
-                    )
-                )}
-            </strong>
-
-            <small>
-                ${macdProgress}/${macdTotal}
-            </small>
-
-        </div>
-
-
-        <div class="status-item">
-
-            <span>Update</span>
-
-            <strong>
-
-                ${esc(
-                    STATUS.finished_at ||
-                    STATUS.updated_at ||
-                    "-"
-                )}
-
-            </strong>
-
-        </div>
-
-    `;
-
+    setText(
+        "dashboardFinished",
+        formatDateTime(
+            getValue(status, [
+                "finished_at",
+                "completed_at"
+            ]) ||
+            getValue(ob, [
+                "finished_at"
+            ])
+        )
+    );
 }
-
 
 /* =========================================================
    HISTORY
@@ -951,637 +501,567 @@ function renderStatus() {
 
 function renderHistory() {
 
-    const container =
-        findElement([
+    const historyRoot = APP_DATA.history;
 
-            "history-recap",
-            "history-table",
-            "recap-table",
-            "history"
+    if (!historyRoot) return;
 
-        ]);
+    let history =
+        Array.isArray(historyRoot)
+            ? historyRoot
+            : historyRoot.history;
 
+    if (!Array.isArray(history)) {
+        history = [];
+    }
 
-    if (!container) {
-
-        console.warn(
-            "Container history tidak ditemukan"
+    if (historyFilter !== "ALL") {
+        history = history.filter(
+            item =>
+                normalizeScanner(item.scanner) ===
+                historyFilter
         );
-
-        return;
-
     }
 
+    renderHeatmap(history);
+    renderRecap(history);
+}
 
-    const history =
-        Array.isArray(
-            HISTORY?.history
-        )
-            ? HISTORY.history
-            : [];
+/* =========================================================
+   HEATMAP
+========================================================= */
 
+function renderHeatmap(history) {
 
-    if (!history.length) {
+    const head = $("heatmapHead");
+    const body = $("heatmapBody");
 
-        container.innerHTML = `
-            <div class="empty-state">
-                Belum ada history
-            </div>
-        `;
+    if (!head || !body) return;
 
-        return;
+    const slots = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00"
+    ];
 
-    }
+    const sectors = [
+        "BASIC MATERIALS",
+        "ENERGY",
+        "FINANCIALS",
+        "INDUSTRIALS",
+        "CONSUMER NON-CYCLICALS",
+        "CONSUMER CYCLICALS",
+        "HEALTHCARE",
+        "PROPERTIES & REAL ESTATE",
+        "TECHNOLOGY",
+        "INFRASTRUCTURES",
+        "TRANSPORTATION & LOGISTIC"
+    ];
 
-
-    const filter =
-        getActiveHistoryFilter();
-
+    head.innerHTML = `
+        <tr>
+            <th>Sektor</th>
+            ${slots.map(s => `<th>${s.replace(":00", "")}</th>`).join("")}
+        </tr>
+    `;
 
     const grouped = {};
 
-
-    history.forEach(function (item) {
-
-        if (
-            !item ||
-            !item.generated_at
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-           Jika filter aktif:
-           Semua
-           SMC OB
-           MACD
-        */
-
-        if (
-            filter !== "ALL" &&
-            item.scanner !== filter
-        ) {
-
-            return;
-
-        }
-
-
-        const date =
-            String(
-                item.generated_at
-            ).substring(0, 10);
-
-
-        if (!grouped[date]) {
-
-            grouped[date] = {
-
-                ob: [],
-                macd: []
-
-            };
-
-        }
-
-
-        if (
-            item.scanner === "SMC OB"
-        ) {
-
-            grouped[date].ob.push(item);
-
-        }
-
-
-        if (
-            item.scanner === "MACD"
-        ) {
-
-            grouped[date].macd.push(item);
-
-        }
-
+    sectors.forEach(sector => {
+        grouped[sector] = {};
+        slots.forEach(slot => {
+            grouped[sector][slot] = new Set();
+        });
     });
 
+    history.forEach(snapshot => {
 
-    const dates =
-        Object.keys(grouped)
-            .sort()
-            .reverse();
+        const slot = snapshot.slot;
 
+        if (!slots.includes(slot)) return;
 
-    if (!dates.length) {
+        const data =
+            Array.isArray(snapshot.data)
+                ? snapshot.data
+                : [];
 
-        container.innerHTML = `
-            <div class="empty-state">
-                Tidak ada data untuk filter ini
-            </div>
+        data.forEach(item => {
+
+            const ticker = getTicker(item);
+            const sector = getSector(ticker);
+
+            if (!grouped[sector]) return;
+
+            grouped[sector][slot].add(
+                snapshot.generated_at || snapshot.date || ""
+            );
+        });
+    });
+
+    body.innerHTML = sectors.map(sector => {
+
+        return `
+            <tr>
+                <td>${escapeHTML(sector)}</td>
+                ${slots.map(slot => {
+
+                    const active =
+                        grouped[sector][slot].size;
+
+                    return `
+                        <td
+                            class="heat-cell"
+                            title="${active} hari aktif"
+                        >
+                            ${active || ""}
+                        </td>
+                    `;
+
+                }).join("")}
+            </tr>
+        `;
+
+    }).join("");
+}
+
+/* =========================================================
+   RECAP
+========================================================= */
+
+function renderRecap(history) {
+
+    const body = $("recapBody");
+
+    if (!body) return;
+
+    const dates = {};
+
+    history.forEach(snapshot => {
+
+        const generated =
+            snapshot.generated_at ||
+            snapshot.date ||
+            "";
+
+        const date =
+            extractDate(generated);
+
+        if (!date) return;
+
+        if (!dates[date]) {
+            dates[date] = {
+                ob: [],
+                macd: []
+            };
+        }
+
+        const scanner =
+            normalizeScanner(snapshot.scanner);
+
+        const tickers =
+            Array.isArray(snapshot.data)
+                ? snapshot.data.map(getTicker).filter(Boolean)
+                : [];
+
+        if (scanner === "SMC OB") {
+            dates[date].ob.push({
+                slot: snapshot.slot,
+                tickers
+            });
+        }
+
+        if (scanner === "MACD") {
+            dates[date].macd.push({
+                slot: snapshot.slot,
+                tickers
+            });
+        }
+    });
+
+    const sortedDates =
+        Object.keys(dates).sort().reverse();
+
+    if (sortedDates.length === 0) {
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="3">Belum ada history</td>
+            </tr>
         `;
 
         return;
-
     }
 
-
-    let html = `
-
-        <div class="table-wrapper">
-
-            <table class="recap-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>Tanggal</th>
-
-                        <th>SMC OB</th>
-
-                        <th>MACD</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-    `;
-
-
-    dates.forEach(function (date) {
-
-        html += `
-
-            <tr>
-
-                <td class="recap-date">
-
-                    ${esc(
-                        formatDate(date)
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    ${renderHistoryCell(
-                        grouped[date].ob
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    ${renderHistoryCell(
-                        grouped[date].macd
-                    )}
-
-                </td>
-
-            </tr>
-
-        `;
-
-    });
-
-
-    html += `
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    `;
-
-
-    container.innerHTML = html;
-
-}
-
-
-/* =========================================================
-   HISTORY CELL
-========================================================= */
-
-function renderHistoryCell(
-    snapshots
-) {
-
-    if (!snapshots.length) {
-
-        return `
-            <span class="muted">
-                —
-            </span>
-        `;
-
-    }
-
-
-    snapshots.sort(
-        function (a, b) {
-
-            return String(
-                a.slot || ""
-            ).localeCompare(
-                String(
-                    b.slot || ""
-                )
-            );
-
-        }
-    );
-
-
-    return snapshots
-        .map(function (snapshot) {
-
-            const data =
-                getData(snapshot);
-
-
-            const tickers =
-                data
-                    .map(getTicker)
-                    .filter(Boolean);
-
+    body.innerHTML =
+        sortedDates.map(date => {
 
             return `
+                <tr>
+                    <td>
+                        <strong>${formatDateOnly(date)}</strong>
+                    </td>
 
-                <div class="recap-slot">
-
-                    <span class="time-badge">
-
-                        ${esc(
-                            snapshot.slot ||
-                            "--:--"
+                    <td>
+                        ${renderRecapScanner(
+                            dates[date].ob
                         )}
+                    </td>
 
-                    </span>
-
-
-                    <div class="recap-tickers">
-
-                        ${
-                            tickers.length
-
-                            ?
-
-                            tickers
-                                .map(
-                                    function (
-                                        ticker
-                                    ) {
-
-                                        return `
-
-                                            <span class="ticker-chip">
-
-                                                ${esc(
-                                                    ticker
-                                                )}
-
-                                            </span>
-
-                                        `;
-
-                                    }
-                                )
-                                .join("")
-
-                            :
-
-                            `
-                                <span class="muted">
-                                    Tidak ada kandidat
-                                </span>
-                            `
-                        }
-
-                    </div>
-
-                </div>
-
+                    <td>
+                        ${renderRecapScanner(
+                            dates[date].macd
+                        )}
+                    </td>
+                </tr>
             `;
 
-        })
-        .join("");
-
+        }).join("");
 }
 
+function renderRecapScanner(items) {
+
+    if (!items.length) return "-";
+
+    return items.map(item => {
+
+        const tickerText =
+            item.tickers.length
+                ? item.tickers.map(
+                    x => `<strong>${escapeHTML(x)}</strong>`
+                ).join(" ")
+                : "-";
+
+        return `
+            <div class="recap-line">
+                <span class="time-badge">
+                    ${escapeHTML(item.slot || "-")}
+                </span>
+                ${tickerText}
+            </div>
+        `;
+
+    }).join("");
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function switchPage(page) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(el => {
+            el.classList.remove("active");
+        });
+
+    document
+        .querySelectorAll("[data-page]")
+        .forEach(el => {
+            el.classList.remove("active");
+        });
+
+    const target = $(`page-${page}`);
+
+    if (target) {
+        target.classList.add("active");
+    }
+
+    const nav =
+        document.querySelector(
+            `[data-page="${page}"]`
+        );
+
+    if (nav) {
+        nav.classList.add("active");
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
 
 /* =========================================================
    HISTORY FILTER
 ========================================================= */
 
-function setupHistoryFilter() {
+function setHistoryFilter(filter) {
+
+    historyFilter =
+        String(filter || "ALL").toUpperCase();
 
     document
-        .querySelectorAll(
-            "[data-history-filter]"
-        )
-        .forEach(function (button) {
+        .querySelectorAll("[data-filter]")
+        .forEach(button => {
 
-            button.addEventListener(
-                "click",
-                function () {
-
-                    document
-                        .querySelectorAll(
-                            "[data-history-filter]"
-                        )
-                        .forEach(
-                            function (btn) {
-
-                                btn.classList.remove(
-                                    "active"
-                                );
-
-                            }
-                        );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    renderHistory();
-
-                }
+            button.classList.toggle(
+                "active",
+                String(
+                    button.dataset.filter || ""
+                ).toUpperCase() === historyFilter
             );
 
         });
 
+    renderHistory();
 }
 
-
 /* =========================================================
-   GET ACTIVE HISTORY FILTER
+   REFRESH
 ========================================================= */
 
-function getActiveHistoryFilter() {
+async function refreshAll() {
 
-    const active =
-        document.querySelector(
-            "[data-history-filter].active"
+    const buttons =
+        document.querySelectorAll(
+            "[data-refresh], #refreshButton"
         );
 
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
 
-    if (!active) {
-        return "ALL";
+    try {
+        await loadData();
+    }
+    catch (error) {
+        console.error(error);
+
+        setText(
+            "dashboardStatus",
+            "Gagal memuat data"
+        );
     }
 
-
-    const value =
-        active.dataset.historyFilter;
-
-
-    if (!value) {
-        return "ALL";
-    }
-
-
-    const normalized =
-        String(value)
-            .trim()
-            .toUpperCase();
-
-
-    if (
-        normalized === "SMC OB" ||
-        normalized === "SMC_OB"
-    ) {
-
-        return "SMC OB";
-
-    }
-
-
-    if (
-        normalized === "MACD"
-    ) {
-
-        return "MACD";
-
-    }
-
-
-    return "ALL";
-
+    buttons.forEach(button => {
+        button.disabled = false;
+    });
 }
 
-
 /* =========================================================
-   TABS
+   INIT NAV
 ========================================================= */
 
-function setupTabs() {
+function setupNavigation() {
 
     document
-        .querySelectorAll(
-            "[data-page]"
-        )
-        .forEach(function (button) {
-
-            /*
-               Hindari listener ganda
-            */
-
-            if (
-                button.dataset
-                    .scannerTabReady === "1"
-            ) {
-
-                return;
-
-            }
-
-
-            button.dataset
-                .scannerTabReady = "1";
-
+        .querySelectorAll("[data-page]")
+        .forEach(button => {
 
             button.addEventListener(
                 "click",
-                function () {
+                () => {
 
                     const page =
                         button.dataset.page;
 
-
-                    document
-                        .querySelectorAll(
-                            "[data-page]"
-                        )
-                        .forEach(
-                            function (btn) {
-
-                                btn.classList.remove(
-                                    "active"
-                                );
-
-                            }
-                        );
-
-
-                    document
-                        .querySelectorAll(
-                            ".page"
-                        )
-                        .forEach(
-                            function (section) {
-
-                                section.classList.remove(
-                                    "active"
-                                );
-
-                            }
-                        );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    const target =
-                        document.getElementById(
-                            page
-                        );
-
-
-                    if (target) {
-
-                        target.classList.add(
-                            "active"
-                        );
-
+                    if (page) {
+                        switchPage(page);
                     }
 
                 }
             );
 
         });
-
 }
 
-
 /* =========================================================
-   AKTIFKAN HALAMAN PERTAMA
+   INIT FILTER
 ========================================================= */
 
-function aktifkanHalamanPertama() {
+function setupFilters() {
 
-    const pages =
-        document.querySelectorAll(
-            ".page"
-        );
+    document
+        .querySelectorAll("[data-filter]")
+        .forEach(button => {
 
+            button.addEventListener(
+                "click",
+                () => {
 
-    if (!pages.length) {
-        return;
-    }
+                    setHistoryFilter(
+                        button.dataset.filter
+                    );
 
+                }
+            );
 
-    const active =
-        document.querySelector(
-            ".page.active"
-        );
-
-
-    if (!active) {
-
-        pages[0].classList.add(
-            "active"
-        );
-
-    }
-
-
-    const tabs =
-        document.querySelectorAll(
-            "[data-page]"
-        );
-
-
-    if (!tabs.length) {
-        return;
-    }
-
-
-    const activeTab =
-        document.querySelector(
-            "[data-page].active"
-        );
-
-
-    if (!activeTab) {
-
-        tabs[0].classList.add(
-            "active"
-        );
-
-    }
-
+        });
 }
 
-
 /* =========================================================
-   GET DATA ARRAY
+   AUTO REFRESH
 ========================================================= */
 
-function getData(payload) {
+function setupAutoRefresh() {
 
-    if (!payload) {
-        return [];
+    setInterval(
+        () => {
+            loadData().catch(
+                error =>
+                    console.error(
+                        "Auto refresh:",
+                        error
+                    )
+            );
+        },
+        60000
+    );
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function setText(id, value) {
+
+    const el = $(id);
+
+    if (!el) return;
+
+    el.textContent =
+        value === null ||
+        value === undefined ||
+        value === ""
+            ? "-"
+            : String(value);
+}
+
+function setProgress(fillId, textId, value) {
+
+    const fill = $(fillId);
+    const text = $(textId);
+
+    const number =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(value) || 0
+            )
+        );
+
+    if (fill) {
+        fill.style.width = `${number}%`;
     }
 
-
-    if (Array.isArray(payload)) {
-        return payload;
+    if (text) {
+        text.textContent = `${number}%`;
     }
+}
 
+function getProgress(data) {
+
+    const processed =
+        Number(
+            getValue(data, [
+                "processed",
+                "progress"
+            ])
+        );
+
+    const total =
+        Number(
+            getValue(data, [
+                "total_tickers",
+                "total"
+            ])
+        );
 
     if (
-        Array.isArray(
-            payload.data
-        )
+        Number.isFinite(processed) &&
+        Number.isFinite(total) &&
+        total > 0
     ) {
-
-        return payload.data;
-
+        return Math.round(
+            processed / total * 100
+        );
     }
 
+    const direct =
+        Number(
+            getValue(data, [
+                "progress_percent"
+            ])
+        );
 
-    /*
-       Beberapa format JSON
-       mungkin menggunakan candidates
-    */
+    return Number.isFinite(direct)
+        ? direct
+        : 100;
+}
 
-    if (
-        Array.isArray(
-            payload.candidates
-        )
-    ) {
+function getDuration(data) {
 
-        return payload.candidates;
+    return (
+        getValue(data, [
+            "duration_text"
+        ]) ||
+        formatDuration(
+            getValue(data, [
+                "duration_seconds",
+                "duration"
+            ])
+        ) ||
+        "-"
+    );
+}
 
+function formatDuration(value) {
+
+    const seconds = Number(value);
+
+    if (!Number.isFinite(seconds)) {
+        return "";
     }
 
+    if (seconds < 60) {
+        return `${Math.round(seconds)} detik`;
+    }
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const sec =
+        Math.round(seconds % 60);
+
+    return `${minutes}m ${sec}d`;
+}
+
+/* =========================================================
+   GET CANDIDATES
+========================================================= */
+
+function getCandidateArray(data) {
+
+    if (!data) return [];
+
+    if (Array.isArray(data)) {
+        return data;
+    }
+
+    if (Array.isArray(data.data)) {
+        return data.data;
+    }
+
+    if (Array.isArray(data.candidates_data)) {
+        return data.candidates_data;
+    }
+
+    if (Array.isArray(data.results)) {
+        return data.results;
+    }
+
+    if (Array.isArray(data.candidates_list)) {
+        return data.candidates_list;
+    }
 
     return [];
-
 }
-
 
 /* =========================================================
    GET TICKER
@@ -1589,63 +1069,31 @@ function getData(payload) {
 
 function getTicker(item) {
 
-    if (
-        !item ||
-        typeof item !== "object"
-    ) {
-
-        return "";
-
+    if (typeof item === "string") {
+        return item;
     }
 
-
-    const keys = [
-
-        "ticker",
-        "symbol",
-        "code",
-        "kode",
-        "Ticker",
-        "Symbol",
-        "TICKER",
-        "SYMBOL"
-
-    ];
-
-
-    for (
-        let i = 0;
-        i < keys.length;
-        i++
-    ) {
-
-        const key =
-            keys[i];
-
-
-        if (
-            item[key] !== undefined &&
-            item[key] !== null &&
-            String(
-                item[key]
-            ).trim() !== ""
-        ) {
-
-            return String(
-                item[key]
-            )
-                .trim()
-                .toUpperCase();
-
-        }
-
+    if (!item || typeof item !== "object") {
+        return "-";
     }
 
+    const value =
+        getValue(item, [
+            "ticker",
+            "symbol",
+            "code",
+            "kode",
+            "Ticker",
+            "Symbol"
+        ]);
 
-    return "";
-
+    return value
+        ? String(value).replace(
+            /\.JK$/i,
+            ""
+        )
+        : "-";
 }
-
 
 /* =========================================================
    GET SECTOR
@@ -1654,353 +1102,185 @@ function getTicker(item) {
 function getSector(ticker) {
 
     if (!ticker) {
-
         return "UNKNOWN";
-
     }
 
+    const map =
+        APP_DATA.sector &&
+        APP_DATA.sector.map
+            ? APP_DATA.sector.map
+            : {};
 
-    const clean =
-        String(ticker)
-            .trim()
-            .toUpperCase()
-            .replace(
-                /\s/g,
-                ""
-            );
+    const full =
+        ticker.endsWith(".JK")
+            ? ticker
+            : `${ticker}.JK`;
 
-
-    /*
-       Coba beberapa kemungkinan key
-    */
-
-    const candidates = [
-
-        clean,
-
-        clean + ".JK",
-
-        clean.replace(
-            /\.JK$/i,
-            ""
-        ),
-
-        clean.replace(
-            /\.JK$/i,
-            ""
-        ) + ".JK"
-
-    ];
-
-
-    for (
-        let i = 0;
-        i < candidates.length;
-        i++
-    ) {
-
-        const key =
-            candidates[i];
-
-
-        if (
-            SECTOR_MAP[key]
-        ) {
-
-            return SECTOR_MAP[key];
-
-        }
-
-    }
-
-
-    /*
-       Fallback case-insensitive
-    */
-
-    const mapKeys =
-        Object.keys(
-            SECTOR_MAP || {}
-        );
-
-
-    for (
-        let i = 0;
-        i < mapKeys.length;
-        i++
-    ) {
-
-        if (
-            String(
-                mapKeys[i]
-            )
-                .toUpperCase() ===
-            clean
-        ) {
-
-            return SECTOR_MAP[
-                mapKeys[i]
-            ];
-
-        }
-
-
-        if (
-            String(
-                mapKeys[i]
-            )
-                .toUpperCase() ===
-            clean + ".JK"
-        ) {
-
-            return SECTOR_MAP[
-                mapKeys[i]
-            ];
-
-        }
-
-    }
-
-
-    return "UNKNOWN";
-
+    return (
+        map[full] ||
+        map[ticker] ||
+        "UNKNOWN"
+    );
 }
-
-
-/* =========================================================
-   SHORT SECTOR
-========================================================= */
 
 function shortSector(sector) {
 
-    const map = {
+    if (!sector) return "-";
 
-        "BASIC MATERIALS":
-            "Basic Materials",
-
-        "CONSUMER CYCLICALS":
-            "Consumer Cyclicals",
-
-        "CONSUMER NON-CYCLICALS":
-            "Consumer Non-Cyclicals",
-
-        "ENERGY":
-            "Energy",
-
-        "FINANCIALS":
-            "Financials",
-
-        "HEALTHCARE":
-            "Healthcare",
-
-        "INDUSTRIALS":
-            "Industrials",
-
-        "INFRASTRUCTURES":
-            "Infrastructure",
-
-        "PROPERTIES & REAL ESTATE":
-            "Properties & Real Estate",
-
-        "TECHNOLOGY":
-            "Technology",
-
-        "TRANSPORTATION & LOGISTIC":
-            "Transportation & Logistic"
-
+    const replacements = {
+        "CONSUMER NON-CYCLICALS": "NON-CYCLICAL",
+        "CONSUMER CYCLICALS": "CYCLICAL",
+        "PROPERTIES & REAL ESTATE": "PROPERTY",
+        "TRANSPORTATION & LOGISTIC": "TRANSPORT",
+        "BASIC MATERIALS": "BASIC MAT",
+        "INFRASTRUCTURES": "INFRA"
     };
 
-
-    const normalized =
-        String(
-            sector || ""
-        )
-            .trim()
-            .toUpperCase();
-
-
-    return (
-        map[normalized] ||
-        sector ||
-        "Unknown"
-    );
-
+    return replacements[sector] || sector;
 }
 
-
 /* =========================================================
-   FORMAT KEY
+   GENERIC VALUE
 ========================================================= */
 
-function formatKey(key) {
+function getValue(object, keys) {
 
-    return String(key)
+    if (!object || typeof object !== "object") {
+        return null;
+    }
 
-        .replace(
-            /_/g,
-            " "
-        )
+    for (const key of keys) {
 
-        .replace(
-            /\b\w/g,
-            function (char) {
+        if (
+            Object.prototype.hasOwnProperty.call(
+                object,
+                key
+            )
+        ) {
+            const value = object[key];
 
-                return char.toUpperCase();
-
+            if (
+                value !== null &&
+                value !== undefined &&
+                value !== ""
+            ) {
+                return value;
             }
-        );
+        }
+    }
 
+    return null;
 }
 
+function valueToString(item, keys) {
 
-/* =========================================================
-   FORMAT VALUE
-========================================================= */
-
-function formatValue(value) {
+    const value =
+        getValue(item, keys);
 
     if (
         value === null ||
-        value === undefined ||
-        value === ""
+        value === undefined
     ) {
-
         return "-";
-
     }
 
-
-    if (
-        typeof value === "number"
-    ) {
-
-        return value.toLocaleString(
-            "id-ID",
-            {
-                maximumFractionDigits: 4
-            }
-        );
-
+    if (typeof value === "object") {
+        return JSON.stringify(value);
     }
 
-
-    if (
-        typeof value === "boolean"
-    ) {
-
-        return value
-            ? "Ya"
-            : "Tidak";
-
-    }
-
-
-    if (
-        typeof value === "object"
-    ) {
-
-        return esc(
-            JSON.stringify(
-                value
-            )
-        );
-
-    }
-
-
-    return esc(
-        String(value)
-    );
-
+    return String(value);
 }
-
 
 /* =========================================================
    STATUS TEXT
 ========================================================= */
 
-function statusText(status) {
+function getStatusText() {
 
-    const map = {
-
-        running:
-            "Running",
-
-        success:
-            "Selesai",
-
-        failed:
-            "Gagal",
-
-        error:
-            "Error",
-
-        pending:
-            "Menunggu",
-
-        skipped:
-            "Skip",
-
-        skip:
-            "Skip",
-
-        queued:
-            "Menunggu",
-
-        cancelled:
-            "Dibatalkan"
-
-    };
-
-
-    const normalized =
-        String(
-            status || ""
-        )
-            .trim()
-            .toLowerCase();
-
-
-    return (
-        map[normalized] ||
-        status ||
-        "-"
-    );
-
-}
-
-
-/* =========================================================
-   FORMAT DATE
-========================================================= */
-
-function formatDate(date) {
-
-    if (!date) {
-        return "-";
-    }
-
-
-    const d =
-        new Date(
-            String(date) +
-            "T00:00:00"
+    const status =
+        getValue(
+            APP_DATA.status,
+            ["status"]
         );
 
-
-    if (
-        isNaN(
-            d.getTime()
-        )
-    ) {
-
-        return date;
-
+    if (status) {
+        return String(status).toUpperCase();
     }
 
+    const obStatus =
+        getValue(
+            APP_DATA.ob,
+            ["status"]
+        );
 
-    const months = [
+    if (obStatus) {
+        return String(obStatus).toUpperCase();
+    }
 
+    return "READY";
+}
+
+/* =========================================================
+   SCANNER NORMALIZATION
+========================================================= */
+
+function normalizeScanner(value) {
+
+    const text =
+        String(value || "")
+            .trim()
+            .toUpperCase();
+
+    if (
+        text.includes("MACD")
+    ) {
+        return "MACD";
+    }
+
+    if (
+        text.includes("OB")
+    ) {
+        return "SMC OB";
+    }
+
+    return text;
+}
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function extractDate(value) {
+
+    if (!value) return "";
+
+    const match =
+        String(value).match(
+            /^(\d{4}-\d{2}-\d{2})/
+        );
+
+    return match
+        ? match[1]
+        : "";
+}
+
+function formatDateOnly(value) {
+
+    if (!value) return "-";
+
+    const parts =
+        String(value).split("-");
+
+    if (parts.length !== 3) {
+        return value;
+    }
+
+    return `${parts[2]} ${monthName(parts[1])}`;
+}
+
+function monthName(month) {
+
+    const names = [
         "Jan",
         "Feb",
         "Mar",
@@ -2013,110 +1293,74 @@ function formatDate(date) {
         "Okt",
         "Nov",
         "Des"
-
     ];
 
-
-    return (
-
-        String(
-            d.getDate()
-        ).padStart(2, "0")
-
-        +
-
-        " "
-
-        +
-
-        months[
-            d.getMonth()
-        ]
-
-    );
-
+    return names[
+        Number(month) - 1
+    ] || month;
 }
 
+function formatDateTime(value) {
 
-/* =========================================================
-   FIND ELEMENT
-========================================================= */
+    if (!value) return "-";
 
-function findElement(ids) {
+    const text = String(value);
 
-    for (
-        let i = 0;
-        i < ids.length;
-        i++
+    if (
+        /^\d{4}-\d{2}-\d{2}/.test(text)
     ) {
 
-        const el =
-            document.getElementById(
-                ids[i]
-            );
+        const date =
+            text.substring(0, 10);
 
+        const time =
+            text.substring(11, 16);
 
-        if (el) {
-
-            return el;
-
-        }
-
+        return `${formatDateOnly(date)} ${time}`;
     }
 
-
-    return null;
-
+    return text;
 }
 
-
 /* =========================================================
-   ESCAPE HTML
+   HTML ESCAPE
 ========================================================= */
 
-function esc(value) {
+function escapeHTML(value) {
 
-    return String(
-
-        value === undefined ||
-        value === null
-            ? ""
-            : value
-
-    )
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-
 /* =========================================================
-   DEBUG
+   START
 ========================================================= */
 
-console.log(
-    "MARKET SCANNER: app.js loaded"
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        setupNavigation();
+        setupFilters();
+
+        const refresh =
+            $("refreshButton");
+
+        if (refresh) {
+            refresh.addEventListener(
+                "click",
+                refreshAll
+            );
+        }
+
+        await loadData();
+
+        switchPage("dashboard");
+
+        setupAutoRefresh();
+    }
 );
