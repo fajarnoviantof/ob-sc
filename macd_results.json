@@ -1,58 +1,25 @@
 {
   "status": "success",
-  "generated_at": "2026-09-09 07:47:08",
-  "started_at": "2026-09-09 07:44:26",
-  "finished_at": "2026-09-09 07:47:08",
-  "duration_seconds": 162.2,
-  "duration_text": "2m 42s",
+  "generated_at": "2026-09-09 10:02:51",
+  "started_at": "2026-09-09 10:01:36",
+  "finished_at": "2026-09-09 10:02:51",
+  "duration_seconds": 75.5,
+  "duration_text": "1m 15s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 4,
+  "candidates": 1,
   "data": [
     {
-      "ticker": "PGAS.JK",
-      "price": 1540.0,
-      "spike_ratio": 1.43,
+      "ticker": "BELL.JK",
+      "price": 118.0,
+      "spike_ratio": 2.12,
       "hist_age": "+1",
-      "macd_hist": 0.35,
-      "value": "45.41B",
-      "ema20": 1523.59,
+      "macd_hist": 0.04,
+      "value": "25.81B",
+      "ema20": 114.59,
       "ema20_break_age": "+1",
       "quality": "MED"
-    },
-    {
-      "ticker": "ESIP.JK",
-      "price": 137.0,
-      "spike_ratio": 10.64,
-      "hist_age": "+1",
-      "macd_hist": 0.97,
-      "value": "36.39B",
-      "ema20": 124.08,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    },
-    {
-      "ticker": "POLA.JK",
-      "price": 70.0,
-      "spike_ratio": 19.3,
-      "hist_age": "+1",
-      "macd_hist": 0.96,
-      "value": "14.21B",
-      "ema20": 56.26,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    },
-    {
-      "ticker": "RATU.JK",
-      "price": 4690.0,
-      "spike_ratio": 1.7,
-      "hist_age": "+4",
-      "macd_hist": 48.52,
-      "value": "124.15B",
-      "ema20": 4533.36,
-      "ema20_break_age": "+1",
-      "quality": "HIGH"
     }
   ]
 }
