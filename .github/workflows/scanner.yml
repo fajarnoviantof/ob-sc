@@ -12,38 +12,33 @@ on:
 
   schedule:
 
+    # 09:05 WIB
+    - cron: "5 2 * * 1-5"
+
+    # 10:05 WIB
+    - cron: "5 3 * * 1-5"
+
+    # 11:05 WIB
+    - cron: "5 4 * * 1-5"
+
+    # 13:05 WIB
+    - cron: "5 6 * * 1-5"
+
+    # 14:05 WIB
+    - cron: "5 7 * * 1-5"
+
+    # 15:05 WIB
+    - cron: "5 8 * * 1-5"
+
+    # 16:05 WIB
     - cron: "5 9 * * 1-5"
-      timezone: "Asia/Jakarta"
 
+    # 17:05 WIB
     - cron: "5 10 * * 1-5"
-      timezone: "Asia/Jakarta"
-
-    - cron: "5 11 * * 1-5"
-      timezone: "Asia/Jakarta"
-
-    - cron: "5 13 * * 1-5"
-      timezone: "Asia/Jakarta"
-
-    - cron: "5 14 * * 1-5"
-      timezone: "Asia/Jakarta"
-
-    - cron: "5 15 * * 1-5"
-      timezone: "Asia/Jakarta"
-
-    - cron: "5 16 * * 1-5"
-      timezone: "Asia/Jakarta"
-
-    - cron: "5 17 * * 1-5"
-      timezone: "Asia/Jakarta"
 
 
 permissions:
   contents: write
-
-
-concurrency:
-  group: smc-macd-scanner
-  cancel-in-progress: false
 
 
 jobs:
@@ -69,47 +64,57 @@ jobs:
           pip install yfinance pandas numpy tqdm
 
 
+      # =====================================================
+      # TENTUKAN SLOT
+      # =====================================================
+
       - name: Determine slot
         id: slot
         shell: bash
         run: |
 
+          # MANUAL RUN
           if [ -n "${{ inputs.slot }}" ]; then
+
             echo "slot=${{ inputs.slot }}" >> "$GITHUB_OUTPUT"
+
             exit 0
+
           fi
 
+
+          # AUTOMATIC RUN
           case "${{ github.event.schedule }}" in
 
-            "5 9 * * 1-5")
+            "5 2 * * 1-5")
               echo "slot=09:00" >> "$GITHUB_OUTPUT"
               ;;
 
-            "5 10 * * 1-5")
+            "5 3 * * 1-5")
               echo "slot=10:00" >> "$GITHUB_OUTPUT"
               ;;
 
-            "5 11 * * 1-5")
+            "5 4 * * 1-5")
               echo "slot=11:00" >> "$GITHUB_OUTPUT"
               ;;
 
-            "5 13 * * 1-5")
+            "5 6 * * 1-5")
               echo "slot=13:00" >> "$GITHUB_OUTPUT"
               ;;
 
-            "5 14 * * 1-5")
+            "5 7 * * 1-5")
               echo "slot=14:00" >> "$GITHUB_OUTPUT"
               ;;
 
-            "5 15 * * 1-5")
+            "5 8 * * 1-5")
               echo "slot=15:00" >> "$GITHUB_OUTPUT"
               ;;
 
-            "5 16 * * 1-5")
+            "5 9 * * 1-5")
               echo "slot=16:00" >> "$GITHUB_OUTPUT"
               ;;
 
-            "5 17 * * 1-5")
+            "5 10 * * 1-5")
               echo "slot=17:00" >> "$GITHUB_OUTPUT"
               ;;
 
@@ -120,19 +125,33 @@ jobs:
           esac
 
 
+      # =====================================================
+      # SMC OB
+      # =====================================================
+
       - name: Run SMC OB
         id: ob
         continue-on-error: true
         run: |
+
           python scanner.py
 
+
+      # =====================================================
+      # MACD
+      # =====================================================
 
       - name: Run MACD
         id: macd
         continue-on-error: true
         run: |
+
           python scanner_macd.py
 
+
+      # =====================================================
+      # ARCHIVE
+      # =====================================================
 
       - name: Archive history
         run: |
@@ -144,6 +163,10 @@ jobs:
             --slot "${{ steps.slot.outputs.slot }}"
 
 
+      # =====================================================
+      # COMMIT
+      # =====================================================
+
       - name: Commit scanner data
         if: always()
         run: |
@@ -153,13 +176,22 @@ jobs:
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
+
           git add \
             results.json \
             macd_results.json \
             history.json \
             scan_status.json
 
-          git diff --cached --quiet || \
+
+          if git diff --cached --quiet; then
+
+            echo "Tidak ada perubahan."
+
+          else
+
             git commit -m "update scanner results"
 
-          git push
+            git push
+
+          fi
