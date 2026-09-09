@@ -1,323 +1,277 @@
 /* =========================================================
    MARKET SCANNER - app.js
-   SMC OB + MACD + SECTOR HISTORY
+   SMC OB + MACD
 ========================================================= */
 
-const FILES = {
+const DATA_FILES = {
     ob: "results.json",
     macd: "macd_results.json",
     status: "scan_status.json",
     history: "history.json",
-    sectors: "sector_map.json"
+    sector: "sector_map.json"
 };
 
-const REFRESH_MS = 30000;
+let OB = null;
+let MACD = null;
+let STATUS = null;
+let HISTORY = null;
+let SECTOR_MAP = {};
 
-let state = {
-    ob: null,
-    macd: null,
-    status: null,
-    history: null,
-    sectorMap: {}
-};
+document.addEventListener("DOMContentLoaded", function () {
 
-let historyFilter = "ALL";
+    console.log("MARKET SCANNER app.js aktif");
+
+    // Pastikan halaman pertama aktif
+    aktifkanHalamanPertama();
+
+    // Jalankan scanner
+    loadData();
+
+    // Refresh setiap 30 detik
+    setInterval(loadData, 30000);
+
+    // Tombol tab
+    setupTabs();
+
+    // Filter history
+    setupHistoryFilter();
+});
+
 
 /* =========================================================
-   INIT
+   LOAD DATA
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
-    initTabs();
-    initHistoryFilters();
-    loadAll();
+async function loadData() {
 
-    setInterval(loadAll, REFRESH_MS);
-});
+    setConnection("Menghubungkan...");
+
+    try {
+
+        const hasil = await Promise.all([
+            getJSON(DATA_FILES.ob),
+            getJSON(DATA_FILES.macd),
+            getJSON(DATA_FILES.status),
+            getJSON(DATA_FILES.history),
+            getJSON(DATA_FILES.sector)
+        ]);
+
+        OB = hasil[0];
+        MACD = hasil[1];
+        STATUS = hasil[2];
+        HISTORY = hasil[3];
+
+        if (hasil[4] && hasil[4].map) {
+            SECTOR_MAP = hasil[4].map;
+        } else {
+            SECTOR_MAP = hasil[4] || {};
+        }
+
+        console.log("OB:", OB);
+        console.log("MACD:", MACD);
+        console.log("STATUS:", STATUS);
+        console.log("HISTORY:", HISTORY);
+        console.log("SECTOR:", SECTOR_MAP);
+
+        setConnection("Terhubung");
+
+        renderAll();
+
+    } catch (error) {
+
+        console.error("Gagal memuat data:", error);
+
+        setConnection("Gagal menghubungkan");
+
+    }
+}
 
 
 /* =========================================================
    FETCH JSON
 ========================================================= */
 
-async function fetchJson(file) {
-    try {
-        const url = `${file}?t=${Date.now()}`;
+async function getJSON(file) {
 
-        const response = await fetch(url, {
-            cache: "no-store"
-        });
+    const url = file + "?v=" + Date.now();
 
-        if (!response.ok) {
-            throw new Error(`${file}: HTTP ${response.status}`);
-        }
+    const response = await fetch(url, {
+        method: "GET",
+        cache: "no-store"
+    });
 
-        return await response.json();
-
-    } catch (error) {
-        console.error(`Gagal membaca ${file}`, error);
-        return null;
+    if (!response.ok) {
+        throw new Error(
+            file + " HTTP " + response.status
+        );
     }
+
+    return await response.json();
 }
 
 
 /* =========================================================
-   LOAD ALL
+   RENDER ALL
 ========================================================= */
 
-async function loadAll() {
+function renderAll() {
 
-    const [
-        status,
-        ob,
-        macd,
-        history,
-        sectorMap
-    ] = await Promise.all([
-        fetchJson(FILES.status),
-        fetchJson(FILES.ob),
-        fetchJson(FILES.macd),
-        fetchJson(FILES.history),
-        fetchJson(FILES.sectors)
-    ]);
+    renderCurrentOB();
+    renderCurrentMACD();
 
-    state.status = status;
-    state.ob = ob;
-    state.macd = macd;
-    state.history = history;
-    state.sectorMap = sectorMap?.map || {};
+    renderOBPage();
+    renderMACDPage();
 
-    renderDashboard();
-    renderOB();
-    renderMACD();
+    renderStatus();
     renderHistory();
 
-    updateLastRefresh();
+    aktifkanHalamanPertama();
 }
 
 
 /* =========================================================
-   TAB
+   CONNECTION
 ========================================================= */
 
-function initTabs() {
+function setConnection(text) {
 
-    document.querySelectorAll("[data-page]").forEach(button => {
+    const candidates = [
+        "connection-status",
+        "connection",
+        "status-connection"
+    ];
 
-        button.addEventListener("click", () => {
+    candidates.forEach(function (id) {
 
-            const page = button.dataset.page;
+        const el = document.getElementById(id);
 
-            document.querySelectorAll("[data-page]").forEach(btn => {
-                btn.classList.remove("active");
-            });
+        if (el) {
+            el.textContent = text;
+        }
 
-            document.querySelectorAll(".page").forEach(section => {
-                section.classList.remove("active");
-            });
+    });
 
-            button.classList.add("active");
+    const textElements =
+        document.querySelectorAll(".connection-status");
 
-            const target = document.getElementById(page);
-
-            if (target) {
-                target.classList.add("active");
-            }
-        });
-
+    textElements.forEach(function (el) {
+        el.textContent = text;
     });
 }
 
 
 /* =========================================================
-   HISTORY FILTER
+   CURRENT SMC OB
 ========================================================= */
 
-function initHistoryFilters() {
+function renderCurrentOB() {
 
-    document.querySelectorAll("[data-history-filter]").forEach(button => {
+    const data = getData(OB);
 
-        button.addEventListener("click", () => {
+    const count = data.length;
 
-            historyFilter = button.dataset.historyFilter;
-
-            document.querySelectorAll("[data-history-filter]").forEach(btn => {
-                btn.classList.remove("active");
-            });
-
-            button.classList.add("active");
-
-            renderHistory();
-        });
-
-    });
-}
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-function renderDashboard() {
-
-    renderCurrentScanner(
+    const container = findElement([
         "current-ob",
-        state.ob,
-        "SMC OB"
-    );
+        "ob-current",
+        "smc-ob-current",
+        "current-ob-list"
+    ]);
 
-    renderCurrentScanner(
-        "current-macd",
-        state.macd,
-        "MACD"
-    );
+    if (!container) {
+        return;
+    }
 
-    renderQuickStatus();
-}
-
-
-/* =========================================================
-   CURRENT SCANNER
-========================================================= */
-
-function renderCurrentScanner(containerId, payload, scannerName) {
-
-    const container = document.getElementById(containerId);
-
-    if (!container) return;
-
-    if (!payload) {
+    if (count === 0) {
 
         container.innerHTML = `
             <div class="empty-state">
-                Data ${scannerName} belum tersedia
+                Tidak ada kandidat SMC OB
             </div>
         `;
 
         return;
     }
 
-    const data = Array.isArray(payload.data)
-        ? payload.data
-        : [];
+    container.innerHTML = `
+        <div class="candidate-list">
+            ${data.map(function (item) {
 
-    const candidates = Number(payload.candidates || data.length || 0);
+                const ticker = getTicker(item);
+                const sector = getSector(ticker);
 
-    let html = "";
+                return `
+                    <div class="candidate-chip">
 
-    if (data.length === 0) {
+                        <div class="candidate-ticker">
+                            ${esc(ticker)}
+                        </div>
 
-        html = `
+                        <div class="candidate-sector">
+                            ${esc(shortSector(sector))}
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("")}
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   CURRENT MACD
+========================================================= */
+
+function renderCurrentMACD() {
+
+    const data = getData(MACD);
+
+    const count = data.length;
+
+    const container = findElement([
+        "current-macd",
+        "macd-current",
+        "current-macd-list"
+    ]);
+
+    if (!container) {
+        return;
+    }
+
+    if (count === 0) {
+
+        container.innerHTML = `
             <div class="empty-state">
-                Tidak ada kandidat
+                Tidak ada kandidat MACD
             </div>
         `;
 
-    } else {
-
-        html = `
-            <div class="candidate-list">
-                ${data.map(item => renderCandidateChip(item)).join("")}
-            </div>
-        `;
-    }
-
-    container.innerHTML = `
-        <div class="scanner-current-header">
-            <div>
-                <div class="scanner-current-title">
-                    ${escapeHtml(scannerName)}
-                </div>
-
-                <div class="scanner-current-count">
-                    ${candidates} kandidat
-                </div>
-            </div>
-
-            <div class="scanner-current-time">
-                ${formatDateTime(
-                    payload.generated_at ||
-                    payload.finished_at
-                )}
-            </div>
-        </div>
-
-        ${html}
-    `;
-}
-
-
-/* =========================================================
-   CANDIDATE CHIP
-========================================================= */
-
-function renderCandidateChip(item) {
-
-    const ticker = getTicker(item);
-
-    if (!ticker) {
-        return "";
-    }
-
-    const sector = getSector(ticker);
-
-    return `
-        <div class="candidate-chip">
-
-            <div class="candidate-ticker">
-                ${escapeHtml(ticker)}
-            </div>
-
-            <div class="candidate-sector">
-                ${escapeHtml(shortSector(sector))}
-            </div>
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   QUICK STATUS
-========================================================= */
-
-function renderQuickStatus() {
-
-    const container = document.getElementById("quick-status");
-
-    if (!container) return;
-
-    const status = state.status;
-
-    if (!status) {
-        container.innerHTML = "";
         return;
     }
 
-    const ob = status.ob || {};
-    const macd = status.macd || {};
-
     container.innerHTML = `
-        <div class="status-item">
-            <span>OB</span>
-            <strong>${statusLabel(ob.status)}</strong>
-            <small>${ob.progress || 0}/${ob.total || 0}</small>
-        </div>
+        <div class="candidate-list">
+            ${data.map(function (item) {
 
-        <div class="status-item">
-            <span>MACD</span>
-            <strong>${statusLabel(macd.status)}</strong>
-            <small>${macd.progress || 0}/${macd.total || 0}</small>
-        </div>
+                const ticker = getTicker(item);
+                const sector = getSector(ticker);
 
-        <div class="status-item">
-            <span>Update</span>
-            <strong>
-                ${formatDateTime(
-                    status.finished_at ||
-                    status.updated_at
-                )}
-            </strong>
+                return `
+                    <div class="candidate-chip">
+
+                        <div class="candidate-ticker">
+                            ${esc(ticker)}
+                        </div>
+
+                        <div class="candidate-sector">
+                            ${esc(shortSector(sector))}
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("")}
         </div>
     `;
 }
@@ -327,39 +281,21 @@ function renderQuickStatus() {
    SMC OB PAGE
 ========================================================= */
 
-function renderOB() {
+function renderOBPage() {
 
-    const payload = state.ob;
+    renderMetric("ob-total", OB?.total_tickers);
+    renderMetric("ob-processed", OB?.processed);
+    renderMetric("ob-candidates", OB?.candidates);
+    renderMetric("ob-errors", OB?.errors);
+    renderMetric("ob-duration", OB?.duration_text);
 
-    renderMetric(
-        "ob-total",
-        payload?.total_tickers
-    );
-
-    renderMetric(
-        "ob-processed",
-        payload?.processed
-    );
-
-    renderMetric(
-        "ob-candidates",
-        payload?.candidates
-    );
-
-    renderMetric(
-        "ob-errors",
-        payload?.errors
-    );
-
-    renderMetric(
-        "ob-duration",
-        payload?.duration_text
-    );
-
-    renderScannerTable(
-        "ob-table",
-        payload,
-        "SMC OB"
+    renderTable(
+        [
+            "ob-table",
+            "smc-ob-table",
+            "ob-results"
+        ],
+        OB
     );
 }
 
@@ -368,39 +304,20 @@ function renderOB() {
    MACD PAGE
 ========================================================= */
 
-function renderMACD() {
+function renderMACDPage() {
 
-    const payload = state.macd;
+    renderMetric("macd-total", MACD?.total_tickers);
+    renderMetric("macd-processed", MACD?.processed);
+    renderMetric("macd-candidates", MACD?.candidates);
+    renderMetric("macd-errors", MACD?.errors);
+    renderMetric("macd-duration", MACD?.duration_text);
 
-    renderMetric(
-        "macd-total",
-        payload?.total_tickers
-    );
-
-    renderMetric(
-        "macd-processed",
-        payload?.processed
-    );
-
-    renderMetric(
-        "macd-candidates",
-        payload?.candidates
-    );
-
-    renderMetric(
-        "macd-errors",
-        payload?.errors
-    );
-
-    renderMetric(
-        "macd-duration",
-        payload?.duration_text
-    );
-
-    renderScannerTable(
-        "macd-table",
-        payload,
-        "MACD"
+    renderTable(
+        [
+            "macd-table",
+            "macd-results"
+        ],
+        MACD
     );
 }
 
@@ -411,113 +328,124 @@ function renderMACD() {
 
 function renderMetric(id, value) {
 
-    const element = document.getElementById(id);
+    const el = document.getElementById(id);
 
-    if (!element) return;
+    if (!el) {
+        return;
+    }
 
     if (
         value === undefined ||
         value === null ||
         value === ""
     ) {
-        element.textContent = "-";
-        return;
+        el.textContent = "-";
+    } else {
+        el.textContent = value;
     }
-
-    element.textContent = value;
 }
 
 
 /* =========================================================
-   SCANNER TABLE
+   TABLE
 ========================================================= */
 
-function renderScannerTable(
-    containerId,
-    payload,
-    scannerName
-) {
+function renderTable(ids, payload) {
 
-    const container = document.getElementById(containerId);
+    const container = findElement(ids);
 
-    if (!container) return;
-
-    if (!payload) {
-
-        container.innerHTML = `
-            <div class="empty-state">
-                Data ${escapeHtml(scannerName)} belum tersedia.
-            </div>
-        `;
-
+    if (!container) {
         return;
     }
 
-    const data = Array.isArray(payload.data)
-        ? payload.data
-        : [];
+    const data = getData(payload);
 
     if (data.length === 0) {
 
         container.innerHTML = `
             <div class="empty-state">
-                Tidak ada kandidat ${escapeHtml(scannerName)}.
+                Tidak ada kandidat
             </div>
         `;
 
         return;
     }
 
-    const columns = getTableColumns(data);
-
     let html = `
         <div class="table-wrapper">
+
             <table class="scanner-table">
 
                 <thead>
                     <tr>
                         <th>No</th>
-                        ${columns.map(column =>
-                            `<th>${escapeHtml(formatColumnName(column))}</th>`
-                        ).join("")}
+                        <th>Emiten</th>
                         <th>Sektor</th>
+    `;
+
+    const keys = getExtraKeys(data);
+
+    keys.forEach(function (key) {
+
+        html += `
+            <th>
+                ${esc(formatKey(key))}
+            </th>
+        `;
+
+    });
+
+    html += `
                     </tr>
                 </thead>
 
                 <tbody>
     `;
 
-    data.forEach((item, index) => {
+    data.forEach(function (item, index) {
 
         const ticker = getTicker(item);
+        const sector = getSector(ticker);
 
         html += `
             <tr>
 
                 <td>${index + 1}</td>
 
-                ${columns.map(column => `
-                    <td>
-                        ${formatCellValue(item[column])}
-                    </td>
-                `).join("")}
+                <td>
+                    <strong>
+                        ${esc(ticker)}
+                    </strong>
+                </td>
 
                 <td>
                     <span class="sector-badge">
-                        ${escapeHtml(
-                            shortSector(getSector(ticker))
-                        )}
+                        ${esc(shortSector(sector))}
                     </span>
                 </td>
+        `;
 
+        keys.forEach(function (key) {
+
+            html += `
+                <td>
+                    ${formatValue(item[key])}
+                </td>
+            `;
+
+        });
+
+        html += `
             </tr>
         `;
+
     });
 
     html += `
                 </tbody>
 
             </table>
+
         </div>
     `;
 
@@ -526,46 +454,116 @@ function renderScannerTable(
 
 
 /* =========================================================
-   TABLE COLUMNS
+   EXTRA KEYS
 ========================================================= */
 
-function getTableColumns(data) {
+function getExtraKeys(data) {
 
-    if (!Array.isArray(data) || data.length === 0) {
+    if (!data.length) {
         return [];
     }
 
-    const excluded = new Set([
+    const excluded = [
         "ticker",
         "symbol",
         "code",
         "kode",
         "sector",
         "sektor"
-    ]);
+    ];
 
-    const columns = [];
+    const result = [];
 
-    data.forEach(item => {
+    data.forEach(function (item) {
 
         if (!item || typeof item !== "object") {
             return;
         }
 
-        Object.keys(item).forEach(key => {
+        Object.keys(item).forEach(function (key) {
 
-            if (!excluded.has(key.toLowerCase())) {
+            if (
+                excluded.indexOf(
+                    key.toLowerCase()
+                ) === -1
+            ) {
 
-                if (!columns.includes(key)) {
-                    columns.push(key);
+                if (result.indexOf(key) === -1) {
+                    result.push(key);
                 }
 
             }
+
         });
 
     });
 
-    return columns.slice(0, 12);
+    return result.slice(0, 10);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function renderStatus() {
+
+    const container = findElement([
+        "quick-status",
+        "scanner-status",
+        "status"
+    ]);
+
+    if (!container || !STATUS) {
+        return;
+    }
+
+    const ob = STATUS.ob || {};
+    const macd = STATUS.macd || {};
+
+    container.innerHTML = `
+        <div class="status-item">
+
+            <span>SMC OB</span>
+
+            <strong>
+                ${esc(statusText(ob.status))}
+            </strong>
+
+            <small>
+                ${ob.progress || 0}/${ob.total || 0}
+            </small>
+
+        </div>
+
+        <div class="status-item">
+
+            <span>MACD</span>
+
+            <strong>
+                ${esc(statusText(macd.status))}
+            </strong>
+
+            <small>
+                ${macd.progress || 0}/${macd.total || 0}
+            </small>
+
+        </div>
+
+        <div class="status-item">
+
+            <span>Update</span>
+
+            <strong>
+                ${esc(
+                    STATUS.finished_at ||
+                    STATUS.updated_at ||
+                    "-"
+                )}
+            </strong>
+
+        </div>
+    `;
 }
 
 
@@ -575,242 +573,27 @@ function getTableColumns(data) {
 
 function renderHistory() {
 
-    renderHeatmap();
-    renderRecap();
-}
+    const container = findElement([
+        "history-recap",
+        "history-table",
+        "recap-table",
+        "history"
+    ]);
 
-
-/* =========================================================
-   HEATMAP
-========================================================= */
-
-function renderHeatmap() {
-
-    const container = document.getElementById("sector-heatmap");
-
-    if (!container) return;
-
-    const history = Array.isArray(state.history?.history)
-        ? state.history.history
-        : [];
-
-    const slots = [
-        "09:00",
-        "10:00",
-        "11:00",
-        "13:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00"
-    ];
-
-    const sectors = [
-        "BASIC MATERIALS",
-        "ENERGY",
-        "FINANCIALS",
-        "INDUSTRIALS",
-        "CONSUMER NON-CYCLICALS",
-        "CONSUMER CYCLICALS",
-        "HEALTHCARE",
-        "PROPERTIES & REAL ESTATE",
-        "TECHNOLOGY",
-        "INFRASTRUCTURES",
-        "TRANSPORTATION & LOGISTIC"
-    ];
-
-    const dates = getHistoryDates(history);
-
-    if (dates.length === 0) {
-
-        container.innerHTML = `
-            <div class="empty-state">
-                Belum ada data history dengan slot yang valid.
-            </div>
-        `;
-
+    if (!container) {
         return;
     }
 
-    let html = `
-        <div class="heatmap-wrapper">
-
-            <table class="heatmap">
-
-                <thead>
-                    <tr>
-                        <th>Sektor</th>
-                        ${slots.map(slot =>
-                            `<th>${slot.replace(":00", "")}</th>`
-                        ).join("")}
-                    </tr>
-                </thead>
-
-                <tbody>
-    `;
-
-    sectors.forEach(sector => {
-
-        html += `
-            <tr>
-
-                <td class="sector-name">
-                    ${escapeHtml(shortSector(sector))}
-                </td>
-        `;
-
-        slots.forEach(slot => {
-
-            const result = calculateSectorActivity(
-                history,
-                sector,
-                slot,
-                dates
-            );
-
-            const percent = result.available > 0
-                ? result.active / result.available
-                : 0;
-
-            html += `
-                <td
-                    class="heat-cell"
-                    title="${result.active}/${result.available} hari"
-                    data-level="${getHeatLevel(percent)}"
-                >
-                    ${result.available > 0
-                        ? `${Math.round(percent * 100)}%`
-                        : "-"
-                    }
-                </td>
-            `;
-        });
-
-        html += `
-            </tr>
-        `;
-    });
-
-    html += `
-                </tbody>
-
-            </table>
-
-        </div>
-    `;
-
-    container.innerHTML = html;
-}
-
-
-/* =========================================================
-   SECTOR ACTIVITY
-========================================================= */
-
-function calculateSectorActivity(
-    history,
-    sector,
-    slot,
-    dates
-) {
-
-    let active = 0;
-    let available = 0;
-
-    dates.forEach(date => {
-
-        const snapshots = history.filter(item => {
-
-            if (!item) return false;
-
-            if (item.slot !== slot) return false;
-
-            if (
-                historyFilter !== "ALL" &&
-                item.scanner !== historyFilter
-            ) {
-                return false;
-            }
-
-            return String(item.generated_at || "")
-                .startsWith(date);
-        });
-
-        if (snapshots.length === 0) {
-            return;
-        }
-
-        available++;
-
-        let found = false;
-
-        snapshots.forEach(snapshot => {
-
-            const data = Array.isArray(snapshot.data)
-                ? snapshot.data
-                : [];
-
-            data.forEach(item => {
-
-                const ticker = getTicker(item);
-
-                if (
-                    ticker &&
-                    getSector(ticker) === sector
-                ) {
-                    found = true;
-                }
-
-            });
-
-        });
-
-        if (found) {
-            active++;
-        }
-    });
-
-    return {
-        active,
-        available
-    };
-}
-
-
-/* =========================================================
-   HEAT LEVEL
-========================================================= */
-
-function getHeatLevel(value) {
-
-    if (value <= 0) return "0";
-    if (value < 0.25) return "1";
-    if (value < 0.50) return "2";
-    if (value < 0.75) return "3";
-
-    return "4";
-}
-
-
-/* =========================================================
-   RECAP
-========================================================= */
-
-function renderRecap() {
-
-    const container = document.getElementById("history-recap");
-
-    if (!container) return;
-
-    const history = Array.isArray(state.history?.history)
-        ? state.history.history
-        : [];
+    const history =
+        Array.isArray(HISTORY?.history)
+            ? HISTORY.history
+            : [];
 
     if (history.length === 0) {
 
         container.innerHTML = `
             <div class="empty-state">
-                Belum ada history scanner.
+                Belum ada history
             </div>
         `;
 
@@ -819,26 +602,22 @@ function renderRecap() {
 
     const grouped = {};
 
-    history.forEach(item => {
+    history.forEach(function (item) {
 
         if (!item || !item.generated_at) {
             return;
         }
 
-        if (
-            historyFilter !== "ALL" &&
-            item.scanner !== historyFilter
-        ) {
-            return;
-        }
-
-        const date = String(item.generated_at).slice(0, 10);
+        const date =
+            String(item.generated_at).substring(0, 10);
 
         if (!grouped[date]) {
+
             grouped[date] = {
                 ob: [],
                 macd: []
             };
+
         }
 
         if (item.scanner === "SMC OB") {
@@ -848,25 +627,16 @@ function renderRecap() {
         if (item.scanner === "MACD") {
             grouped[date].macd.push(item);
         }
+
     });
 
-    const dates = Object.keys(grouped)
-        .sort()
-        .reverse();
-
-    if (dates.length === 0) {
-
-        container.innerHTML = `
-            <div class="empty-state">
-                Tidak ada data untuk filter ini.
-            </div>
-        `;
-
-        return;
-    }
+    const dates =
+        Object.keys(grouped)
+            .sort()
+            .reverse();
 
     let html = `
-        <div class="recap-wrapper">
+        <div class="table-wrapper">
 
             <table class="recap-table">
 
@@ -881,27 +651,30 @@ function renderRecap() {
                 <tbody>
     `;
 
-    dates.forEach(date => {
-
-        const group = grouped[date];
+    dates.forEach(function (date) {
 
         html += `
             <tr>
 
                 <td class="recap-date">
-                    ${formatDateShort(date)}
+                    ${esc(formatDate(date))}
                 </td>
 
                 <td>
-                    ${renderHistoryScannerCell(group.ob)}
+                    ${renderHistoryCell(
+                        grouped[date].ob
+                    )}
                 </td>
 
                 <td>
-                    ${renderHistoryScannerCell(group.macd)}
+                    ${renderHistoryCell(
+                        grouped[date].macd
+                    )}
                 </td>
 
             </tr>
         `;
+
     });
 
     html += `
@@ -917,47 +690,55 @@ function renderRecap() {
 
 
 /* =========================================================
-   HISTORY SCANNER CELL
+   HISTORY CELL
 ========================================================= */
 
-function renderHistoryScannerCell(snapshots) {
+function renderHistoryCell(snapshots) {
 
-    if (!snapshots || snapshots.length === 0) {
+    if (!snapshots.length) {
         return `<span class="muted">—</span>`;
     }
 
-    snapshots.sort((a, b) => {
+    snapshots.sort(function (a, b) {
+
         return String(a.slot || "")
-            .localeCompare(String(b.slot || ""));
+            .localeCompare(
+                String(b.slot || "")
+            );
+
     });
 
-    return snapshots.map(snapshot => {
+    return snapshots.map(function (snapshot) {
 
-        const data = Array.isArray(snapshot.data)
-            ? snapshot.data
-            : [];
+        const data = getData(snapshot);
 
         const tickers = data
-            .map(item => getTicker(item))
+            .map(getTicker)
             .filter(Boolean);
 
         return `
             <div class="recap-slot">
 
                 <span class="time-badge">
-                    ${escapeHtml(snapshot.slot || "--:--")}
+                    ${esc(snapshot.slot || "--:--")}
                 </span>
 
                 <div class="recap-tickers">
 
                     ${
                         tickers.length
-                            ? tickers.map(ticker => `
-                                <span class="ticker-chip">
-                                    ${escapeHtml(ticker)}
-                                </span>
-                            `).join("")
-                            : `<span class="muted">Tidak ada kandidat</span>`
+                            ? tickers.map(function (ticker) {
+
+                                return `
+                                    <span class="ticker-chip">
+                                        ${esc(ticker)}
+                                    </span>
+                                `;
+
+                            }).join("")
+                            : `<span class="muted">
+                                Tidak ada kandidat
+                               </span>`
                     }
 
                 </div>
@@ -970,36 +751,155 @@ function renderHistoryScannerCell(snapshots) {
 
 
 /* =========================================================
-   HISTORY DATES
+   TABS
 ========================================================= */
 
-function getHistoryDates(history) {
+function setupTabs() {
 
-    const dates = new Set();
+    document.querySelectorAll(
+        "[data-page]"
+    ).forEach(function (button) {
 
-    history.forEach(item => {
+        button.addEventListener(
+            "click",
+            function () {
 
-        if (!item?.generated_at) return;
+                const page =
+                    button.dataset.page;
 
-        if (
-            historyFilter !== "ALL" &&
-            item.scanner !== historyFilter
-        ) {
-            return;
-        }
+                document.querySelectorAll(
+                    "[data-page]"
+                ).forEach(function (btn) {
 
-        dates.add(
-            String(item.generated_at).slice(0, 10)
+                    btn.classList.remove(
+                        "active"
+                    );
+
+                });
+
+                document.querySelectorAll(
+                    ".page"
+                ).forEach(function (section) {
+
+                    section.classList.remove(
+                        "active"
+                    );
+
+                });
+
+                button.classList.add("active");
+
+                const target =
+                    document.getElementById(page);
+
+                if (target) {
+                    target.classList.add(
+                        "active"
+                    );
+                }
+
+            }
         );
-    });
 
-    return Array.from(dates).sort();
+    });
 }
 
 
 /* =========================================================
-   TICKER DETECTION
+   AKTIFKAN HALAMAN PERTAMA
 ========================================================= */
+
+function aktifkanHalamanPertama() {
+
+    const pages =
+        document.querySelectorAll(".page");
+
+    const active =
+        document.querySelector(".page.active");
+
+    if (pages.length > 0 && !active) {
+
+        pages[0].classList.add("active");
+
+    }
+
+    const tabs =
+        document.querySelectorAll(
+            "[data-page]"
+        );
+
+    const activeTab =
+        document.querySelector(
+            "[data-page].active"
+        );
+
+    if (
+        tabs.length > 0 &&
+        !activeTab
+    ) {
+
+        tabs[0].classList.add("active");
+
+    }
+}
+
+
+/* =========================================================
+   HISTORY FILTER
+========================================================= */
+
+function setupHistoryFilter() {
+
+    document.querySelectorAll(
+        "[data-history-filter]"
+    ).forEach(function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                document.querySelectorAll(
+                    "[data-history-filter]"
+                ).forEach(function (btn) {
+
+                    btn.classList.remove(
+                        "active"
+                    );
+
+                });
+
+                button.classList.add("active");
+
+                renderHistory();
+
+            }
+        );
+
+    });
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function getData(payload) {
+
+    if (!payload) {
+        return [];
+    }
+
+    if (Array.isArray(payload)) {
+        return payload;
+    }
+
+    if (Array.isArray(payload.data)) {
+        return payload.data;
+    }
+
+    return [];
+}
+
 
 function getTicker(item) {
 
@@ -1016,24 +916,31 @@ function getTicker(item) {
         "Symbol"
     ];
 
-    for (const key of keys) {
+    for (
+        let i = 0;
+        i < keys.length;
+        i++
+    ) {
+
+        const key = keys[i];
 
         if (
             item[key] !== undefined &&
             item[key] !== null &&
             String(item[key]).trim() !== ""
         ) {
-            return String(item[key]).trim().toUpperCase();
+
+            return String(item[key])
+                .trim()
+                .toUpperCase();
+
         }
+
     }
 
     return "";
 }
 
-
-/* =========================================================
-   SECTOR
-========================================================= */
 
 function getSector(ticker) {
 
@@ -1041,59 +948,138 @@ function getSector(ticker) {
         return "UNKNOWN";
     }
 
-    const cleanTicker = ticker
-        .toUpperCase()
-        .replace(/\s+/g, "");
+    const clean =
+        ticker
+            .toUpperCase()
+            .replace(/\s/g, "");
 
     return (
-        state.sectorMap[cleanTicker] ||
-        state.sectorMap[`${cleanTicker}.JK`] ||
+        SECTOR_MAP[clean] ||
+        SECTOR_MAP[clean + ".JK"] ||
         "UNKNOWN"
     );
 }
 
 
-/* =========================================================
-   SHORT SECTOR
-========================================================= */
-
 function shortSector(sector) {
 
-    if (!sector || sector === "UNKNOWN") {
-        return "Unknown";
-    }
-
     const map = {
-        "BASIC MATERIALS": "Basic Materials",
-        "CONSUMER CYCLICALS": "Consumer Cyclicals",
-        "CONSUMER NON-CYCLICALS": "Consumer Non-Cyclicals",
-        "ENERGY": "Energy",
-        "FINANCIALS": "Financials",
-        "HEALTHCARE": "Healthcare",
-        "INDUSTRIALS": "Industrials",
-        "INFRASTRUCTURES": "Infrastructure",
-        "PROPERTIES & REAL ESTATE": "Properties & Real Estate",
-        "TECHNOLOGY": "Technology",
-        "TRANSPORTATION & LOGISTIC": "Transportation & Logistic"
+
+        "BASIC MATERIALS":
+            "Basic Materials",
+
+        "CONSUMER CYCLICALS":
+            "Consumer Cyclicals",
+
+        "CONSUMER NON-CYCLICALS":
+            "Consumer Non-Cyclicals",
+
+        "ENERGY":
+            "Energy",
+
+        "FINANCIALS":
+            "Financials",
+
+        "HEALTHCARE":
+            "Healthcare",
+
+        "INDUSTRIALS":
+            "Industrials",
+
+        "INFRASTRUCTURES":
+            "Infrastructure",
+
+        "PROPERTIES & REAL ESTATE":
+            "Properties & Real Estate",
+
+        "TECHNOLOGY":
+            "Technology",
+
+        "TRANSPORTATION & LOGISTIC":
+            "Transportation & Logistic"
+
     };
 
-    return map[sector] || sector;
+    return map[sector] || sector || "Unknown";
 }
 
 
-/* =========================================================
-   DATE FORMAT
-========================================================= */
+function formatKey(key) {
 
-function formatDateShort(date) {
+    return String(key)
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, function (char) {
+            return char.toUpperCase();
+        });
+}
+
+
+function formatValue(value) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+        return "-";
+    }
+
+    if (typeof value === "number") {
+
+        return value.toLocaleString(
+            "id-ID",
+            {
+                maximumFractionDigits: 4
+            }
+        );
+
+    }
+
+    if (typeof value === "boolean") {
+        return value ? "Ya" : "Tidak";
+    }
+
+    if (typeof value === "object") {
+
+        return esc(
+            JSON.stringify(value)
+        );
+
+    }
+
+    return esc(String(value));
+}
+
+
+function statusText(status) {
+
+    const map = {
+
+        running: "Running",
+        success: "Selesai",
+        failed: "Gagal",
+        error: "Error",
+        pending: "Menunggu",
+        skipped: "Skip"
+
+    };
+
+    return map[
+        String(status || "").toLowerCase()
+    ] || status || "-";
+}
+
+
+function formatDate(date) {
 
     if (!date) {
         return "-";
     }
 
-    const d = new Date(`${date}T00:00:00`);
+    const d =
+        new Date(date + "T00:00:00");
 
-    if (Number.isNaN(d.getTime())) {
+    if (isNaN(d.getTime())) {
         return date;
     }
 
@@ -1112,139 +1098,46 @@ function formatDateShort(date) {
         "Des"
     ];
 
-    return `
-        ${String(d.getDate()).padStart(2, "0")}
-        ${months[d.getMonth()]}
-    `;
+    return (
+        String(d.getDate()).padStart(2, "0") +
+        " " +
+        months[d.getMonth()]
+    );
 }
 
 
-/* =========================================================
-   DATETIME FORMAT
-========================================================= */
+function findElement(ids) {
 
-function formatDateTime(value) {
-
-    if (!value) {
-        return "-";
-    }
-
-    return String(value)
-        .replace("T", " ")
-        .replace("Z", "");
-}
-
-
-/* =========================================================
-   COLUMN NAME
-========================================================= */
-
-function formatColumnName(value) {
-
-    if (!value) return "";
-
-    return String(value)
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, char => char.toUpperCase());
-}
-
-
-/* =========================================================
-   CELL VALUE
-========================================================= */
-
-function formatCellValue(value) {
-
-    if (
-        value === null ||
-        value === undefined ||
-        value === ""
+    for (
+        let i = 0;
+        i < ids.length;
+        i++
     ) {
-        return "-";
+
+        const el =
+            document.getElementById(ids[i]);
+
+        if (el) {
+            return el;
+        }
+
     }
 
-    if (typeof value === "number") {
-
-        return Number.isInteger(value)
-            ? value.toLocaleString("id-ID")
-            : value.toLocaleString("id-ID", {
-                maximumFractionDigits: 4
-            });
-    }
-
-    if (typeof value === "boolean") {
-        return value ? "Ya" : "Tidak";
-    }
-
-    if (typeof value === "object") {
-        return escapeHtml(
-            JSON.stringify(value)
-        );
-    }
-
-    return escapeHtml(String(value));
+    return null;
 }
 
 
-/* =========================================================
-   STATUS LABEL
-========================================================= */
+function esc(value) {
 
-function statusLabel(status) {
-
-    if (!status) {
-        return "-";
-    }
-
-    const map = {
-        running: "Running",
-        success: "Selesai",
-        failed: "Gagal",
-        error: "Error",
-        pending: "Menunggu",
-        skipped: "Skip"
-    };
-
-    return map[String(status).toLowerCase()] ||
-        String(status);
-}
-
-
-/* =========================================================
-   LAST REFRESH
-========================================================= */
-
-function updateLastRefresh() {
-
-    const element = document.getElementById("last-refresh");
-
-    if (!element) return;
-
-    const now = new Date();
-
-    element.textContent =
-        `Update halaman: ${now.toLocaleTimeString("id-ID", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        })}`;
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value) {
-
-    if (value === null || value === undefined) {
-        return "";
-    }
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value === undefined ||
+        value === null
+            ? ""
+            : value
+    )
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
