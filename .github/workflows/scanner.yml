@@ -1,17 +1,11 @@
-name: SMC + MACD Scanner
-
+name: SMC OB + MACD Scanner
 on:
   workflow_dispatch:
     inputs:
       slot:
-        description: "Slot WIB untuk manual test, misalnya 09:00. Kosong = tidak masuk history."
+        description: "Slot manual, contoh 09:00 (kosong = tidak masuk history)"
         required: false
         type: string
-        default: ""
-
-  # Sengaja dijalankan 5 menit lewat jam bulat.
-  # Offset ini menghindari menit 00 yang merupakan periode beban tinggi.
-  # Zona waktu langsung memakai Asia/Jakarta.
   schedule:
     - cron: "5 9 * * 1-5"
       timezone: "Asia/Jakarta"
@@ -29,204 +23,51 @@ on:
       timezone: "Asia/Jakarta"
     - cron: "5 17 * * 1-5"
       timezone: "Asia/Jakarta"
-
 permissions:
   contents: write
-
 concurrency:
   group: smc-macd-scanner
   cancel-in-progress: false
-
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install yfinance pandas numpy tqdm
-
-      - name: Determine intended slot
+      - run: pip install yfinance pandas numpy tqdm
+      - name: Set slot
         id: slot
         shell: bash
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "slot=${{ github.event.inputs.slot }}" >> "$GITHUB_OUTPUT"
-          else
-            case "${{ github.event.schedule }}" in
-              "5 9 * * 1-5")  echo "slot=09:00" >> "$GITHUB_OUTPUT" ;;
-              "5 10 * * 1-5")  echo "slot=10:00" >> "$GITHUB_OUTPUT" ;;
-              "5 11 * * 1-5")  echo "slot=11:00" >> "$GITHUB_OUTPUT" ;;
-              "5 13 * * 1-5")  echo "slot=13:00" >> "$GITHUB_OUTPUT" ;;
-              "5 14 * * 1-5")  echo "slot=14:00" >> "$GITHUB_OUTPUT" ;;
-              "5 15 * * 1-5")  echo "slot=15:00" >> "$GITHUB_OUTPUT" ;;
-              "5 16 * * 1-5")  echo "slot=16:00" >> "$GITHUB_OUTPUT" ;;
-              "5 17 * * 1-5") echo "slot=17:00" >> "$GITHUB_OUTPUT" ;;
-              *) echo "slot=" >> "$GITHUB_OUTPUT" ;;
-            esac
-          fi
-
-      - name: Set scanner status RUNNING
-        run: |
-          python - <<'PY'
-          import json
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-
-          TZ = ZoneInfo("Asia/Jakarta")
-          now = datetime.now(TZ).strftime("%Y-%m-%d %H:%M:%S")
-          slot = "${{ steps.slot.outputs.slot }}"
-
-          try:
-              with open("scan_status.json", "r", encoding="utf-8") as f:
-                  old = json.load(f)
-          except Exception:
-              old = {}
-
-          data = {
-              "status": "running",
-              "started_at": now,
-              "finished_at": old.get("finished_at"),
-              "expected_slot": slot or None,
-              "trigger": "${{ github.event_name }}",
-              "ob": {
-                  "status": "waiting",
-                  "processed": 0,
-                  "total_tickers": old.get("ob", {}).get("total_tickers", 0),
-                  "candidates": 0,
-                  "errors": 0
-              },
-              "macd": {
-                  "status": "waiting",
-                  "processed": 0,
-                  "total_tickers": old.get("macd", {}).get("total_tickers", 0),
-                  "candidates": 0,
-                  "errors": 0
-              }
-          }
-
-          with open("scan_status.json", "w", encoding="utf-8") as f:
-              json.dump(data, f, ensure_ascii=False, indent=2)
-          PY
-
-      - name: Commit RUNNING status
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add scan_status.json
-          git diff --cached --quiet || git commit -m "scanner running"
-          git push
-
+          if [ -n "${{ inputs.slot }}" ]; then echo "slot=${{ inputs.slot }}" >> "$GITHUB_OUTPUT"; exit 0; fi
+          case "${{ github.event.schedule }}" in
+            "5 9 * * 1-5") echo "slot=09:00" >> "$GITHUB_OUTPUT";;
+            "5 10 * * 1-5") echo "slot=10:00" >> "$GITHUB_OUTPUT";;
+            "5 11 * * 1-5") echo "slot=11:00" >> "$GITHUB_OUTPUT";;
+            "5 13 * * 1-5") echo "slot=13:00" >> "$GITHUB_OUTPUT";;
+            "5 14 * * 1-5") echo "slot=14:00" >> "$GITHUB_OUTPUT";;
+            "5 15 * * 1-5") echo "slot=15:00" >> "$GITHUB_OUTPUT";;
+            "5 16 * * 1-5") echo "slot=16:00" >> "$GITHUB_OUTPUT";;
+            "5 17 * * 1-5") echo "slot=17:00" >> "$GITHUB_OUTPUT";;
+            *) echo "slot=" >> "$GITHUB_OUTPUT";;
+          esac
       - name: Run SMC OB scanner
         id: ob
         continue-on-error: true
-        run: |
-          python scanner.py
-
+        run: python scanner.py
       - name: Run MACD scanner
         id: macd
         continue-on-error: true
-        run: |
-          python scanner_macd.py
-
-      - name: Update 31-day history
-        run: |
-          python archive_history.py \
-            --ob "${{ steps.ob.outcome }}" \
-            --macd "${{ steps.macd.outcome }}" \
-            --schedule "${{ github.event.schedule }}" \
-            --slot "${{ steps.slot.outputs.slot }}"
-
-      - name: Set final scanner status
-        if: always()
-        run: |
-          python - <<'PY'
-          import json
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-
-          TZ = ZoneInfo("Asia/Jakarta")
-          now = datetime.now(TZ).strftime("%Y-%m-%d %H:%M:%S")
-
-          try:
-              with open("scan_status.json", "r", encoding="utf-8") as f:
-                  data = json.load(f)
-          except Exception:
-              data = {}
-
-          ob_outcome = "${{ steps.ob.outcome }}"
-          macd_outcome = "${{ steps.macd.outcome }}"
-
-          try:
-              with open("results.json", "r", encoding="utf-8") as f:
-                  ob = json.load(f)
-          except Exception:
-              ob = {}
-
-          try:
-              with open("macd_results.json", "r", encoding="utf-8") as f:
-                  macd = json.load(f)
-          except Exception:
-              macd = {}
-
-          data["status"] = (
-              "success"
-              if ob_outcome == "success" and macd_outcome == "success"
-              else "partial"
-          )
-
-          data["finished_at"] = now
-
-          data["ob"] = {
-              "status": ob_outcome,
-              "processed": ob.get("processed", 0),
-              "total_tickers": ob.get("total_tickers", 0),
-              "candidates": ob.get("candidates", 0),
-              "errors": ob.get("errors", 0),
-              "duration_text": ob.get("duration_text")
-          }
-
-          data["macd"] = {
-              "status": macd_outcome,
-              "processed": macd.get("processed", 0),
-              "total_tickers": macd.get("total_tickers", 0),
-              "candidates": macd.get("candidates", 0),
-              "errors": macd.get("errors", 0),
-              "duration_text": macd.get("duration_text")
-          }
-
-          with open("scan_status.json", "w", encoding="utf-8") as f:
-              json.dump(data, f, ensure_ascii=False, indent=2)
-          PY
-
-      - name: Commit scanner results
+        run: python scanner_macd.py
+      - name: Archive history
+        run: python archive_history.py --ob "${{ steps.ob.outcome }}" --macd "${{ steps.macd.outcome }}" --schedule "${{ github.event.schedule }}" --slot "${{ steps.slot.outputs.slot }}"
+      - name: Commit results
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add results.json
-          git add macd_results.json
-          git add history.json
-          git add scan_status.json
-
+          git add results.json macd_results.json history.json scan_status.json
           git diff --cached --quiet || git commit -m "update scanner results"
           git push
-
-      - name: Fail workflow if both scanners failed
-        if: steps.ob.outcome == 'failure' && steps.macd.outcome == 'failure'
-        run: |
-          echo "SMC OB dan MACD sama-sama gagal."
-          exit 1
