@@ -1,73 +1,165 @@
 name: SMC OB + MACD Scanner
+
 on:
+
   workflow_dispatch:
     inputs:
+
       slot:
-        description: "Slot manual, contoh 09:00 (kosong = tidak masuk history)"
+        description: "Slot manual, contoh 09:00"
         required: false
         type: string
+
   schedule:
+
     - cron: "5 9 * * 1-5"
       timezone: "Asia/Jakarta"
+
     - cron: "5 10 * * 1-5"
       timezone: "Asia/Jakarta"
+
     - cron: "5 11 * * 1-5"
       timezone: "Asia/Jakarta"
+
     - cron: "5 13 * * 1-5"
       timezone: "Asia/Jakarta"
+
     - cron: "5 14 * * 1-5"
       timezone: "Asia/Jakarta"
+
     - cron: "5 15 * * 1-5"
       timezone: "Asia/Jakarta"
+
     - cron: "5 16 * * 1-5"
       timezone: "Asia/Jakarta"
+
     - cron: "5 17 * * 1-5"
       timezone: "Asia/Jakarta"
+
+
 permissions:
   contents: write
+
+
 concurrency:
   group: smc-macd-scanner
   cancel-in-progress: false
+
+
 jobs:
+
   scan:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install yfinance pandas numpy tqdm
-      - name: Set slot
+
+
+      - name: Install dependencies
+        run: |
+          pip install yfinance pandas numpy tqdm
+
+
+      - name: Determine slot
         id: slot
         shell: bash
         run: |
-          if [ -n "${{ inputs.slot }}" ]; then echo "slot=${{ inputs.slot }}" >> "$GITHUB_OUTPUT"; exit 0; fi
+
+          if [ -n "${{ inputs.slot }}" ]; then
+            echo "slot=${{ inputs.slot }}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           case "${{ github.event.schedule }}" in
-            "5 9 * * 1-5") echo "slot=09:00" >> "$GITHUB_OUTPUT";;
-            "5 10 * * 1-5") echo "slot=10:00" >> "$GITHUB_OUTPUT";;
-            "5 11 * * 1-5") echo "slot=11:00" >> "$GITHUB_OUTPUT";;
-            "5 13 * * 1-5") echo "slot=13:00" >> "$GITHUB_OUTPUT";;
-            "5 14 * * 1-5") echo "slot=14:00" >> "$GITHUB_OUTPUT";;
-            "5 15 * * 1-5") echo "slot=15:00" >> "$GITHUB_OUTPUT";;
-            "5 16 * * 1-5") echo "slot=16:00" >> "$GITHUB_OUTPUT";;
-            "5 17 * * 1-5") echo "slot=17:00" >> "$GITHUB_OUTPUT";;
-            *) echo "slot=" >> "$GITHUB_OUTPUT";;
+
+            "5 9 * * 1-5")
+              echo "slot=09:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            "5 10 * * 1-5")
+              echo "slot=10:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            "5 11 * * 1-5")
+              echo "slot=11:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            "5 13 * * 1-5")
+              echo "slot=13:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            "5 14 * * 1-5")
+              echo "slot=14:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            "5 15 * * 1-5")
+              echo "slot=15:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            "5 16 * * 1-5")
+              echo "slot=16:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            "5 17 * * 1-5")
+              echo "slot=17:00" >> "$GITHUB_OUTPUT"
+              ;;
+
+            *)
+              echo "slot=" >> "$GITHUB_OUTPUT"
+              ;;
+
           esac
-      - name: Run SMC OB scanner
+
+
+      - name: Run SMC OB
         id: ob
         continue-on-error: true
-        run: python scanner.py
-      - name: Run MACD scanner
+        run: |
+          python scanner.py
+
+
+      - name: Run MACD
         id: macd
         continue-on-error: true
-        run: python scanner_macd.py
+        run: |
+          python scanner_macd.py
+
+
       - name: Archive history
-        run: python archive_history.py --ob "${{ steps.ob.outcome }}" --macd "${{ steps.macd.outcome }}" --schedule "${{ github.event.schedule }}" --slot "${{ steps.slot.outputs.slot }}"
-      - name: Commit results
+        run: |
+
+          python archive_history.py \
+            --ob "${{ steps.ob.outcome }}" \
+            --macd "${{ steps.macd.outcome }}" \
+            --schedule "${{ github.event.schedule }}" \
+            --slot "${{ steps.slot.outputs.slot }}"
+
+
+      - name: Commit scanner data
         if: always()
         run: |
+
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results.json macd_results.json history.json scan_status.json
-          git diff --cached --quiet || git commit -m "update scanner results"
+
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            results.json \
+            macd_results.json \
+            history.json \
+            scan_status.json
+
+          git diff --cached --quiet || \
+            git commit -m "update scanner results"
+
           git push
