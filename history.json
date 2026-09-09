@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-09 19:59:44",
+  "updated_at": "2026-09-09 20:38:40",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,128 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-09-09 20:38:39",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "0m 51s",
+      "data": [
+        {
+          "ticker": "LEAD.JK",
+          "price": 115.0,
+          "spike_ratio": 1.75,
+          "hist_age": "+1",
+          "macd_hist": 0.1,
+          "value": "19.59B",
+          "ema20": 109.75,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ASHA.JK",
+          "price": 60.0,
+          "spike_ratio": 2.01,
+          "hist_age": "+1",
+          "macd_hist": 0.02,
+          "value": "5.35B",
+          "ema20": 58.31,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MGNA.JK",
+          "price": 101.0,
+          "spike_ratio": 4.52,
+          "hist_age": "+1",
+          "macd_hist": 0.0,
+          "value": "8.17B",
+          "ema20": 98.11,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "KOKA.JK",
+          "price": 214.0,
+          "spike_ratio": 8.42,
+          "hist_age": "+1",
+          "macd_hist": 1.16,
+          "value": "45.42B",
+          "ema20": 185.3,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-09-09 20:37:48",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 16s",
+      "data": [
+        {
+          "ticker": "BMAS.JK",
+          "ob_range": "510-500",
+          "sl": 499,
+          "sl_pct": 2.0,
+          "tp": 560.0,
+          "tp_pct": 9.8,
+          "rr": 4.9,
+          "distance": 3.92,
+          "bos_age": 1,
+          "ob_size": 1.89,
+          "score": 91.19
+        },
+        {
+          "ticker": "ITMA.JK",
+          "ob_range": "1460-1410",
+          "sl": 1409,
+          "sl_pct": 3.5,
+          "tp": 1650.0,
+          "tp_pct": 13.0,
+          "rr": 3.73,
+          "distance": 4.45,
+          "bos_age": 3,
+          "ob_size": 3.28,
+          "score": 85.78
+        },
+        {
+          "ticker": "TRJA.JK",
+          "ob_range": "125-121",
+          "sl": 120,
+          "sl_pct": 3.3,
+          "tp": 146.0,
+          "tp_pct": 16.8,
+          "rr": 5.15,
+          "distance": 4.0,
+          "bos_age": 6,
+          "ob_size": 3.08,
+          "score": 83.66
+        },
+        {
+          "ticker": "PNGO.JK",
+          "ob_range": "3470-3460",
+          "sl": 3459,
+          "sl_pct": 0.3,
+          "tp": 3560.0,
+          "tp_pct": 2.6,
+          "rr": 8.93,
+          "distance": 3.46,
+          "bos_age": 2,
+          "ob_size": 0.28,
+          "score": 76.74
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "15:00",
