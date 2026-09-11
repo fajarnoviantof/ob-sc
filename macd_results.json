@@ -1,36 +1,36 @@
 {
   "status": "success",
-  "generated_at": "2026-09-11 15:00:02",
-  "started_at": "2026-09-11 14:59:10",
-  "finished_at": "2026-09-11 15:00:02",
-  "duration_seconds": 52.4,
-  "duration_text": "0m 52s",
+  "generated_at": "2026-09-11 15:54:27",
+  "started_at": "2026-09-11 15:53:30",
+  "finished_at": "2026-09-11 15:54:27",
+  "duration_seconds": 57.0,
+  "duration_text": "0m 57s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
   "candidates": 2,
   "data": [
     {
-      "ticker": "CTTH.JK",
-      "price": 141.0,
-      "spike_ratio": 7.25,
+      "ticker": "MUTU.JK",
+      "price": 153.0,
+      "spike_ratio": 17.06,
       "hist_age": "+1",
-      "macd_hist": 0.51,
-      "value": "11.81B",
-      "ema20": 129.51,
+      "macd_hist": 0.86,
+      "value": "71.41B",
+      "ema20": 123.41,
       "ema20_break_age": "+1",
-      "quality": "MED"
+      "quality": "LOW"
     },
     {
-      "ticker": "ESIP.JK",
-      "price": 126.0,
-      "spike_ratio": 1.91,
-      "hist_age": "+4",
-      "macd_hist": 0.7,
-      "value": "15.06B",
-      "ema20": 124.22,
+      "ticker": "IFII.JK",
+      "price": 250.0,
+      "spike_ratio": 34.22,
+      "hist_age": "+1",
+      "macd_hist": 2.96,
+      "value": "5.56B",
+      "ema20": 208.81,
       "ema20_break_age": "+1",
-      "quality": "HIGH"
+      "quality": "MED"
     }
   ]
 }
