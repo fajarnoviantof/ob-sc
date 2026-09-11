@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-09-11 14:08:06",
-  "started_at": "2026-09-11 14:05:23",
-  "finished_at": "2026-09-11 14:08:06",
-  "duration_seconds": 162.4,
-  "duration_text": "2m 42s",
+  "generated_at": "2026-09-11 14:59:09",
+  "started_at": "2026-09-11 14:56:48",
+  "finished_at": "2026-09-11 14:59:09",
+  "duration_seconds": 141.2,
+  "duration_text": "2m 21s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 7,
+  "candidates": 5,
   "data": [
     {
       "ticker": "DKFT.JK",
@@ -18,10 +18,10 @@
       "tp": 730.0,
       "tp_pct": 8.2,
       "rr": 3.59,
-      "distance": 4.44,
+      "distance": 3.7,
       "bos_age": 6,
-      "ob_size": 2.13,
-      "score": 84.61
+      "ob_size": 2.14,
+      "score": 85.34
     },
     {
       "ticker": "BBRI.JK",
@@ -31,10 +31,10 @@
       "tp": 3440.0,
       "tp_pct": 8.5,
       "rr": 4.41,
-      "distance": 3.15,
+      "distance": 3.79,
       "bos_age": 9,
-      "ob_size": 1.83,
-      "score": 84.09
+      "ob_size": 1.82,
+      "score": 83.46
     },
     {
       "ticker": "TRJA.JK",
@@ -44,10 +44,10 @@
       "tp": 146.0,
       "tp_pct": 16.8,
       "rr": 5.15,
-      "distance": 1.6,
+      "distance": 2.4,
       "bos_age": 8,
-      "ob_size": 3.15,
-      "score": 83.99
+      "ob_size": 3.12,
+      "score": 83.22
     },
     {
       "ticker": "TPMA.JK",
@@ -61,32 +61,6 @@
       "bos_age": 7,
       "ob_size": 0.83,
       "score": 83.04
-    },
-    {
-      "ticker": "TLDN.JK",
-      "ob_range": "585-565",
-      "sl": 564,
-      "sl_pct": 3.5,
-      "tp": 670.0,
-      "tp_pct": 14.5,
-      "rr": 4.16,
-      "distance": 3.42,
-      "bos_age": 7,
-      "ob_size": 3.31,
-      "score": 82.78
-    },
-    {
-      "ticker": "NOBU.JK",
-      "ob_range": "505-486",
-      "sl": 485,
-      "sl_pct": 3.8,
-      "tp": 565.0,
-      "tp_pct": 11.9,
-      "rr": 3.09,
-      "distance": 2.97,
-      "bos_age": 7,
-      "ob_size": 3.65,
-      "score": 82.54
     },
     {
       "ticker": "PNGO.JK",
