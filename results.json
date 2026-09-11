@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-09-11 15:53:30",
-  "started_at": "2026-09-11 15:51:02",
-  "finished_at": "2026-09-11 15:53:30",
-  "duration_seconds": 148.0,
-  "duration_text": "2m 28s",
+  "generated_at": "2026-09-11 18:14:00",
+  "started_at": "2026-09-11 18:09:35",
+  "finished_at": "2026-09-11 18:14:00",
+  "duration_seconds": 265.6,
+  "duration_text": "4m 25s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -18,10 +18,23 @@
       "tp": 730.0,
       "tp_pct": 8.2,
       "rr": 3.59,
-      "distance": 4.44,
+      "distance": 3.7,
       "bos_age": 6,
-      "ob_size": 2.13,
-      "score": 84.61
+      "ob_size": 2.14,
+      "score": 85.34
+    },
+    {
+      "ticker": "BBRI.JK",
+      "ob_range": "3170-3110",
+      "sl": 3108,
+      "sl_pct": 1.9,
+      "tp": 3440.0,
+      "tp_pct": 8.5,
+      "rr": 4.41,
+      "distance": 3.15,
+      "bos_age": 9,
+      "ob_size": 1.83,
+      "score": 84.09
     },
     {
       "ticker": "TRJA.JK",
@@ -35,19 +48,6 @@
       "bos_age": 8,
       "ob_size": 3.12,
       "score": 83.22
-    },
-    {
-      "ticker": "BBRI.JK",
-      "ob_range": "3170-3110",
-      "sl": 3108,
-      "sl_pct": 1.9,
-      "tp": 3440.0,
-      "tp_pct": 8.5,
-      "rr": 4.41,
-      "distance": 4.1,
-      "bos_age": 9,
-      "ob_size": 1.82,
-      "score": 83.15
     },
     {
       "ticker": "TPMA.JK",
