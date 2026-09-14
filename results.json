@@ -1,15 +1,28 @@
 {
   "status": "success",
-  "generated_at": "2026-09-14 14:42:21",
-  "started_at": "2026-09-14 14:39:57",
-  "finished_at": "2026-09-14 14:42:21",
-  "duration_seconds": 144.7,
-  "duration_text": "2m 24s",
+  "generated_at": "2026-09-14 15:48:59",
+  "started_at": "2026-09-14 15:46:01",
+  "finished_at": "2026-09-14 15:48:59",
+  "duration_seconds": 178.5,
+  "duration_text": "2m 58s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
   "candidates": 7,
   "data": [
+    {
+      "ticker": "SMKL.JK",
+      "ob_range": "148-146",
+      "sl": 145,
+      "sl_pct": 1.4,
+      "tp": 172.0,
+      "tp_pct": 16.2,
+      "rr": 11.75,
+      "distance": 2.03,
+      "bos_age": 7,
+      "ob_size": 1.32,
+      "score": 88.27
+    },
     {
       "ticker": "ISAP.JK",
       "ob_range": "24-23",
@@ -24,30 +37,17 @@
       "score": 85.58
     },
     {
-      "ticker": "BBRI.JK",
-      "ob_range": "3170-3110",
-      "sl": 3108,
-      "sl_pct": 1.9,
-      "tp": 3440.0,
-      "tp_pct": 8.5,
-      "rr": 4.41,
-      "distance": 1.89,
-      "bos_age": 10,
-      "ob_size": 1.86,
-      "score": 84.32
-    },
-    {
-      "ticker": "TPMA.JK",
-      "ob_range": "466-462",
-      "sl": 461,
-      "sl_pct": 0.9,
-      "tp": 498.0,
-      "tp_pct": 6.9,
-      "rr": 7.81,
-      "distance": 1.72,
-      "bos_age": 8,
-      "ob_size": 0.84,
-      "score": 84.17
+      "ticker": "JSPT.JK",
+      "ob_range": "1415-1390",
+      "sl": 1389,
+      "sl_pct": 1.8,
+      "tp": 1480.0,
+      "tp_pct": 4.6,
+      "rr": 2.55,
+      "distance": 0.71,
+      "bos_age": 1,
+      "ob_size": 1.75,
+      "score": 83.51
     },
     {
       "ticker": "PZZA.JK",
@@ -57,23 +57,23 @@
       "tp": 226.0,
       "tp_pct": 24.2,
       "rr": 14.39,
-      "distance": 2.75,
+      "distance": 3.3,
       "bos_age": 10,
       "ob_size": 1.6,
-      "score": 83.97
+      "score": 83.42
     },
     {
-      "ticker": "TLDN.JK",
-      "ob_range": "585-565",
-      "sl": 564,
-      "sl_pct": 3.5,
-      "tp": 670.0,
-      "tp_pct": 14.5,
-      "rr": 4.16,
-      "distance": 4.27,
+      "ticker": "TPMA.JK",
+      "ob_range": "466-462",
+      "sl": 461,
+      "sl_pct": 0.9,
+      "tp": 498.0,
+      "tp_pct": 6.9,
+      "rr": 7.81,
+      "distance": 2.58,
       "bos_age": 8,
-      "ob_size": 3.28,
-      "score": 80.96
+      "ob_size": 0.84,
+      "score": 83.31
     },
     {
       "ticker": "PNGO.JK",
@@ -96,10 +96,10 @@
       "tp": 95.0,
       "tp_pct": 15.8,
       "rr": 2.12,
-      "distance": 3.66,
+      "distance": 4.88,
       "bos_age": 9,
-      "ob_size": 7.06,
-      "score": 72.82
+      "ob_size": 6.98,
+      "score": 71.68
     }
   ]
 }

@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-09-14 14:43:20",
-  "started_at": "2026-09-14 14:42:22",
-  "finished_at": "2026-09-14 14:43:20",
-  "duration_seconds": 58.2,
-  "duration_text": "0m 58s",
+  "generated_at": "2026-09-14 15:50:21",
+  "started_at": "2026-09-14 15:49:00",
+  "finished_at": "2026-09-14 15:50:21",
+  "duration_seconds": 81.5,
+  "duration_text": "1m 21s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 1,
+  "candidates": 2,
   "data": [
     {
       "ticker": "LAPD.JK",
@@ -16,10 +16,21 @@
       "spike_ratio": 19.42,
       "hist_age": "+1",
       "macd_hist": 1.21,
-      "value": "92.66B",
+      "value": "101.21B",
       "ema20": 71.53,
       "ema20_break_age": "+1",
       "quality": "MED"
+    },
+    {
+      "ticker": "TLKM.JK",
+      "price": 2670.0,
+      "spike_ratio": 4.26,
+      "hist_age": "+5",
+      "macd_hist": 4.78,
+      "value": "256.11B",
+      "ema20": 2622.07,
+      "ema20_break_age": "+1",
+      "quality": "LOW"
     }
   ]
 }
