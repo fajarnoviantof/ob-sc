@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-11 21:25:39",
+  "updated_at": "2026-09-14 14:43:20",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,134 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-09-14 14:43:20",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "0m 58s",
+      "data": [
+        {
+          "ticker": "LAPD.JK",
+          "price": 93.0,
+          "spike_ratio": 19.42,
+          "hist_age": "+1",
+          "macd_hist": 1.21,
+          "value": "92.66B",
+          "ema20": 71.53,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-09-14 14:42:21",
+      "candidates": 7,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 24s",
+      "data": [
+        {
+          "ticker": "ISAP.JK",
+          "ob_range": "24-23",
+          "sl": 22,
+          "sl_pct": 4.2,
+          "tp": 28.0,
+          "tp_pct": 16.7,
+          "rr": 3.92,
+          "distance": 4.17,
+          "bos_age": 2,
+          "ob_size": 4.0,
+          "score": 85.58
+        },
+        {
+          "ticker": "BBRI.JK",
+          "ob_range": "3170-3110",
+          "sl": 3108,
+          "sl_pct": 1.9,
+          "tp": 3440.0,
+          "tp_pct": 8.5,
+          "rr": 4.41,
+          "distance": 1.89,
+          "bos_age": 10,
+          "ob_size": 1.86,
+          "score": 84.32
+        },
+        {
+          "ticker": "TPMA.JK",
+          "ob_range": "466-462",
+          "sl": 461,
+          "sl_pct": 0.9,
+          "tp": 498.0,
+          "tp_pct": 6.9,
+          "rr": 7.81,
+          "distance": 1.72,
+          "bos_age": 8,
+          "ob_size": 0.84,
+          "score": 84.17
+        },
+        {
+          "ticker": "PZZA.JK",
+          "ob_range": "182-179",
+          "sl": 178,
+          "sl_pct": 1.7,
+          "tp": 226.0,
+          "tp_pct": 24.2,
+          "rr": 14.39,
+          "distance": 2.75,
+          "bos_age": 10,
+          "ob_size": 1.6,
+          "score": 83.97
+        },
+        {
+          "ticker": "TLDN.JK",
+          "ob_range": "585-565",
+          "sl": 564,
+          "sl_pct": 3.5,
+          "tp": 670.0,
+          "tp_pct": 14.5,
+          "rr": 4.16,
+          "distance": 4.27,
+          "bos_age": 8,
+          "ob_size": 3.28,
+          "score": 80.96
+        },
+        {
+          "ticker": "PNGO.JK",
+          "ob_range": "3470-3460",
+          "sl": 3459,
+          "sl_pct": 0.3,
+          "tp": 3560.0,
+          "tp_pct": 2.6,
+          "rr": 8.93,
+          "distance": 3.46,
+          "bos_age": 5,
+          "ob_size": 0.28,
+          "score": 73.74
+        },
+        {
+          "ticker": "SMGA.JK",
+          "ob_range": "82-76",
+          "sl": 75,
+          "sl_pct": 7.5,
+          "tp": 95.0,
+          "tp_pct": 15.8,
+          "rr": 2.12,
+          "distance": 3.66,
+          "bos_age": 9,
+          "ob_size": 7.06,
+          "score": 72.82
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
