@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15 21:23:14",
+  "updated_at": "2026-09-15 21:58:18",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,165 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-09-15 21:58:18",
+      "candidates": 5,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 8s",
+      "data": [
+        {
+          "ticker": "YOII.JK",
+          "price": 85.0,
+          "spike_ratio": 5.07,
+          "hist_age": "+1",
+          "macd_hist": 0.26,
+          "value": "11.18B",
+          "ema20": 82.24,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "BDKR.JK",
+          "price": 164.0,
+          "spike_ratio": 5.76,
+          "hist_age": "+1",
+          "macd_hist": 0.02,
+          "value": "6.28B",
+          "ema20": 157.5,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "TRJA.JK",
+          "price": 145.0,
+          "spike_ratio": 15.72,
+          "hist_age": "+1",
+          "macd_hist": 0.38,
+          "value": "11.68B",
+          "ema20": 127.1,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "DEFI.JK",
+          "price": 139.0,
+          "spike_ratio": 24.49,
+          "hist_age": "+1",
+          "macd_hist": 2.05,
+          "value": "87.07B",
+          "ema20": 108.92,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "CMNT.JK",
+          "price": 775.0,
+          "spike_ratio": 3.26,
+          "hist_age": "+4",
+          "macd_hist": 3.38,
+          "value": "17.34B",
+          "ema20": 758.65,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-09-15 21:57:09",
+      "candidates": 6,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "3m 3s",
+      "data": [
+        {
+          "ticker": "SMKL.JK",
+          "ob_range": "148-146",
+          "sl": 145,
+          "sl_pct": 1.4,
+          "tp": 172.0,
+          "tp_pct": 16.2,
+          "rr": 11.75,
+          "distance": 3.38,
+          "bos_age": 8,
+          "ob_size": 1.31,
+          "score": 85.93
+        },
+        {
+          "ticker": "BTPS.JK",
+          "ob_range": "1000-990",
+          "sl": 989,
+          "sl_pct": 1.0,
+          "tp": 1080.0,
+          "tp_pct": 8.0,
+          "rr": 7.84,
+          "distance": 4.5,
+          "bos_age": 8,
+          "ob_size": 0.96,
+          "score": 84.52
+        },
+        {
+          "ticker": "TPMA.JK",
+          "ob_range": "466-462",
+          "sl": 461,
+          "sl_pct": 0.9,
+          "tp": 498.0,
+          "tp_pct": 6.9,
+          "rr": 7.81,
+          "distance": 3.43,
+          "bos_age": 9,
+          "ob_size": 0.83,
+          "score": 81.47
+        },
+        {
+          "ticker": "RONY.JK",
+          "ob_range": "1275-1225",
+          "sl": 1224,
+          "sl_pct": 4.0,
+          "tp": 1975.0,
+          "tp_pct": 54.9,
+          "rr": 13.72,
+          "distance": 4.31,
+          "bos_age": 7,
+          "ob_size": 3.76,
+          "score": 80.93
+        },
+        {
+          "ticker": "AMOR.JK",
+          "ob_range": "358-354",
+          "sl": 353,
+          "sl_pct": 1.1,
+          "tp": 378.0,
+          "tp_pct": 5.6,
+          "rr": 4.9,
+          "distance": 3.35,
+          "bos_age": 6,
+          "ob_size": 1.08,
+          "score": 80.2
+        },
+        {
+          "ticker": "SMGA.JK",
+          "ob_range": "82-76",
+          "sl": 75,
+          "sl_pct": 7.5,
+          "tp": 95.0,
+          "tp_pct": 15.8,
+          "rr": 2.12,
+          "distance": 4.88,
+          "bos_age": 10,
+          "ob_size": 6.98,
+          "score": 70.68
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "16:00",
