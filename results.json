@@ -1,28 +1,15 @@
 {
   "status": "success",
-  "generated_at": "2026-09-15 15:37:26",
-  "started_at": "2026-09-15 15:33:22",
-  "finished_at": "2026-09-15 15:37:26",
-  "duration_seconds": 244.6,
-  "duration_text": "4m 4s",
+  "generated_at": "2026-09-15 18:41:56",
+  "started_at": "2026-09-15 18:36:54",
+  "finished_at": "2026-09-15 18:41:56",
+  "duration_seconds": 302.3,
+  "duration_text": "5m 2s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
   "candidates": 6,
   "data": [
-    {
-      "ticker": "BTPS.JK",
-      "ob_range": "1000-990",
-      "sl": 989,
-      "sl_pct": 1.0,
-      "tp": 1080.0,
-      "tp_pct": 8.0,
-      "rr": 7.84,
-      "distance": 3.0,
-      "bos_age": 8,
-      "ob_size": 0.97,
-      "score": 86.01
-    },
     {
       "ticker": "SMKL.JK",
       "ob_range": "148-146",
@@ -31,10 +18,23 @@
       "tp": 172.0,
       "tp_pct": 16.2,
       "rr": 11.75,
-      "distance": 4.73,
+      "distance": 3.38,
       "bos_age": 8,
-      "ob_size": 1.29,
-      "score": 84.6
+      "ob_size": 1.31,
+      "score": 85.93
+    },
+    {
+      "ticker": "BTPS.JK",
+      "ob_range": "1000-990",
+      "sl": 989,
+      "sl_pct": 1.0,
+      "tp": 1080.0,
+      "tp_pct": 8.0,
+      "rr": 7.84,
+      "distance": 4.5,
+      "bos_age": 8,
+      "ob_size": 0.96,
+      "score": 84.52
     },
     {
       "ticker": "TPMA.JK",
@@ -44,10 +44,10 @@
       "tp": 498.0,
       "tp_pct": 6.9,
       "rr": 7.81,
-      "distance": 3.0,
+      "distance": 3.43,
       "bos_age": 9,
       "ob_size": 0.83,
-      "score": 81.9
+      "score": 81.47
     },
     {
       "ticker": "RONY.JK",
@@ -70,10 +70,10 @@
       "tp": 378.0,
       "tp_pct": 5.6,
       "rr": 4.9,
-      "distance": 2.79,
+      "distance": 3.35,
       "bos_age": 6,
-      "ob_size": 1.09,
-      "score": 80.75
+      "ob_size": 1.08,
+      "score": 80.2
     },
     {
       "ticker": "SMGA.JK",
