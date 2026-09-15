@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-09-15 14:24:15",
-  "started_at": "2026-09-15 14:21:24",
-  "finished_at": "2026-09-15 14:24:15",
-  "duration_seconds": 171.7,
-  "duration_text": "2m 51s",
+  "generated_at": "2026-09-15 15:37:26",
+  "started_at": "2026-09-15 15:33:22",
+  "finished_at": "2026-09-15 15:37:26",
+  "duration_seconds": 244.6,
+  "duration_text": "4m 4s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -44,10 +44,10 @@
       "tp": 498.0,
       "tp_pct": 6.9,
       "rr": 7.81,
-      "distance": 2.58,
+      "distance": 3.0,
       "bos_age": 9,
-      "ob_size": 0.84,
-      "score": 82.31
+      "ob_size": 0.83,
+      "score": 81.9
     },
     {
       "ticker": "RONY.JK",
