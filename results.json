@@ -1,28 +1,15 @@
 {
   "status": "success",
-  "generated_at": "2026-09-15 21:57:09",
-  "started_at": "2026-09-15 21:54:05",
-  "finished_at": "2026-09-15 21:57:09",
-  "duration_seconds": 183.9,
-  "duration_text": "3m 3s",
+  "generated_at": "2026-09-16 14:25:23",
+  "started_at": "2026-09-16 14:22:10",
+  "finished_at": "2026-09-16 14:25:23",
+  "duration_seconds": 193.8,
+  "duration_text": "3m 13s",
   "total_tickers": 962,
   "processed": 962,
-  "errors": 0,
-  "candidates": 6,
+  "errors": 41,
+  "candidates": 4,
   "data": [
-    {
-      "ticker": "SMKL.JK",
-      "ob_range": "148-146",
-      "sl": 145,
-      "sl_pct": 1.4,
-      "tp": 172.0,
-      "tp_pct": 16.2,
-      "rr": 11.75,
-      "distance": 3.38,
-      "bos_age": 8,
-      "ob_size": 1.31,
-      "score": 85.93
-    },
     {
       "ticker": "BTPS.JK",
       "ob_range": "1000-990",
@@ -31,10 +18,23 @@
       "tp": 1080.0,
       "tp_pct": 8.0,
       "rr": 7.84,
-      "distance": 4.5,
-      "bos_age": 8,
-      "ob_size": 0.96,
-      "score": 84.52
+      "distance": 3.5,
+      "bos_age": 9,
+      "ob_size": 0.97,
+      "score": 84.51
+    },
+    {
+      "ticker": "SMKL.JK",
+      "ob_range": "148-146",
+      "sl": 145,
+      "sl_pct": 1.4,
+      "tp": 172.0,
+      "tp_pct": 16.2,
+      "rr": 11.75,
+      "distance": 4.73,
+      "bos_age": 9,
+      "ob_size": 1.29,
+      "score": 83.6
     },
     {
       "ticker": "TPMA.JK",
@@ -44,23 +44,10 @@
       "tp": 498.0,
       "tp_pct": 6.9,
       "rr": 7.81,
-      "distance": 3.43,
-      "bos_age": 9,
-      "ob_size": 0.83,
-      "score": 81.47
-    },
-    {
-      "ticker": "RONY.JK",
-      "ob_range": "1275-1225",
-      "sl": 1224,
-      "sl_pct": 4.0,
-      "tp": 1975.0,
-      "tp_pct": 54.9,
-      "rr": 13.72,
-      "distance": 4.31,
-      "bos_age": 7,
-      "ob_size": 3.76,
-      "score": 80.93
+      "distance": 1.29,
+      "bos_age": 10,
+      "ob_size": 0.85,
+      "score": 82.59
     },
     {
       "ticker": "AMOR.JK",
@@ -70,23 +57,10 @@
       "tp": 378.0,
       "tp_pct": 5.6,
       "rr": 4.9,
-      "distance": 3.35,
-      "bos_age": 6,
-      "ob_size": 1.08,
-      "score": 80.2
-    },
-    {
-      "ticker": "SMGA.JK",
-      "ob_range": "82-76",
-      "sl": 75,
-      "sl_pct": 7.5,
-      "tp": 95.0,
-      "tp_pct": 15.8,
-      "rr": 2.12,
-      "distance": 4.88,
-      "bos_age": 10,
-      "ob_size": 6.98,
-      "score": 70.68
+      "distance": 2.79,
+      "bos_age": 7,
+      "ob_size": 1.09,
+      "score": 79.75
     }
   ]
 }
