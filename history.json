@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16 21:10:32",
+  "updated_at": "2026-09-16 21:55:38",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,106 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-09-16 21:55:38",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 10s",
+      "data": [
+        {
+          "ticker": "TRON.JK",
+          "price": 105.0,
+          "spike_ratio": 2.04,
+          "hist_age": "+1",
+          "macd_hist": 0.25,
+          "value": "5.22B",
+          "ema20": 101.98,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "VAST.JK",
+          "price": 134.0,
+          "spike_ratio": 18.86,
+          "hist_age": "+1",
+          "macd_hist": 1.29,
+          "value": "28.96B",
+          "ema20": 115.26,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-09-16 21:54:27",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 44s",
+      "data": [
+        {
+          "ticker": "BTPS.JK",
+          "ob_range": "1000-990",
+          "sl": 989,
+          "sl_pct": 1.0,
+          "tp": 1080.0,
+          "tp_pct": 8.0,
+          "rr": 7.84,
+          "distance": 3.0,
+          "bos_age": 9,
+          "ob_size": 0.97,
+          "score": 85.01
+        },
+        {
+          "ticker": "SMKL.JK",
+          "ob_range": "148-146",
+          "sl": 145,
+          "sl_pct": 1.4,
+          "tp": 172.0,
+          "tp_pct": 16.2,
+          "rr": 11.75,
+          "distance": 3.38,
+          "bos_age": 9,
+          "ob_size": 1.31,
+          "score": 84.93
+        },
+        {
+          "ticker": "TPMA.JK",
+          "ob_range": "466-462",
+          "sl": 461,
+          "sl_pct": 0.9,
+          "tp": 498.0,
+          "tp_pct": 6.9,
+          "rr": 7.81,
+          "distance": 1.72,
+          "bos_age": 10,
+          "ob_size": 0.84,
+          "score": 82.17
+        },
+        {
+          "ticker": "AMOR.JK",
+          "ob_range": "358-354",
+          "sl": 353,
+          "sl_pct": 1.1,
+          "tp": 378.0,
+          "tp_pct": 5.6,
+          "rr": 4.9,
+          "distance": 3.35,
+          "bos_age": 7,
+          "ob_size": 1.08,
+          "score": 79.2
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "16:00",
