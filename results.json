@@ -1,15 +1,28 @@
 {
   "status": "success",
-  "generated_at": "2026-09-16 14:25:23",
-  "started_at": "2026-09-16 14:22:10",
-  "finished_at": "2026-09-16 14:25:23",
-  "duration_seconds": 193.8,
-  "duration_text": "3m 13s",
+  "generated_at": "2026-09-16 15:29:53",
+  "started_at": "2026-09-16 15:27:28",
+  "finished_at": "2026-09-16 15:29:53",
+  "duration_seconds": 144.9,
+  "duration_text": "2m 24s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
   "candidates": 4,
   "data": [
+    {
+      "ticker": "SMKL.JK",
+      "ob_range": "148-146",
+      "sl": 145,
+      "sl_pct": 1.4,
+      "tp": 172.0,
+      "tp_pct": 16.2,
+      "rr": 11.75,
+      "distance": 3.38,
+      "bos_age": 9,
+      "ob_size": 1.31,
+      "score": 84.93
+    },
     {
       "ticker": "BTPS.JK",
       "ob_range": "1000-990",
@@ -24,19 +37,6 @@
       "score": 84.51
     },
     {
-      "ticker": "SMKL.JK",
-      "ob_range": "148-146",
-      "sl": 145,
-      "sl_pct": 1.4,
-      "tp": 172.0,
-      "tp_pct": 16.2,
-      "rr": 11.75,
-      "distance": 4.73,
-      "bos_age": 9,
-      "ob_size": 1.29,
-      "score": 83.6
-    },
-    {
       "ticker": "TPMA.JK",
       "ob_range": "466-462",
       "sl": 461,
@@ -44,10 +44,10 @@
       "tp": 498.0,
       "tp_pct": 6.9,
       "rr": 7.81,
-      "distance": 1.29,
+      "distance": 2.58,
       "bos_age": 10,
-      "ob_size": 0.85,
-      "score": 82.59
+      "ob_size": 0.84,
+      "score": 81.31
     },
     {
       "ticker": "AMOR.JK",
@@ -57,10 +57,10 @@
       "tp": 378.0,
       "tp_pct": 5.6,
       "rr": 4.9,
-      "distance": 2.79,
+      "distance": 3.35,
       "bos_age": 7,
-      "ob_size": 1.09,
-      "score": 79.75
+      "ob_size": 1.08,
+      "score": 79.2
     }
   ]
 }
