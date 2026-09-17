@@ -1,15 +1,28 @@
 {
   "status": "success",
-  "generated_at": "2026-09-17 14:22:20",
-  "started_at": "2026-09-17 14:18:00",
-  "finished_at": "2026-09-17 14:22:20",
-  "duration_seconds": 259.4,
-  "duration_text": "4m 19s",
+  "generated_at": "2026-09-17 15:36:33",
+  "started_at": "2026-09-17 15:32:48",
+  "finished_at": "2026-09-17 15:36:33",
+  "duration_seconds": 224.8,
+  "duration_text": "3m 44s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 4,
+  "candidates": 5,
   "data": [
+    {
+      "ticker": "BRNA.JK",
+      "ob_range": "645-625",
+      "sl": 624,
+      "sl_pct": 3.2,
+      "tp": 750.0,
+      "tp_pct": 16.3,
+      "rr": 5.15,
+      "distance": 3.1,
+      "bos_age": 1,
+      "ob_size": 3.01,
+      "score": 89.73
+    },
     {
       "ticker": "AKRA.JK",
       "ob_range": "1415-1385",
@@ -31,10 +44,10 @@
       "tp": 1080.0,
       "tp_pct": 8.0,
       "rr": 7.84,
-      "distance": 3.0,
+      "distance": 3.5,
       "bos_age": 10,
       "ob_size": 0.97,
-      "score": 84.01
+      "score": 83.51
     },
     {
       "ticker": "UNTR.JK",
@@ -57,10 +70,10 @@
       "tp": 378.0,
       "tp_pct": 5.6,
       "rr": 4.9,
-      "distance": 2.79,
+      "distance": 3.35,
       "bos_age": 8,
-      "ob_size": 1.09,
-      "score": 78.75
+      "ob_size": 1.08,
+      "score": 78.2
     }
   ]
 }
