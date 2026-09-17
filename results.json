@@ -1,15 +1,28 @@
 {
   "status": "success",
-  "generated_at": "2026-09-16 21:54:27",
-  "started_at": "2026-09-16 21:50:42",
-  "finished_at": "2026-09-16 21:54:27",
-  "duration_seconds": 224.6,
-  "duration_text": "3m 44s",
+  "generated_at": "2026-09-17 14:22:20",
+  "started_at": "2026-09-17 14:18:00",
+  "finished_at": "2026-09-17 14:22:20",
+  "duration_seconds": 259.4,
+  "duration_text": "4m 19s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
   "candidates": 4,
   "data": [
+    {
+      "ticker": "AKRA.JK",
+      "ob_range": "1415-1385",
+      "sl": 1384,
+      "sl_pct": 2.2,
+      "tp": 1560.0,
+      "tp_pct": 10.2,
+      "rr": 4.75,
+      "distance": 3.53,
+      "bos_age": 7,
+      "ob_size": 2.05,
+      "score": 85.26
+    },
     {
       "ticker": "BTPS.JK",
       "ob_range": "1000-990",
@@ -19,35 +32,22 @@
       "tp_pct": 8.0,
       "rr": 7.84,
       "distance": 3.0,
-      "bos_age": 9,
-      "ob_size": 0.97,
-      "score": 85.01
-    },
-    {
-      "ticker": "SMKL.JK",
-      "ob_range": "148-146",
-      "sl": 145,
-      "sl_pct": 1.4,
-      "tp": 172.0,
-      "tp_pct": 16.2,
-      "rr": 11.75,
-      "distance": 3.38,
-      "bos_age": 9,
-      "ob_size": 1.31,
-      "score": 84.93
-    },
-    {
-      "ticker": "TPMA.JK",
-      "ob_range": "466-462",
-      "sl": 461,
-      "sl_pct": 0.9,
-      "tp": 498.0,
-      "tp_pct": 6.9,
-      "rr": 7.81,
-      "distance": 1.72,
       "bos_age": 10,
-      "ob_size": 0.84,
-      "score": 82.17
+      "ob_size": 0.97,
+      "score": 84.01
+    },
+    {
+      "ticker": "UNTR.JK",
+      "ob_range": "25400-24950",
+      "sl": 24941,
+      "sl_pct": 1.8,
+      "tp": 26975.0,
+      "tp_pct": 6.2,
+      "rr": 3.43,
+      "distance": 1.38,
+      "bos_age": 6,
+      "ob_size": 1.75,
+      "score": 82.66
     },
     {
       "ticker": "AMOR.JK",
@@ -57,10 +57,10 @@
       "tp": 378.0,
       "tp_pct": 5.6,
       "rr": 4.9,
-      "distance": 3.35,
-      "bos_age": 7,
-      "ob_size": 1.08,
-      "score": 79.2
+      "distance": 2.79,
+      "bos_age": 8,
+      "ob_size": 1.09,
+      "score": 78.75
     }
   ]
 }
