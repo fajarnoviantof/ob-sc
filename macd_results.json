@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-09-17 15:38:58",
-  "started_at": "2026-09-17 15:36:33",
-  "finished_at": "2026-09-17 15:38:58",
-  "duration_seconds": 144.7,
-  "duration_text": "2m 24s",
+  "generated_at": "2026-09-17 16:27:13",
+  "started_at": "2026-09-17 16:26:12",
+  "finished_at": "2026-09-17 16:27:13",
+  "duration_seconds": 60.3,
+  "duration_text": "1m 0s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -12,14 +12,14 @@
   "data": [
     {
       "ticker": "MAPI.JK",
-      "price": 1485.0,
-      "spike_ratio": 4.1,
+      "price": 1455.0,
+      "spike_ratio": 2.93,
       "hist_age": "+1",
-      "macd_hist": 5.58,
-      "value": "14.16B",
-      "ema20": 1426.85,
+      "macd_hist": 3.67,
+      "value": "18.10B",
+      "ema20": 1423.99,
       "ema20_break_age": "+1",
-      "quality": "LOW"
+      "quality": "MED"
     },
     {
       "ticker": "AYLS.JK",
@@ -27,7 +27,7 @@
       "spike_ratio": 20.65,
       "hist_age": "+1",
       "macd_hist": 2.35,
-      "value": "20.42B",
+      "value": "20.58B",
       "ema20": 158.33,
       "ema20_break_age": "+1",
       "quality": "MED"
