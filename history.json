@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17 21:16:41",
+  "updated_at": "2026-09-17 21:58:14",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,119 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-09-17 21:58:14",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 9s",
+      "data": [
+        {
+          "ticker": "MAPI.JK",
+          "price": 1455.0,
+          "spike_ratio": 2.93,
+          "hist_age": "+1",
+          "macd_hist": 3.67,
+          "value": "18.10B",
+          "ema20": 1423.99,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "AYLS.JK",
+          "price": 198.0,
+          "spike_ratio": 20.65,
+          "hist_age": "+1",
+          "macd_hist": 2.35,
+          "value": "20.58B",
+          "ema20": 158.33,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-09-17 21:57:04",
+      "candidates": 5,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 37s",
+      "data": [
+        {
+          "ticker": "BRNA.JK",
+          "ob_range": "645-625",
+          "sl": 624,
+          "sl_pct": 3.2,
+          "tp": 750.0,
+          "tp_pct": 16.3,
+          "rr": 5.15,
+          "distance": 3.88,
+          "bos_age": 1,
+          "ob_size": 2.99,
+          "score": 88.97
+        },
+        {
+          "ticker": "AKRA.JK",
+          "ob_range": "1415-1385",
+          "sl": 1384,
+          "sl_pct": 2.2,
+          "tp": 1560.0,
+          "tp_pct": 10.2,
+          "rr": 4.75,
+          "distance": 3.89,
+          "bos_age": 7,
+          "ob_size": 2.04,
+          "score": 84.91
+        },
+        {
+          "ticker": "BTPS.JK",
+          "ob_range": "1000-990",
+          "sl": 989,
+          "sl_pct": 1.0,
+          "tp": 1080.0,
+          "tp_pct": 8.0,
+          "rr": 7.84,
+          "distance": 3.5,
+          "bos_age": 10,
+          "ob_size": 0.97,
+          "score": 83.51
+        },
+        {
+          "ticker": "UNTR.JK",
+          "ob_range": "25400-24950",
+          "sl": 24941,
+          "sl_pct": 1.8,
+          "tp": 26975.0,
+          "tp_pct": 6.2,
+          "rr": 3.43,
+          "distance": 1.18,
+          "bos_age": 6,
+          "ob_size": 1.75,
+          "score": 82.86
+        },
+        {
+          "ticker": "AMOR.JK",
+          "ob_range": "358-354",
+          "sl": 353,
+          "sl_pct": 1.1,
+          "tp": 378.0,
+          "tp_pct": 5.6,
+          "rr": 4.9,
+          "distance": 3.35,
+          "bos_age": 8,
+          "ob_size": 1.08,
+          "score": 78.2
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "16:00",
