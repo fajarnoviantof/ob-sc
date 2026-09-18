@@ -1,36 +1,36 @@
 {
   "status": "success",
-  "generated_at": "2026-09-17 21:58:14",
-  "started_at": "2026-09-17 21:57:04",
-  "finished_at": "2026-09-17 21:58:14",
-  "duration_seconds": 69.4,
-  "duration_text": "1m 9s",
+  "generated_at": "2026-09-18 14:13:47",
+  "started_at": "2026-09-18 14:12:45",
+  "finished_at": "2026-09-18 14:13:47",
+  "duration_seconds": 62.6,
+  "duration_text": "1m 2s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
   "candidates": 2,
   "data": [
     {
-      "ticker": "MAPI.JK",
-      "price": 1455.0,
-      "spike_ratio": 2.93,
+      "ticker": "AISA.JK",
+      "price": 124.0,
+      "spike_ratio": 5.23,
       "hist_age": "+1",
-      "macd_hist": 3.67,
-      "value": "18.10B",
-      "ema20": 1423.99,
+      "macd_hist": 0.05,
+      "value": "5.92B",
+      "ema20": 117.74,
       "ema20_break_age": "+1",
-      "quality": "MED"
+      "quality": "LOW"
     },
     {
-      "ticker": "AYLS.JK",
-      "price": 198.0,
-      "spike_ratio": 20.65,
+      "ticker": "MAHA.JK",
+      "price": 156.0,
+      "spike_ratio": 13.38,
       "hist_age": "+1",
-      "macd_hist": 2.35,
-      "value": "20.58B",
-      "ema20": 158.33,
+      "macd_hist": 0.07,
+      "value": "20.90B",
+      "ema20": 146.51,
       "ema20_break_age": "+1",
-      "quality": "MED"
+      "quality": "LOW"
     }
   ]
 }

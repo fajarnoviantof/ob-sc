@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17 21:58:14",
+  "updated_at": "2026-09-18 14:13:48",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,93 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-09-18 14:13:47",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 2s",
+      "data": [
+        {
+          "ticker": "AISA.JK",
+          "price": 124.0,
+          "spike_ratio": 5.23,
+          "hist_age": "+1",
+          "macd_hist": 0.05,
+          "value": "5.92B",
+          "ema20": 117.74,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "MAHA.JK",
+          "price": 156.0,
+          "spike_ratio": 13.38,
+          "hist_age": "+1",
+          "macd_hist": 0.07,
+          "value": "20.90B",
+          "ema20": 146.51,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-09-18 14:12:44",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 1s",
+      "data": [
+        {
+          "ticker": "AKRA.JK",
+          "ob_range": "1415-1385",
+          "sl": 1384,
+          "sl_pct": 2.2,
+          "tp": 1560.0,
+          "tp_pct": 10.2,
+          "rr": 4.75,
+          "distance": 2.83,
+          "bos_age": 8,
+          "ob_size": 2.06,
+          "score": 84.95
+        },
+        {
+          "ticker": "UNTR.JK",
+          "ob_range": "25400-24950",
+          "sl": 24941,
+          "sl_pct": 1.8,
+          "tp": 26975.0,
+          "tp_pct": 6.2,
+          "rr": 3.43,
+          "distance": 0.59,
+          "bos_age": 7,
+          "ob_size": 1.76,
+          "score": 82.44
+        },
+        {
+          "ticker": "AMOR.JK",
+          "ob_range": "358-354",
+          "sl": 353,
+          "sl_pct": 1.1,
+          "tp": 378.0,
+          "tp_pct": 5.6,
+          "rr": 4.9,
+          "distance": 2.79,
+          "bos_age": 9,
+          "ob_size": 1.09,
+          "score": 77.75
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
