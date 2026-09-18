@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-09-18 14:12:44",
-  "started_at": "2026-09-18 14:09:43",
-  "finished_at": "2026-09-18 14:12:44",
-  "duration_seconds": 181.4,
-  "duration_text": "3m 1s",
+  "generated_at": "2026-09-18 15:10:11",
+  "started_at": "2026-09-18 15:07:26",
+  "finished_at": "2026-09-18 15:10:11",
+  "duration_seconds": 165.5,
+  "duration_text": "2m 45s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 3,
+  "candidates": 4,
   "data": [
     {
       "ticker": "AKRA.JK",
@@ -18,23 +18,23 @@
       "tp": 1560.0,
       "tp_pct": 10.2,
       "rr": 4.75,
-      "distance": 2.83,
+      "distance": 3.18,
       "bos_age": 8,
-      "ob_size": 2.06,
-      "score": 84.95
+      "ob_size": 2.05,
+      "score": 84.61
     },
     {
-      "ticker": "UNTR.JK",
-      "ob_range": "25400-24950",
-      "sl": 24941,
-      "sl_pct": 1.8,
-      "tp": 26975.0,
-      "tp_pct": 6.2,
-      "rr": 3.43,
-      "distance": 0.59,
-      "bos_age": 7,
-      "ob_size": 1.76,
-      "score": 82.44
+      "ticker": "ICON.JK",
+      "ob_range": "148-140",
+      "sl": 139,
+      "sl_pct": 5.5,
+      "tp": 177.0,
+      "tp_pct": 19.6,
+      "rr": 3.56,
+      "distance": 4.05,
+      "bos_age": 1,
+      "ob_size": 5.19,
+      "score": 84.25
     },
     {
       "ticker": "AMOR.JK",
@@ -44,10 +44,23 @@
       "tp": 378.0,
       "tp_pct": 5.6,
       "rr": 4.9,
-      "distance": 2.79,
+      "distance": 3.35,
       "bos_age": 9,
-      "ob_size": 1.09,
-      "score": 77.75
+      "ob_size": 1.08,
+      "score": 77.2
+    },
+    {
+      "ticker": "NIRO.JK",
+      "ob_range": "170-160",
+      "sl": 159,
+      "sl_pct": 6.0,
+      "tp": 236.0,
+      "tp_pct": 38.8,
+      "rr": 6.47,
+      "distance": 4.12,
+      "bos_age": 9,
+      "ob_size": 5.65,
+      "score": 75.23
     }
   ]
 }
