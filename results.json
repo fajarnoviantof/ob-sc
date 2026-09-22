@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-09-22 14:30:27",
-  "started_at": "2026-09-22 14:26:26",
-  "finished_at": "2026-09-22 14:30:27",
-  "duration_seconds": 240.6,
-  "duration_text": "4m 0s",
+  "generated_at": "2026-09-22 15:29:14",
+  "started_at": "2026-09-22 15:25:02",
+  "finished_at": "2026-09-22 15:29:14",
+  "duration_seconds": 252.8,
+  "duration_text": "4m 12s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 5,
+  "candidates": 4,
   "data": [
     {
       "ticker": "SCNP.JK",
@@ -24,19 +24,6 @@
       "score": 92.73
     },
     {
-      "ticker": "ICON.JK",
-      "ob_range": "148-140",
-      "sl": 139,
-      "sl_pct": 5.5,
-      "tp": 177.0,
-      "tp_pct": 19.6,
-      "rr": 3.56,
-      "distance": 2.7,
-      "bos_age": 3,
-      "ob_size": 5.26,
-      "score": 83.53
-    },
-    {
       "ticker": "GSMF.JK",
       "ob_range": "94-92",
       "sl": 91,
@@ -44,10 +31,10 @@
       "tp": 148.0,
       "tp_pct": 57.5,
       "rr": 26.47,
-      "distance": 4.26,
+      "distance": 2.13,
       "bos_age": 8,
-      "ob_size": 2.04,
-      "score": 83.53
+      "ob_size": 2.08,
+      "score": 85.62
     },
     {
       "ticker": "AKRA.JK",
@@ -57,10 +44,10 @@
       "tp": 1560.0,
       "tp_pct": 10.2,
       "rr": 4.75,
-      "distance": 4.24,
+      "distance": 2.83,
       "bos_age": 10,
-      "ob_size": 2.03,
-      "score": 81.57
+      "ob_size": 2.06,
+      "score": 82.95
     },
     {
       "ticker": "MAPB.JK",
