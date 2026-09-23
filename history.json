@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23 18:28:49",
+  "updated_at": "2026-09-23 19:44:53",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,117 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-09-23 19:44:53",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 13s",
+      "data": [
+        {
+          "ticker": "ANTM.JK",
+          "price": 3280.0,
+          "spike_ratio": 2.04,
+          "hist_age": "+1",
+          "macd_hist": 0.17,
+          "value": "263.25B",
+          "ema20": 3197.77,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MPXL.JK",
+          "price": 220.0,
+          "spike_ratio": 31.92,
+          "hist_age": "+1",
+          "macd_hist": 2.39,
+          "value": "16.17B",
+          "ema20": 171.6,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "CYBR.JK",
+          "price": 530.0,
+          "spike_ratio": 0.77,
+          "hist_age": "+2",
+          "macd_hist": 1.6,
+          "value": "15.45B",
+          "ema20": 529.61,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-09-23 19:43:39",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "2m 36s",
+      "data": [
+        {
+          "ticker": "NOBU.JK",
+          "ob_range": "525-510",
+          "sl": 509,
+          "sl_pct": 2.9,
+          "tp": 565.0,
+          "tp_pct": 7.6,
+          "rr": 2.62,
+          "distance": 4.76,
+          "bos_age": 1,
+          "ob_size": 2.73,
+          "score": 86.46
+        },
+        {
+          "ticker": "SCCO.JK",
+          "ob_range": "2560-2450",
+          "sl": 2447,
+          "sl_pct": 4.4,
+          "tp": 3290.0,
+          "tp_pct": 28.5,
+          "rr": 6.51,
+          "distance": 3.91,
+          "bos_age": 6,
+          "ob_size": 4.14,
+          "score": 81.57
+        },
+        {
+          "ticker": "JAWA.JK",
+          "ob_range": "163-153",
+          "sl": 152,
+          "sl_pct": 6.3,
+          "tp": 186.0,
+          "tp_pct": 14.1,
+          "rr": 2.25,
+          "distance": 4.91,
+          "bos_age": 2,
+          "ob_size": 5.85,
+          "score": 80.98
+        },
+        {
+          "ticker": "ARGO.JK",
+          "ob_range": "1170-1160",
+          "sl": 1159,
+          "sl_pct": 0.9,
+          "tp": 1200.0,
+          "tp_pct": 2.6,
+          "rr": 2.94,
+          "distance": 4.27,
+          "bos_age": 1,
+          "ob_size": 0.82,
+          "score": 75.72
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "13:00",
