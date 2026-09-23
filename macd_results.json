@@ -1,25 +1,47 @@
 {
   "status": "success",
-  "generated_at": "2026-09-23 15:34:49",
-  "started_at": "2026-09-23 15:32:27",
-  "finished_at": "2026-09-23 15:34:49",
-  "duration_seconds": 141.8,
-  "duration_text": "2m 21s",
+  "generated_at": "2026-09-23 16:20:39",
+  "started_at": "2026-09-23 16:19:01",
+  "finished_at": "2026-09-23 16:20:39",
+  "duration_seconds": 97.8,
+  "duration_text": "1m 37s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 1,
+  "candidates": 3,
   "data": [
     {
-      "ticker": "MPXL.JK",
-      "price": 218.0,
-      "spike_ratio": 30.78,
+      "ticker": "ANTM.JK",
+      "price": 3280.0,
+      "spike_ratio": 2.04,
       "hist_age": "+1",
-      "macd_hist": 2.26,
-      "value": "15.56B",
-      "ema20": 171.41,
+      "macd_hist": 0.17,
+      "value": "262.90B",
+      "ema20": 3197.77,
       "ema20_break_age": "+1",
       "quality": "MED"
+    },
+    {
+      "ticker": "MPXL.JK",
+      "price": 220.0,
+      "spike_ratio": 31.92,
+      "hist_age": "+1",
+      "macd_hist": 2.39,
+      "value": "16.17B",
+      "ema20": 171.6,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "CYBR.JK",
+      "price": 530.0,
+      "spike_ratio": 0.77,
+      "hist_age": "+2",
+      "macd_hist": 1.6,
+      "value": "15.45B",
+      "ema20": 529.61,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
     }
   ]
 }
