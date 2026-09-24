@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-24 14:26:40",
+  "updated_at": "2026-09-24 15:25:30",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,80 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-09-24 15:25:30",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 46s",
+      "data": [
+        {
+          "ticker": "SDMU.JK",
+          "price": 112.0,
+          "spike_ratio": 11.73,
+          "hist_age": "+1",
+          "macd_hist": 0.79,
+          "value": "44.95B",
+          "ema20": 91.56,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "BIPP.JK",
+          "price": 87.0,
+          "spike_ratio": 17.36,
+          "hist_age": "+1",
+          "macd_hist": 0.94,
+          "value": "35.48B",
+          "ema20": 68.88,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-09-24 15:23:42",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 20s",
+      "data": [
+        {
+          "ticker": "JAWA.JK",
+          "ob_range": "163-153",
+          "sl": 152,
+          "sl_pct": 6.3,
+          "tp": 186.0,
+          "tp_pct": 14.1,
+          "rr": 2.25,
+          "distance": 4.91,
+          "bos_age": 3,
+          "ob_size": 5.85,
+          "score": 79.98
+        },
+        {
+          "ticker": "AISA.JK",
+          "ob_range": "117-115",
+          "sl": 114,
+          "sl_pct": 1.7,
+          "tp": 123.0,
+          "tp_pct": 5.1,
+          "rr": 2.95,
+          "distance": 3.42,
+          "bos_age": 4,
+          "ob_size": 1.65,
+          "score": 79.58
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
