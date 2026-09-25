@@ -1,9 +1,9 @@
 {
   "status": "success",
-  "generated_at": "2026-09-25 21:34:35",
-  "started_at": "2026-09-25 21:33:17",
-  "finished_at": "2026-09-25 21:34:35",
-  "duration_seconds": 78.0,
+  "generated_at": "2026-09-25 22:15:42",
+  "started_at": "2026-09-25 22:14:23",
+  "finished_at": "2026-09-25 22:15:42",
+  "duration_seconds": 78.9,
   "duration_text": "1m 18s",
   "total_tickers": 962,
   "processed": 962,
