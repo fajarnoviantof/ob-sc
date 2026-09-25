@@ -1,25 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-09-25 14:21:33",
-  "started_at": "2026-09-25 14:19:58",
-  "finished_at": "2026-09-25 14:21:33",
-  "duration_seconds": 94.6,
-  "duration_text": "1m 34s",
+  "generated_at": "2026-09-25 15:46:03",
+  "started_at": "2026-09-25 15:44:57",
+  "finished_at": "2026-09-25 15:46:03",
+  "duration_seconds": 66.4,
+  "duration_text": "1m 6s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "BBSS.JK",
-      "price": 94.0,
-      "spike_ratio": 1.43,
-      "hist_age": "+1",
-      "macd_hist": 0.06,
-      "value": "16.65B",
-      "ema20": 92.07,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
