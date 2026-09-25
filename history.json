@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-24 22:02:17",
+  "updated_at": "2026-09-25 14:21:33",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,82 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-09-25 14:21:33",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 34s",
+      "data": [
+        {
+          "ticker": "BBSS.JK",
+          "price": 94.0,
+          "spike_ratio": 1.43,
+          "hist_age": "+1",
+          "macd_hist": 0.06,
+          "value": "16.65B",
+          "ema20": 92.07,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-09-25 14:19:58",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 1s",
+      "data": [
+        {
+          "ticker": "PMUI.JK",
+          "ob_range": "106-103",
+          "sl": 102,
+          "sl_pct": 2.9,
+          "tp": 116.0,
+          "tp_pct": 9.4,
+          "rr": 3.26,
+          "distance": 0.94,
+          "bos_age": 1,
+          "ob_size": 2.8,
+          "score": 92.37
+        },
+        {
+          "ticker": "JAWA.JK",
+          "ob_range": "163-153",
+          "sl": 152,
+          "sl_pct": 6.3,
+          "tp": 186.0,
+          "tp_pct": 14.1,
+          "rr": 2.25,
+          "distance": 1.23,
+          "bos_age": 4,
+          "ob_size": 6.06,
+          "score": 82.45
+        },
+        {
+          "ticker": "LAPD.JK",
+          "ob_range": "70-65",
+          "sl": 64,
+          "sl_pct": 7.3,
+          "tp": 105.0,
+          "tp_pct": 50.0,
+          "rr": 6.86,
+          "distance": 4.29,
+          "bos_age": 9,
+          "ob_size": 6.85,
+          "score": 72.57
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
