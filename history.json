@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29 21:53:41",
+  "updated_at": "2026-09-29 22:37:52",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,30 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-09-29 22:37:52",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 23s",
+      "data": []
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-09-29 22:36:27",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 0s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "15:00",
@@ -178,30 +202,6 @@
       "processed": 962,
       "errors": 41,
       "duration_text": "3m 4s",
-      "data": []
-    },
-    {
-      "scanner": "MACD",
-      "slot": "16:00",
-      "cron": "5 9 * * 1-5",
-      "generated_at": "2026-09-29 00:35:55",
-      "candidates": 0,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 0,
-      "duration_text": "1m 49s",
-      "data": []
-    },
-    {
-      "scanner": "SMC OB",
-      "slot": "16:00",
-      "cron": "5 9 * * 1-5",
-      "generated_at": "2026-09-29 00:34:04",
-      "candidates": 0,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 41,
-      "duration_text": "4m 29s",
       "data": []
     },
     {
