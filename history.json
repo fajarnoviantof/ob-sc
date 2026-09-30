@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-30 19:31:56",
+  "updated_at": "2026-09-30 20:35:30",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,42 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-09-30 20:35:30",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 21s",
+      "data": [
+        {
+          "ticker": "HRTA.JK",
+          "price": 2280.0,
+          "spike_ratio": 2.2,
+          "hist_age": "+1",
+          "macd_hist": 0.05,
+          "value": "27.33B",
+          "ema20": 2212.65,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-09-30 20:34:07",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "2m 45s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "13:00",
