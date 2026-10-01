@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01 17:58:01",
+  "updated_at": "2026-10-01 20:06:37",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,86 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "13:00",
+      "cron": "5 6 * * 1-5",
+      "generated_at": "2026-10-01 20:06:37",
+      "candidates": 5,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 16s",
+      "data": [
+        {
+          "ticker": "VKTR.JK",
+          "price": 825.0,
+          "spike_ratio": 1.34,
+          "hist_age": "+1",
+          "macd_hist": 1.94,
+          "value": "63.43B",
+          "ema20": 809.41,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ASPR.JK",
+          "price": 145.0,
+          "spike_ratio": 1.74,
+          "hist_age": "+1",
+          "macd_hist": 0.36,
+          "value": "6.24B",
+          "ema20": 141.5,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "GEMS.JK",
+          "price": 8150.0,
+          "spike_ratio": 8.78,
+          "hist_age": "+1",
+          "macd_hist": 15.52,
+          "value": "10.66B",
+          "ema20": 7340.38,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "UNIQ.JK",
+          "price": 137.0,
+          "spike_ratio": 12.61,
+          "hist_age": "+1",
+          "macd_hist": 0.09,
+          "value": "9.16B",
+          "ema20": 120.31,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "BBSS.JK",
+          "price": 94.0,
+          "spike_ratio": 0.41,
+          "hist_age": "+4",
+          "macd_hist": 1.04,
+          "value": "5.20B",
+          "ema20": 93.38,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "13:00",
+      "cron": "5 6 * * 1-5",
+      "generated_at": "2026-10-01 20:05:20",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 14s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "11:00",
