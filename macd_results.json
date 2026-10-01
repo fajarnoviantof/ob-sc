@@ -1,25 +1,47 @@
 {
   "status": "success",
-  "generated_at": "2026-09-30 23:27:49",
-  "started_at": "2026-09-30 23:26:25",
-  "finished_at": "2026-09-30 23:27:49",
-  "duration_seconds": 83.3,
-  "duration_text": "1m 23s",
+  "generated_at": "2026-10-01 15:34:16",
+  "started_at": "2026-10-01 15:32:37",
+  "finished_at": "2026-10-01 15:34:16",
+  "duration_seconds": 99.8,
+  "duration_text": "1m 39s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 1,
+  "candidates": 3,
   "data": [
     {
-      "ticker": "HRTA.JK",
-      "price": 2280.0,
-      "spike_ratio": 2.2,
+      "ticker": "VKTR.JK",
+      "price": 820.0,
+      "spike_ratio": 1.15,
       "hist_age": "+1",
-      "macd_hist": 0.05,
-      "value": "27.33B",
-      "ema20": 2212.65,
+      "macd_hist": 1.62,
+      "value": "52.56B",
+      "ema20": 808.94,
       "ema20_break_age": "+1",
       "quality": "MED"
+    },
+    {
+      "ticker": "ASPR.JK",
+      "price": 145.0,
+      "spike_ratio": 1.74,
+      "hist_age": "+1",
+      "macd_hist": 0.36,
+      "value": "5.96B",
+      "ema20": 141.5,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "GEMS.JK",
+      "price": 8125.0,
+      "spike_ratio": 8.54,
+      "hist_age": "+1",
+      "macd_hist": 13.93,
+      "value": "9.91B",
+      "ema20": 7338.0,
+      "ema20_break_age": "+1",
+      "quality": "LOW"
     }
   ]
 }

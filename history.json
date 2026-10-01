@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-30 23:27:49",
+  "updated_at": "2026-10-01 15:34:16",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,64 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-01 15:34:16",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 39s",
+      "data": [
+        {
+          "ticker": "VKTR.JK",
+          "price": 820.0,
+          "spike_ratio": 1.15,
+          "hist_age": "+1",
+          "macd_hist": 1.62,
+          "value": "52.56B",
+          "ema20": 808.94,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ASPR.JK",
+          "price": 145.0,
+          "spike_ratio": 1.74,
+          "hist_age": "+1",
+          "macd_hist": 0.36,
+          "value": "5.96B",
+          "ema20": 141.5,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "GEMS.JK",
+          "price": 8125.0,
+          "spike_ratio": 8.54,
+          "hist_age": "+1",
+          "macd_hist": 13.93,
+          "value": "9.91B",
+          "ema20": 7338.0,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-01 15:32:36",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 10s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
