@@ -1,13 +1,36 @@
 {
   "status": "success",
-  "generated_at": "2026-10-02 23:19:47",
-  "started_at": "2026-10-02 23:18:03",
-  "finished_at": "2026-10-02 23:19:47",
-  "duration_seconds": 103.6,
-  "duration_text": "1m 43s",
+  "generated_at": "2026-10-05 15:37:40",
+  "started_at": "2026-10-05 15:36:28",
+  "finished_at": "2026-10-05 15:37:40",
+  "duration_seconds": 72.1,
+  "duration_text": "1m 12s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 0,
-  "data": []
+  "candidates": 2,
+  "data": [
+    {
+      "ticker": "RATU.JK",
+      "price": 4240.0,
+      "spike_ratio": 2.39,
+      "hist_age": "+1",
+      "macd_hist": 11.83,
+      "value": "23.73B",
+      "ema20": 4225.43,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "SICO.JK",
+      "price": 121.0,
+      "spike_ratio": 6.36,
+      "hist_age": "+1",
+      "macd_hist": 0.18,
+      "value": "6.60B",
+      "ema20": 113.19,
+      "ema20_break_age": "+1",
+      "quality": "LOW"
+    }
+  ]
 }
