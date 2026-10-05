@@ -1,9 +1,9 @@
 {
   "status": "success",
-  "generated_at": "2026-10-05 15:37:40",
-  "started_at": "2026-10-05 15:36:28",
-  "finished_at": "2026-10-05 15:37:40",
-  "duration_seconds": 72.1,
+  "generated_at": "2026-10-05 17:19:23",
+  "started_at": "2026-10-05 17:18:10",
+  "finished_at": "2026-10-05 17:19:23",
+  "duration_seconds": 72.4,
   "duration_text": "1m 12s",
   "total_tickers": 962,
   "processed": 962,
@@ -16,21 +16,21 @@
       "spike_ratio": 2.39,
       "hist_age": "+1",
       "macd_hist": 11.83,
-      "value": "23.73B",
+      "value": "26.97B",
       "ema20": 4225.43,
       "ema20_break_age": "+1",
       "quality": "MED"
     },
     {
-      "ticker": "SICO.JK",
-      "price": 121.0,
-      "spike_ratio": 6.36,
+      "ticker": "SIDO.JK",
+      "price": 352.0,
+      "spike_ratio": 2.66,
       "hist_age": "+1",
-      "macd_hist": 0.18,
-      "value": "6.60B",
-      "ema20": 113.19,
+      "macd_hist": 0.06,
+      "value": "5.15B",
+      "ema20": 350.52,
       "ema20_break_age": "+1",
-      "quality": "LOW"
+      "quality": "MED"
     }
   ]
 }

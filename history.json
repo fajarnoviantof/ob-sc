@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-05 15:37:40",
+  "updated_at": "2026-10-05 17:19:23",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,67 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-05 17:19:23",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 12s",
+      "data": [
+        {
+          "ticker": "RATU.JK",
+          "price": 4240.0,
+          "spike_ratio": 2.39,
+          "hist_age": "+1",
+          "macd_hist": 11.83,
+          "value": "26.97B",
+          "ema20": 4225.43,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "SIDO.JK",
+          "price": 352.0,
+          "spike_ratio": 2.66,
+          "hist_age": "+1",
+          "macd_hist": 0.06,
+          "value": "5.15B",
+          "ema20": 350.52,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-05 17:18:10",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 11s",
+      "data": [
+        {
+          "ticker": "UNTR.JK",
+          "ob_range": "24550-24150",
+          "sl": 24142,
+          "sl_pct": 1.7,
+          "tp": 26975.0,
+          "tp_pct": 9.9,
+          "rr": 5.95,
+          "distance": 4.28,
+          "bos_age": 3,
+          "ob_size": 1.56,
+          "score": 89.5
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
