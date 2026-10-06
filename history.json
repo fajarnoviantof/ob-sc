@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-06 21:08:42",
+  "updated_at": "2026-10-06 22:06:52",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,86 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-06 22:06:52",
+      "candidates": 5,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 35s",
+      "data": [
+        {
+          "ticker": "TOWR.JK",
+          "price": 428.0,
+          "spike_ratio": 1.55,
+          "hist_age": "+1",
+          "macd_hist": 0.78,
+          "value": "40.94B",
+          "ema20": 416.65,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "BYAN.JK",
+          "price": 13450.0,
+          "spike_ratio": 2.13,
+          "hist_age": "+1",
+          "macd_hist": 101.9,
+          "value": "77.33B",
+          "ema20": 12434.23,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "BTEK.JK",
+          "price": 14.0,
+          "spike_ratio": 3.75,
+          "hist_age": "+1",
+          "macd_hist": 0.05,
+          "value": "16.59B",
+          "ema20": 11.84,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "FUTR.JK",
+          "price": 282.0,
+          "spike_ratio": 3.85,
+          "hist_age": "+1",
+          "macd_hist": 0.46,
+          "value": "15.65B",
+          "ema20": 274.76,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "WIIM.JK",
+          "price": 1565.0,
+          "spike_ratio": 2.41,
+          "hist_age": "+2",
+          "macd_hist": 8.45,
+          "value": "5.27B",
+          "ema20": 1524.92,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-06 22:05:16",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 4s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "14:00",
@@ -484,30 +564,6 @@
       "processed": 962,
       "errors": 41,
       "duration_text": "4m 16s",
-      "data": []
-    },
-    {
-      "scanner": "MACD",
-      "slot": "15:00",
-      "cron": "5 8 * * 1-5",
-      "generated_at": "2026-10-06 00:09:30",
-      "candidates": 0,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 0,
-      "duration_text": "1m 23s",
-      "data": []
-    },
-    {
-      "scanner": "SMC OB",
-      "slot": "15:00",
-      "cron": "5 8 * * 1-5",
-      "generated_at": "2026-10-06 00:08:07",
-      "candidates": 0,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 41,
-      "duration_text": "3m 30s",
       "data": []
     },
     {
