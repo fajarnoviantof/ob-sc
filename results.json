@@ -1,27 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-10-06 02:18:14",
-  "started_at": "2026-10-06 02:13:46",
-  "finished_at": "2026-10-06 02:18:14",
-  "duration_seconds": 268.7,
-  "duration_text": "4m 28s",
+  "generated_at": "2026-10-06 15:44:09",
+  "started_at": "2026-10-06 15:41:14",
+  "finished_at": "2026-10-06 15:44:09",
+  "duration_seconds": 175.1,
+  "duration_text": "2m 55s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "UNTR.JK",
-      "ob_range": "24550-24150",
-      "sl": 24142,
-      "sl_pct": 1.7,
-      "tp": 26975.0,
-      "tp_pct": 9.9,
-      "rr": 5.95,
-      "distance": 4.28,
-      "bos_age": 3,
-      "ob_size": 1.56,
-      "score": 89.5
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
