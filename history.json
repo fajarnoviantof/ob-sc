@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07 22:35:42",
+  "updated_at": "2026-10-07 23:19:07",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,89 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-10-07 23:19:07",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 1,
+      "duration_text": "2m 1s",
+      "data": [
+        {
+          "ticker": "CMRY.JK",
+          "price": 4470.0,
+          "spike_ratio": 1.05,
+          "hist_age": "+1",
+          "macd_hist": 4.79,
+          "value": "7.82B",
+          "ema20": 4444.45,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "INDF.JK",
+          "price": 6950.0,
+          "spike_ratio": 1.79,
+          "hist_age": "+1",
+          "macd_hist": 2.61,
+          "value": "19.60B",
+          "ema20": 6946.14,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ENAK.JK",
+          "price": 214.0,
+          "spike_ratio": 5.5,
+          "hist_age": "+1",
+          "macd_hist": 1.35,
+          "value": "9.36B",
+          "ema20": 205.16,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "REAL.JK",
+          "price": 51.0,
+          "spike_ratio": 5.63,
+          "hist_age": "+1",
+          "macd_hist": 0.21,
+          "value": "27.08B",
+          "ema20": 45.35,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-10-07 23:17:05",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 49s",
+      "data": [
+        {
+          "ticker": "CSIS.JK",
+          "ob_range": "181-165",
+          "sl": 164,
+          "sl_pct": 9.0,
+          "tp": 214.0,
+          "tp_pct": 18.2,
+          "rr": 2.02,
+          "distance": 4.42,
+          "bos_age": 1,
+          "ob_size": 8.47,
+          "score": 77.09
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "15:00",
