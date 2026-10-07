@@ -1,13 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-10-07 18:05:54",
-  "started_at": "2026-10-07 18:04:05",
-  "finished_at": "2026-10-07 18:05:54",
-  "duration_seconds": 109.2,
-  "duration_text": "1m 49s",
+  "generated_at": "2026-10-07 20:18:39",
+  "started_at": "2026-10-07 20:16:44",
+  "finished_at": "2026-10-07 20:18:39",
+  "duration_seconds": 114.9,
+  "duration_text": "1m 54s",
   "total_tickers": 962,
   "processed": 962,
-  "errors": 0,
+  "errors": 1,
   "candidates": 4,
   "data": [
     {
