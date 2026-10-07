@@ -1,13 +1,40 @@
 {
   "status": "success",
-  "generated_at": "2026-10-06 23:45:29",
-  "started_at": "2026-10-06 23:41:21",
-  "finished_at": "2026-10-06 23:45:29",
-  "duration_seconds": 247.8,
-  "duration_text": "4m 7s",
+  "generated_at": "2026-10-07 15:20:15",
+  "started_at": "2026-10-07 15:16:05",
+  "finished_at": "2026-10-07 15:20:15",
+  "duration_seconds": 250.2,
+  "duration_text": "4m 10s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 0,
-  "data": []
+  "candidates": 2,
+  "data": [
+    {
+      "ticker": "BKDP.JK",
+      "ob_range": "184-178",
+      "sl": 177,
+      "sl_pct": 3.3,
+      "tp": 198.0,
+      "tp_pct": 7.6,
+      "rr": 2.29,
+      "distance": 4.35,
+      "bos_age": 1,
+      "ob_size": 3.12,
+      "score": 86.03
+    },
+    {
+      "ticker": "CSIS.JK",
+      "ob_range": "181-165",
+      "sl": 164,
+      "sl_pct": 9.0,
+      "tp": 214.0,
+      "tp_pct": 18.2,
+      "rr": 2.02,
+      "distance": 4.42,
+      "bos_age": 1,
+      "ob_size": 8.47,
+      "score": 77.09
+    }
+  ]
 }
