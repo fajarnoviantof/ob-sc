@@ -1,27 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-10-07 23:17:05",
-  "started_at": "2026-10-07 23:12:15",
-  "finished_at": "2026-10-07 23:17:05",
-  "duration_seconds": 289.7,
-  "duration_text": "4m 49s",
+  "generated_at": "2026-10-08 00:28:40",
+  "started_at": "2026-10-08 00:23:51",
+  "finished_at": "2026-10-08 00:28:40",
+  "duration_seconds": 288.5,
+  "duration_text": "4m 48s",
   "total_tickers": 962,
   "processed": 962,
-  "errors": 41,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "CSIS.JK",
-      "ob_range": "181-165",
-      "sl": 164,
-      "sl_pct": 9.0,
-      "tp": 214.0,
-      "tp_pct": 18.2,
-      "rr": 2.02,
-      "distance": 4.42,
-      "bos_age": 1,
-      "ob_size": 8.47,
-      "score": 77.09
-    }
-  ]
+  "errors": 42,
+  "candidates": 0,
+  "data": []
 }
