@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08 00:30:36",
+  "updated_at": "2026-10-08 15:37:02",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,53 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-08 15:37:02",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 15s",
+      "data": [
+        {
+          "ticker": "KIOS.JK",
+          "price": 87.0,
+          "spike_ratio": 1.19,
+          "hist_age": "+1",
+          "macd_hist": 0.19,
+          "value": "10.10B",
+          "ema20": 86.45,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MCAS.JK",
+          "price": 284.0,
+          "spike_ratio": 9.13,
+          "hist_age": "+1",
+          "macd_hist": 1.48,
+          "value": "6.99B",
+          "ema20": 250.26,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-08 15:35:46",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 40s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
