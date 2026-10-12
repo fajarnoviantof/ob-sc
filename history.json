@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12 22:16:21",
+  "updated_at": "2026-10-12 23:46:53",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,89 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-10-12 23:46:53",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 37s",
+      "data": [
+        {
+          "ticker": "INTP.JK",
+          "price": 5200.0,
+          "spike_ratio": 1.84,
+          "hist_age": "+1",
+          "macd_hist": 13.24,
+          "value": "15.58B",
+          "ema20": 5084.4,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "CPIN.JK",
+          "price": 3020.0,
+          "spike_ratio": 2.2,
+          "hist_age": "+1",
+          "macd_hist": 1.86,
+          "value": "64.86B",
+          "ema20": 3002.6,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MINE.JK",
+          "price": 320.0,
+          "spike_ratio": 8.47,
+          "hist_age": "+1",
+          "macd_hist": 0.08,
+          "value": "9.04B",
+          "ema20": 279.96,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "INKP.JK",
+          "price": 8675.0,
+          "spike_ratio": 2.91,
+          "hist_age": "+2",
+          "macd_hist": 32.55,
+          "value": "34.10B",
+          "ema20": 8373.04,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-10-12 23:44:15",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "5m 59s",
+      "data": [
+        {
+          "ticker": "MOLI.JK",
+          "ob_range": "376-350",
+          "sl": 349,
+          "sl_pct": 7.0,
+          "tp": 442.0,
+          "tp_pct": 17.6,
+          "rr": 2.49,
+          "distance": 1.06,
+          "bos_age": 8,
+          "ob_size": 6.84,
+          "score": 77.05
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "13:00",
