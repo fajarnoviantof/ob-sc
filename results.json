@@ -1,27 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-10-13 23:52:30",
-  "started_at": "2026-10-13 23:48:36",
-  "finished_at": "2026-10-13 23:52:30",
-  "duration_seconds": 234.3,
-  "duration_text": "3m 54s",
+  "generated_at": "2026-10-14 00:35:46",
+  "started_at": "2026-10-14 00:32:22",
+  "finished_at": "2026-10-14 00:35:46",
+  "duration_seconds": 204.0,
+  "duration_text": "3m 24s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "POLA.JK",
-      "ob_range": "86-81",
-      "sl": 80,
-      "sl_pct": 5.9,
-      "tp": 103.0,
-      "tp_pct": 19.8,
-      "rr": 3.33,
-      "distance": 4.65,
-      "bos_age": 4,
-      "ob_size": 5.56,
-      "score": 79.86
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
