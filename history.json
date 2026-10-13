@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13 02:53:36",
+  "updated_at": "2026-10-13 16:09:22",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,78 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-13 16:09:22",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 27s",
+      "data": [
+        {
+          "ticker": "INTP.JK",
+          "price": 5275.0,
+          "spike_ratio": 2.76,
+          "hist_age": "+1",
+          "macd_hist": 18.02,
+          "value": "6.32B",
+          "ema20": 5091.55,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "CTRA.JK",
+          "price": 565.0,
+          "spike_ratio": 2.78,
+          "hist_age": "+1",
+          "macd_hist": 1.72,
+          "value": "16.23B",
+          "ema20": 560.37,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "INKP.JK",
+          "price": 8375.0,
+          "spike_ratio": 0.73,
+          "hist_age": "+2",
+          "macd_hist": 13.41,
+          "value": "14.12B",
+          "ema20": 8344.47,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-13 16:07:53",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 24s",
+      "data": [
+        {
+          "ticker": "POLA.JK",
+          "ob_range": "86-81",
+          "sl": 80,
+          "sl_pct": 5.9,
+          "tp": 103.0,
+          "tp_pct": 19.8,
+          "rr": 3.33,
+          "distance": 4.65,
+          "bos_age": 4,
+          "ob_size": 5.56,
+          "score": 79.86
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
