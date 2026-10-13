@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13 21:11:02",
+  "updated_at": "2026-10-13 22:02:56",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,78 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-10-13 22:02:56",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 25s",
+      "data": [
+        {
+          "ticker": "INTP.JK",
+          "price": 5200.0,
+          "spike_ratio": 1.84,
+          "hist_age": "+1",
+          "macd_hist": 13.24,
+          "value": "6.62B",
+          "ema20": 5084.4,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "CTRA.JK",
+          "price": 575.0,
+          "spike_ratio": 4.18,
+          "hist_age": "+1",
+          "macd_hist": 2.36,
+          "value": "18.14B",
+          "ema20": 561.32,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "CMRY.JK",
+          "price": 4480.0,
+          "spike_ratio": 0.97,
+          "hist_age": "+4",
+          "macd_hist": 11.52,
+          "value": "5.01B",
+          "ema20": 4446.33,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "14:00",
+      "cron": "5 7 * * 1-5",
+      "generated_at": "2026-10-13 22:00:30",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "5m 21s",
+      "data": [
+        {
+          "ticker": "POLA.JK",
+          "ob_range": "86-81",
+          "sl": 80,
+          "sl_pct": 5.9,
+          "tp": 103.0,
+          "tp_pct": 19.8,
+          "rr": 3.33,
+          "distance": 4.65,
+          "bos_age": 4,
+          "ob_size": 5.56,
+          "score": 79.86
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "13:00",
