@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14 14:19:12",
+  "updated_at": "2026-10-14 15:40:53",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,155 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-14 15:40:53",
+      "candidates": 10,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 9s",
+      "data": [
+        {
+          "ticker": "ELSA.JK",
+          "price": 680.0,
+          "spike_ratio": 2.25,
+          "hist_age": "+1",
+          "macd_hist": 2.06,
+          "value": "14.36B",
+          "ema20": 660.7,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "BUKA.JK",
+          "price": 104.0,
+          "spike_ratio": 2.47,
+          "hist_age": "+1",
+          "macd_hist": 0.1,
+          "value": "6.86B",
+          "ema20": 103.58,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "EURO.JK",
+          "price": 1410.0,
+          "spike_ratio": 3.86,
+          "hist_age": "+1",
+          "macd_hist": 2.3,
+          "value": "20.66B",
+          "ema20": 1404.07,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "ACES.JK",
+          "price": 340.0,
+          "spike_ratio": 4.25,
+          "hist_age": "+1",
+          "macd_hist": 0.44,
+          "value": "7.26B",
+          "ema20": 333.96,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "KBLV.JK",
+          "price": 113.0,
+          "spike_ratio": 5.56,
+          "hist_age": "+1",
+          "macd_hist": 0.82,
+          "value": "8.81B",
+          "ema20": 108.99,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "TRON.JK",
+          "price": 101.0,
+          "spike_ratio": 10.93,
+          "hist_age": "+1",
+          "macd_hist": 1.27,
+          "value": "39.47B",
+          "ema20": 85.53,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "CBDK.JK",
+          "price": 3740.0,
+          "spike_ratio": 3.53,
+          "hist_age": "+2",
+          "macd_hist": 27.59,
+          "value": "24.74B",
+          "ema20": 3548.03,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "SMRA.JK",
+          "price": 266.0,
+          "spike_ratio": 1.93,
+          "hist_age": "+3",
+          "macd_hist": 3.91,
+          "value": "22.94B",
+          "ema20": 258.23,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MYOR.JK",
+          "price": 1435.0,
+          "spike_ratio": 4.2,
+          "hist_age": "+4",
+          "macd_hist": 7.91,
+          "value": "12.77B",
+          "ema20": 1423.41,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "PANI.JK",
+          "price": 5100.0,
+          "spike_ratio": 3.02,
+          "hist_age": "+5",
+          "macd_hist": 71.64,
+          "value": "59.51B",
+          "ema20": 4889.5,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-14 15:38:43",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 40s",
+      "data": [
+        {
+          "ticker": "RDTX.JK",
+          "ob_range": "12350-12100",
+          "sl": 12095,
+          "sl_pct": 2.1,
+          "tp": 13575.0,
+          "tp_pct": 9.9,
+          "rr": 4.82,
+          "distance": 3.24,
+          "bos_age": 1,
+          "ob_size": 1.96,
+          "score": 91.74
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
