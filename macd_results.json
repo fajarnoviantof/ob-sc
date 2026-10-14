@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-10-14 16:30:46",
-  "started_at": "2026-10-14 16:29:20",
-  "finished_at": "2026-10-14 16:30:46",
-  "duration_seconds": 85.0,
-  "duration_text": "1m 25s",
+  "generated_at": "2026-10-14 18:46:32",
+  "started_at": "2026-10-14 18:45:06",
+  "finished_at": "2026-10-14 18:46:32",
+  "duration_seconds": 86.5,
+  "duration_text": "1m 26s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -60,7 +60,7 @@
       "spike_ratio": 4.78,
       "hist_age": "+1",
       "macd_hist": 0.57,
-      "value": "9.03B",
+      "value": "9.02B",
       "ema20": 334.15,
       "ema20_break_age": "+1",
       "quality": "LOW"
@@ -104,7 +104,7 @@
       "spike_ratio": 1.54,
       "hist_age": "+3",
       "macd_hist": 3.78,
-      "value": "23.88B",
+      "value": "23.87B",
       "ema20": 258.04,
       "ema20_break_age": "+1",
       "quality": "MED"
