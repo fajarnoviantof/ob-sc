@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14 00:37:26",
+  "updated_at": "2026-10-14 14:19:12",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,122 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-14 14:19:12",
+      "candidates": 7,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 27s",
+      "data": [
+        {
+          "ticker": "ELSA.JK",
+          "price": 675.0,
+          "spike_ratio": 1.8,
+          "hist_age": "+1",
+          "macd_hist": 1.74,
+          "value": "9.38B",
+          "ema20": 660.22,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "EURO.JK",
+          "price": 1405.0,
+          "spike_ratio": 3.7,
+          "hist_age": "+1",
+          "macd_hist": 1.98,
+          "value": "20.51B",
+          "ema20": 1403.6,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "TRON.JK",
+          "price": 97.0,
+          "spike_ratio": 9.25,
+          "hist_age": "+1",
+          "macd_hist": 1.02,
+          "value": "27.14B",
+          "ema20": 85.15,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "CBDK.JK",
+          "price": 3770.0,
+          "spike_ratio": 4.02,
+          "hist_age": "+2",
+          "macd_hist": 29.51,
+          "value": "21.30B",
+          "ema20": 3550.89,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "SMRA.JK",
+          "price": 268.0,
+          "spike_ratio": 2.32,
+          "hist_age": "+3",
+          "macd_hist": 4.04,
+          "value": "17.82B",
+          "ema20": 258.42,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MYOR.JK",
+          "price": 1425.0,
+          "spike_ratio": 3.5,
+          "hist_age": "+4",
+          "macd_hist": 7.27,
+          "value": "8.92B",
+          "ema20": 1422.46,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "PANI.JK",
+          "price": 5150.0,
+          "spike_ratio": 3.47,
+          "hist_age": "+5",
+          "macd_hist": 74.83,
+          "value": "52.63B",
+          "ema20": 4894.26,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-14 14:17:44",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 4s",
+      "data": [
+        {
+          "ticker": "RDTX.JK",
+          "ob_range": "12350-12100",
+          "sl": 12095,
+          "sl_pct": 2.1,
+          "tp": 13575.0,
+          "tp_pct": 9.9,
+          "rr": 4.82,
+          "distance": 1.82,
+          "bos_age": 1,
+          "ob_size": 1.99,
+          "score": 93.13
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
