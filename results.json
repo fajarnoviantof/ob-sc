@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-10-15 16:07:50",
-  "started_at": "2026-10-15 16:04:45",
-  "finished_at": "2026-10-15 16:07:50",
-  "duration_seconds": 185.2,
-  "duration_text": "3m 5s",
+  "generated_at": "2026-10-15 18:23:18",
+  "started_at": "2026-10-15 18:19:06",
+  "finished_at": "2026-10-15 18:23:18",
+  "duration_seconds": 252.4,
+  "duration_text": "4m 12s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 1,
+  "candidates": 2,
   "data": [
     {
       "ticker": "RDTX.JK",
@@ -18,10 +18,23 @@
       "tp": 13575.0,
       "tp_pct": 9.9,
       "rr": 4.82,
-      "distance": 2.43,
+      "distance": 1.82,
       "bos_age": 2,
-      "ob_size": 1.98,
-      "score": 91.53
+      "ob_size": 1.99,
+      "score": 92.13
+    },
+    {
+      "ticker": "SAMF.JK",
+      "ob_range": "300-296",
+      "sl": 295,
+      "sl_pct": 1.4,
+      "tp": 386.0,
+      "tp_pct": 28.7,
+      "rr": 21.08,
+      "distance": 4.0,
+      "bos_age": 9,
+      "ob_size": 1.28,
+      "score": 84.36
     }
   ]
 }
