@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15 19:39:08",
+  "updated_at": "2026-10-15 20:25:58",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,69 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-15 20:25:58",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 53s",
+      "data": [
+        {
+          "ticker": "KKES.JK",
+          "price": 77.0,
+          "spike_ratio": 1.02,
+          "hist_age": "+6",
+          "macd_hist": 0.81,
+          "value": "9.07B",
+          "ema20": 75.06,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-15 20:24:04",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 28s",
+      "data": [
+        {
+          "ticker": "RDTX.JK",
+          "ob_range": "12350-12100",
+          "sl": 12095,
+          "sl_pct": 2.1,
+          "tp": 13575.0,
+          "tp_pct": 9.9,
+          "rr": 4.82,
+          "distance": 1.82,
+          "bos_age": 2,
+          "ob_size": 1.99,
+          "score": 92.13
+        },
+        {
+          "ticker": "SAMF.JK",
+          "ob_range": "300-296",
+          "sl": 295,
+          "sl_pct": 1.4,
+          "tp": 386.0,
+          "tp_pct": 28.7,
+          "rr": 21.08,
+          "distance": 4.0,
+          "bos_age": 9,
+          "ob_size": 1.28,
+          "score": 84.36
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "14:00",
@@ -14703,41 +14766,6 @@
           "bos_age": 5,
           "ob_size": 0.28,
           "score": 73.74
-        }
-      ]
-    },
-    {
-      "scanner": "MACD",
-      "slot": "13:00",
-      "cron": "5 6 * * 1-5",
-      "generated_at": "2026-09-14 19:40:52",
-      "candidates": 2,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 0,
-      "duration_text": "1m 46s",
-      "data": [
-        {
-          "ticker": "LAPD.JK",
-          "price": 93.0,
-          "spike_ratio": 19.42,
-          "hist_age": "+1",
-          "macd_hist": 1.21,
-          "value": "101.25B",
-          "ema20": 71.53,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "TLKM.JK",
-          "price": 2690.0,
-          "spike_ratio": 5.48,
-          "hist_age": "+5",
-          "macd_hist": 6.05,
-          "value": "375.87B",
-          "ema20": 2623.98,
-          "ema20_break_age": "+1",
-          "quality": "LOW"
         }
       ]
     }
