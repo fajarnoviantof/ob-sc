@@ -1,25 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-10-15 21:59:58",
-  "started_at": "2026-10-15 21:58:00",
-  "finished_at": "2026-10-15 21:59:58",
-  "duration_seconds": 118.5,
-  "duration_text": "1m 58s",
+  "generated_at": "2026-10-16 13:53:06",
+  "started_at": "2026-10-16 13:51:48",
+  "finished_at": "2026-10-16 13:53:06",
+  "duration_seconds": 77.9,
+  "duration_text": "1m 17s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "KKES.JK",
-      "price": 77.0,
-      "spike_ratio": 1.02,
-      "hist_age": "+6",
-      "macd_hist": 0.81,
-      "value": "9.07B",
-      "ema20": 75.06,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
