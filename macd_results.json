@@ -1,13 +1,25 @@
 {
   "status": "success",
-  "generated_at": "2026-10-20 14:23:03",
-  "started_at": "2026-10-20 14:21:11",
-  "finished_at": "2026-10-20 14:23:03",
-  "duration_seconds": 111.6,
+  "generated_at": "2026-10-20 15:28:44",
+  "started_at": "2026-10-20 15:26:52",
+  "finished_at": "2026-10-20 15:28:44",
+  "duration_seconds": 111.5,
   "duration_text": "1m 51s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 0,
-  "data": []
+  "candidates": 1,
+  "data": [
+    {
+      "ticker": "BUKA.JK",
+      "price": 104.0,
+      "spike_ratio": 3.49,
+      "hist_age": "+1",
+      "macd_hist": 0.28,
+      "value": "18.69B",
+      "ema20": 102.89,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    }
+  ]
 }
