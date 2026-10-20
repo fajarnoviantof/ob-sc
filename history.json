@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20 19:45:29",
+  "updated_at": "2026-10-20 20:36:48",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,53 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-20 20:36:48",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 39s",
+      "data": [
+        {
+          "ticker": "BUKA.JK",
+          "price": 106.0,
+          "spike_ratio": 4.88,
+          "hist_age": "+1",
+          "macd_hist": 0.4,
+          "value": "23.63B",
+          "ema20": 103.08,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "BRPT.JK",
+          "price": 1435.0,
+          "spike_ratio": 6.06,
+          "hist_age": "+1",
+          "macd_hist": 1.22,
+          "value": "333.15B",
+          "ema20": 1423.33,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-20 20:35:08",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 10s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "14:00",
