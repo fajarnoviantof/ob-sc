@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-10-21 14:20:31",
-  "started_at": "2026-10-21 14:18:13",
-  "finished_at": "2026-10-21 14:20:31",
-  "duration_seconds": 137.1,
-  "duration_text": "2m 17s",
+  "generated_at": "2026-10-21 15:31:29",
+  "started_at": "2026-10-21 15:29:56",
+  "finished_at": "2026-10-21 15:31:29",
+  "duration_seconds": 92.4,
+  "duration_text": "1m 32s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -12,36 +12,36 @@
   "data": [
     {
       "ticker": "BTPS.JK",
-      "price": 970.0,
-      "spike_ratio": 0.48,
+      "price": 975.0,
+      "spike_ratio": 0.73,
       "hist_age": "+1",
-      "macd_hist": 0.04,
-      "value": "5.97B",
-      "ema20": 963.35,
+      "macd_hist": 0.35,
+      "value": "8.20B",
+      "ema20": 963.83,
       "ema20_break_age": "+1",
       "quality": "MED"
     },
     {
       "ticker": "DMAS.JK",
-      "price": 206.0,
-      "spike_ratio": 5.46,
+      "price": 208.0,
+      "spike_ratio": 5.85,
       "hist_age": "+1",
-      "macd_hist": 0.17,
-      "value": "173.03B",
-      "ema20": 183.3,
+      "macd_hist": 0.3,
+      "value": "191.37B",
+      "ema20": 183.49,
       "ema20_break_age": "+1",
       "quality": "LOW"
     },
     {
       "ticker": "ACES.JK",
-      "price": 338.0,
-      "spike_ratio": 0.51,
+      "price": 344.0,
+      "spike_ratio": 1.29,
       "hist_age": "+6",
-      "macd_hist": 1.48,
-      "value": "7.84B",
-      "ema20": 335.16,
+      "macd_hist": 1.87,
+      "value": "10.23B",
+      "ema20": 335.73,
       "ema20_break_age": "+1",
-      "quality": "MED"
+      "quality": "HIGH"
     }
   ]
 }

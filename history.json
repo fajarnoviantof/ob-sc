@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21 14:20:31",
+  "updated_at": "2026-10-21 15:31:29",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,64 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-21 15:31:29",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 32s",
+      "data": [
+        {
+          "ticker": "BTPS.JK",
+          "price": 975.0,
+          "spike_ratio": 0.73,
+          "hist_age": "+1",
+          "macd_hist": 0.35,
+          "value": "8.20B",
+          "ema20": 963.83,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "DMAS.JK",
+          "price": 208.0,
+          "spike_ratio": 5.85,
+          "hist_age": "+1",
+          "macd_hist": 0.3,
+          "value": "191.37B",
+          "ema20": 183.49,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "ACES.JK",
+          "price": 344.0,
+          "spike_ratio": 1.29,
+          "hist_age": "+6",
+          "macd_hist": 1.87,
+          "value": "10.23B",
+          "ema20": 335.73,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-21 15:29:56",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 51s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
