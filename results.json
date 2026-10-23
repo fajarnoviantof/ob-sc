@@ -1,13 +1,27 @@
 {
   "status": "success",
-  "generated_at": "2026-10-23 14:10:39",
-  "started_at": "2026-10-23 14:06:35",
-  "finished_at": "2026-10-23 14:10:39",
-  "duration_seconds": 244.0,
-  "duration_text": "4m 4s",
+  "generated_at": "2026-10-23 15:29:03",
+  "started_at": "2026-10-23 15:24:56",
+  "finished_at": "2026-10-23 15:29:03",
+  "duration_seconds": 246.8,
+  "duration_text": "4m 6s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 0,
-  "data": []
+  "candidates": 1,
+  "data": [
+    {
+      "ticker": "BRPT.JK",
+      "ob_range": "1360-1305",
+      "sl": 1303,
+      "sl_pct": 4.1,
+      "tp": 1505.0,
+      "tp_pct": 10.7,
+      "rr": 2.59,
+      "distance": 3.68,
+      "bos_age": 2,
+      "ob_size": 3.9,
+      "score": 86.3
+    }
+  ]
 }
