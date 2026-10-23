@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-10-23 16:20:08",
-  "started_at": "2026-10-23 16:18:49",
-  "finished_at": "2026-10-23 16:20:08",
-  "duration_seconds": 78.9,
-  "duration_text": "1m 18s",
+  "generated_at": "2026-10-23 18:35:40",
+  "started_at": "2026-10-23 18:33:46",
+  "finished_at": "2026-10-23 18:35:40",
+  "duration_seconds": 114.1,
+  "duration_text": "1m 54s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -27,7 +27,7 @@
       "spike_ratio": 0.56,
       "hist_age": "+1",
       "macd_hist": 9.72,
-      "value": "534.98B",
+      "value": "535.15B",
       "ema20": 2221.28,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -38,7 +38,7 @@
       "spike_ratio": 0.78,
       "hist_age": "+1",
       "macd_hist": 1.8,
-      "value": "10.55B",
+      "value": "11.29B",
       "ema20": 1453.26,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -60,7 +60,7 @@
       "spike_ratio": 2.46,
       "hist_age": "+1",
       "macd_hist": 0.11,
-      "value": "10.65B",
+      "value": "10.66B",
       "ema20": 24.32,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -71,7 +71,7 @@
       "spike_ratio": 2.81,
       "hist_age": "+1",
       "macd_hist": 13.38,
-      "value": "28.63B",
+      "value": "28.66B",
       "ema20": 2503.92,
       "ema20_break_age": "+1",
       "quality": "MED"
