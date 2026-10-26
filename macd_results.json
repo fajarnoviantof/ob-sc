@@ -1,36 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-10-26 14:36:51",
-  "started_at": "2026-10-26 14:35:04",
-  "finished_at": "2026-10-26 14:36:51",
-  "duration_seconds": 107.1,
-  "duration_text": "1m 47s",
+  "generated_at": "2026-10-26 15:49:06",
+  "started_at": "2026-10-26 15:47:42",
+  "finished_at": "2026-10-26 15:49:06",
+  "duration_seconds": 83.4,
+  "duration_text": "1m 23s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 2,
-  "data": [
-    {
-      "ticker": "SIDO.JK",
-      "price": 344.0,
-      "spike_ratio": 0.31,
-      "hist_age": "+1",
-      "macd_hist": 0.07,
-      "value": "5.93B",
-      "ema20": 343.44,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    },
-    {
-      "ticker": "TPIA.JK",
-      "price": 1500.0,
-      "spike_ratio": 3.38,
-      "hist_age": "+1",
-      "macd_hist": 2.6,
-      "value": "434.29B",
-      "ema20": 1499.2,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
