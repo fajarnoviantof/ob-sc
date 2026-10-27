@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-27 14:31:16",
+  "updated_at": "2026-10-27 15:56:15",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,111 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-27 15:56:15",
+      "candidates": 6,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 50s",
+      "data": [
+        {
+          "ticker": "ASII.JK",
+          "price": 4640.0,
+          "spike_ratio": 0.78,
+          "hist_age": "+1",
+          "macd_hist": 7.72,
+          "value": "269.46B",
+          "ema20": 4579.28,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ERAL.JK",
+          "price": 312.0,
+          "spike_ratio": 4.08,
+          "hist_age": "+1",
+          "macd_hist": 0.12,
+          "value": "11.96B",
+          "ema20": 296.71,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "OKAS.JK",
+          "price": 103.0,
+          "spike_ratio": 6.22,
+          "hist_age": "+1",
+          "macd_hist": 0.8,
+          "value": "6.27B",
+          "ema20": 95.74,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "MAPA.JK",
+          "price": 600.0,
+          "spike_ratio": 0.29,
+          "hist_age": "+2",
+          "macd_hist": 2.45,
+          "value": "15.31B",
+          "ema20": 599.12,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ADRO.JK",
+          "price": 2470.0,
+          "spike_ratio": 0.35,
+          "hist_age": "+2",
+          "macd_hist": 6.41,
+          "value": "101.32B",
+          "ema20": 2465.16,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "ELSA.JK",
+          "price": 650.0,
+          "spike_ratio": 0.5,
+          "hist_age": "+4",
+          "macd_hist": 4.61,
+          "value": "23.05B",
+          "ema20": 646.06,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-10-27 15:54:24",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 20s",
+      "data": [
+        {
+          "ticker": "KBLM.JK",
+          "ob_range": "328-324",
+          "sl": 323,
+          "sl_pct": 1.2,
+          "tp": 362.0,
+          "tp_pct": 10.4,
+          "rr": 8.36,
+          "distance": 2.44,
+          "bos_age": 2,
+          "ob_size": 1.19,
+          "score": 93.13
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
