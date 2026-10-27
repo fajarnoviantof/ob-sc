@@ -1,13 +1,47 @@
 {
   "status": "success",
-  "generated_at": "2026-10-26 23:52:01",
-  "started_at": "2026-10-26 23:49:46",
-  "finished_at": "2026-10-26 23:52:01",
-  "duration_seconds": 134.4,
-  "duration_text": "2m 14s",
+  "generated_at": "2026-10-27 14:31:16",
+  "started_at": "2026-10-27 14:29:58",
+  "finished_at": "2026-10-27 14:31:16",
+  "duration_seconds": 77.7,
+  "duration_text": "1m 17s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 0,
-  "data": []
+  "candidates": 3,
+  "data": [
+    {
+      "ticker": "ASII.JK",
+      "price": 4680.0,
+      "spike_ratio": 1.17,
+      "hist_age": "+1",
+      "macd_hist": 10.27,
+      "value": "155.01B",
+      "ema20": 4583.09,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "GGRM.JK",
+      "price": 17125.0,
+      "spike_ratio": 1.69,
+      "hist_age": "+3",
+      "macd_hist": 90.4,
+      "value": "15.85B",
+      "ema20": 16928.02,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "ELSA.JK",
+      "price": 655.0,
+      "spike_ratio": 0.75,
+      "hist_age": "+4",
+      "macd_hist": 4.93,
+      "value": "18.79B",
+      "ema20": 646.54,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    }
+  ]
 }
