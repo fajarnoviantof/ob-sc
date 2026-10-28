@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-27 22:56:59",
+  "updated_at": "2026-10-28 15:04:36",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,75 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-28 15:04:36",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 21s",
+      "data": [
+        {
+          "ticker": "NISP.JK",
+          "price": 1195.0,
+          "spike_ratio": 1.75,
+          "hist_age": "+1",
+          "macd_hist": 1.2,
+          "value": "6.91B",
+          "ema20": 1194.25,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "KOKA.JK",
+          "price": 130.0,
+          "spike_ratio": 3.09,
+          "hist_age": "+1",
+          "macd_hist": 1.32,
+          "value": "9.86B",
+          "ema20": 129.87,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ITMG.JK",
+          "price": 25175.0,
+          "spike_ratio": 1.12,
+          "hist_age": "+4",
+          "macd_hist": 46.56,
+          "value": "48.97B",
+          "ema20": 25048.32,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "PGEO.JK",
+          "price": 990.0,
+          "spike_ratio": 0.35,
+          "hist_age": "+5",
+          "macd_hist": 6.25,
+          "value": "7.61B",
+          "ema20": 986.3,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-28 15:03:14",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 3s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
