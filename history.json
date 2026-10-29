@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-29 21:09:18",
+  "updated_at": "2026-10-29 22:16:29",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,67 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-29 22:16:29",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 58s",
+      "data": [
+        {
+          "ticker": "SSMS.JK",
+          "price": 985.0,
+          "spike_ratio": 1.45,
+          "hist_age": "+1",
+          "macd_hist": 3.22,
+          "value": "12.49B",
+          "ema20": 966.02,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "TMAS.JK",
+          "price": 127.0,
+          "spike_ratio": 6.08,
+          "hist_age": "+1",
+          "macd_hist": 0.77,
+          "value": "15.97B",
+          "ema20": 119.6,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "15:00",
+      "cron": "5 8 * * 1-5",
+      "generated_at": "2026-10-29 22:14:31",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 0s",
+      "data": [
+        {
+          "ticker": "LTLS.JK",
+          "ob_range": "860-835",
+          "sl": 834,
+          "sl_pct": 3.0,
+          "tp": 925.0,
+          "tp_pct": 7.6,
+          "rr": 2.55,
+          "distance": 2.91,
+          "bos_age": 1,
+          "ob_size": 2.82,
+          "score": 87.98
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "14:00",
