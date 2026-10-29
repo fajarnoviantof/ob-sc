@@ -1,47 +1,47 @@
 {
   "status": "success",
-  "generated_at": "2026-10-28 23:41:02",
-  "started_at": "2026-10-28 23:39:05",
-  "finished_at": "2026-10-28 23:41:02",
-  "duration_seconds": 116.5,
-  "duration_text": "1m 56s",
+  "generated_at": "2026-10-29 15:14:59",
+  "started_at": "2026-10-29 15:13:37",
+  "finished_at": "2026-10-29 15:14:59",
+  "duration_seconds": 81.7,
+  "duration_text": "1m 21s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
   "candidates": 3,
   "data": [
     {
-      "ticker": "NISP.JK",
-      "price": 1200.0,
-      "spike_ratio": 2.04,
+      "ticker": "SSMS.JK",
+      "price": 980.0,
+      "spike_ratio": 1.29,
       "hist_age": "+1",
-      "macd_hist": 1.52,
-      "value": "11.67B",
-      "ema20": 1194.73,
+      "macd_hist": 2.9,
+      "value": "11.53B",
+      "ema20": 965.55,
       "ema20_break_age": "+1",
       "quality": "MED"
     },
     {
-      "ticker": "KOKA.JK",
-      "price": 138.0,
-      "spike_ratio": 4.54,
+      "ticker": "TMAS.JK",
+      "price": 125.0,
+      "spike_ratio": 5.37,
       "hist_age": "+1",
-      "macd_hist": 1.83,
-      "value": "18.63B",
-      "ema20": 130.63,
+      "macd_hist": 0.64,
+      "value": "14.13B",
+      "ema20": 119.41,
       "ema20_break_age": "+1",
-      "quality": "MED"
+      "quality": "LOW"
     },
     {
-      "ticker": "PGEO.JK",
-      "price": 990.0,
-      "spike_ratio": 0.35,
-      "hist_age": "+5",
-      "macd_hist": 6.25,
-      "value": "8.66B",
-      "ema20": 986.3,
+      "ticker": "KJEN.JK",
+      "price": 133.0,
+      "spike_ratio": 5.67,
+      "hist_age": "+1",
+      "macd_hist": 0.77,
+      "value": "12.28B",
+      "ema20": 127.33,
       "ema20_break_age": "+1",
-      "quality": "HIGH"
+      "quality": "LOW"
     }
   ]
 }

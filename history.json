@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-28 23:41:02",
+  "updated_at": "2026-10-29 15:14:59",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,78 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-29 15:14:59",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 21s",
+      "data": [
+        {
+          "ticker": "SSMS.JK",
+          "price": 980.0,
+          "spike_ratio": 1.29,
+          "hist_age": "+1",
+          "macd_hist": 2.9,
+          "value": "11.53B",
+          "ema20": 965.55,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "TMAS.JK",
+          "price": 125.0,
+          "spike_ratio": 5.37,
+          "hist_age": "+1",
+          "macd_hist": 0.64,
+          "value": "14.13B",
+          "ema20": 119.41,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "KJEN.JK",
+          "price": 133.0,
+          "spike_ratio": 5.67,
+          "hist_age": "+1",
+          "macd_hist": 0.77,
+          "value": "12.28B",
+          "ema20": 127.33,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-10-29 15:13:37",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 26s",
+      "data": [
+        {
+          "ticker": "LTLS.JK",
+          "ob_range": "860-835",
+          "sl": 834,
+          "sl_pct": 3.0,
+          "tp": 925.0,
+          "tp_pct": 7.6,
+          "rr": 2.55,
+          "distance": 3.49,
+          "bos_age": 1,
+          "ob_size": 2.81,
+          "score": 87.41
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
