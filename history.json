@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30 17:51:55",
+  "updated_at": "2026-10-30 19:48:43",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,108 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "13:00",
+      "cron": "5 6 * * 1-5",
+      "generated_at": "2026-10-30 19:48:43",
+      "candidates": 7,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 53s",
+      "data": [
+        {
+          "ticker": "BINA.JK",
+          "price": 3950.0,
+          "spike_ratio": 0.22,
+          "hist_age": "+1",
+          "macd_hist": 3.87,
+          "value": "20.86B",
+          "ema20": 3946.5,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "KLBF.JK",
+          "price": 730.0,
+          "spike_ratio": 0.83,
+          "hist_age": "+1",
+          "macd_hist": 1.03,
+          "value": "46.20B",
+          "ema20": 728.93,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "POWR.JK",
+          "price": 960.0,
+          "spike_ratio": 2.14,
+          "hist_age": "+1",
+          "macd_hist": 1.22,
+          "value": "16.10B",
+          "ema20": 927.03,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ABMM.JK",
+          "price": 2600.0,
+          "spike_ratio": 2.56,
+          "hist_age": "+1",
+          "macd_hist": 2.29,
+          "value": "5.41B",
+          "ema20": 2564.38,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "AADI.JK",
+          "price": 11475.0,
+          "spike_ratio": 1.23,
+          "hist_age": "+4",
+          "macd_hist": 15.69,
+          "value": "98.12B",
+          "ema20": 11341.83,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "DSNG.JK",
+          "price": 1550.0,
+          "spike_ratio": 3.98,
+          "hist_age": "+4",
+          "macd_hist": 15.64,
+          "value": "17.51B",
+          "ema20": 1450.89,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MPMX.JK",
+          "price": 1020.0,
+          "spike_ratio": 1.1,
+          "hist_age": "+6",
+          "macd_hist": 1.01,
+          "value": "7.06B",
+          "ema20": 1013.9,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "13:00",
+      "cron": "5 6 * * 1-5",
+      "generated_at": "2026-10-30 19:46:49",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 39s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "11:00",
@@ -11662,30 +11764,6 @@
       "processed": 962,
       "errors": 41,
       "duration_text": "2m 9s",
-      "data": []
-    },
-    {
-      "scanner": "MACD",
-      "slot": "13:00",
-      "cron": "5 6 * * 1-5",
-      "generated_at": "2026-09-29 19:45:50",
-      "candidates": 0,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 0,
-      "duration_text": "1m 13s",
-      "data": []
-    },
-    {
-      "scanner": "SMC OB",
-      "slot": "13:00",
-      "cron": "5 6 * * 1-5",
-      "generated_at": "2026-09-29 19:44:35",
-      "candidates": 0,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 41,
-      "duration_text": "3m 25s",
       "data": []
     }
   ]
