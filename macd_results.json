@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-11-02 16:03:50",
-  "started_at": "2026-11-02 16:02:27",
-  "finished_at": "2026-11-02 16:03:50",
-  "duration_seconds": 82.7,
-  "duration_text": "1m 22s",
+  "generated_at": "2026-11-02 17:53:42",
+  "started_at": "2026-11-02 17:52:37",
+  "finished_at": "2026-11-02 17:53:42",
+  "duration_seconds": 65.1,
+  "duration_text": "1m 5s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 4,
+  "candidates": 3,
   "data": [
     {
       "ticker": "PGAS.JK",
@@ -16,7 +16,7 @@
       "spike_ratio": 1.17,
       "hist_age": "+1",
       "macd_hist": 5.31,
-      "value": "82.42B",
+      "value": "85.11B",
       "ema20": 1337.64,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -27,19 +27,8 @@
       "spike_ratio": 4.61,
       "hist_age": "+1",
       "macd_hist": 2.0,
-      "value": "9.75B",
+      "value": "9.96B",
       "ema20": 533.56,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    },
-    {
-      "ticker": "ADMR.JK",
-      "price": 1325.0,
-      "spike_ratio": 1.84,
-      "hist_age": "+3",
-      "macd_hist": 9.03,
-      "value": "90.68B",
-      "ema20": 1324.58,
       "ema20_break_age": "+1",
       "quality": "MED"
     },
@@ -49,7 +38,7 @@
       "spike_ratio": 8.6,
       "hist_age": "+6",
       "macd_hist": 1.48,
-      "value": "8.32B",
+      "value": "9.16B",
       "ema20": 64.47,
       "ema20_break_age": "+1",
       "quality": "LOW"
