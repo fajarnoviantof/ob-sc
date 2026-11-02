@@ -1,25 +1,36 @@
 {
   "status": "success",
-  "generated_at": "2026-11-03 00:00:20",
-  "started_at": "2026-11-02 23:59:17",
-  "finished_at": "2026-11-03 00:00:20",
-  "duration_seconds": 63.1,
-  "duration_text": "1m 3s",
+  "generated_at": "2026-11-03 01:16:31",
+  "started_at": "2026-11-03 01:15:00",
+  "finished_at": "2026-11-03 01:16:31",
+  "duration_seconds": 91.4,
+  "duration_text": "1m 31s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 3,
+  "candidates": 7,
   "data": [
     {
-      "ticker": "PGAS.JK",
-      "price": 1370.0,
-      "spike_ratio": 1.17,
+      "ticker": "BINA.JK",
+      "price": 3950.0,
+      "spike_ratio": 0.22,
       "hist_age": "+1",
-      "macd_hist": 5.31,
-      "value": "85.11B",
-      "ema20": 1337.64,
+      "macd_hist": 3.87,
+      "value": "20.86B",
+      "ema20": 3946.5,
       "ema20_break_age": "+1",
-      "quality": "HIGH"
+      "quality": "MED"
+    },
+    {
+      "ticker": "KLBF.JK",
+      "price": 730.0,
+      "spike_ratio": 0.83,
+      "hist_age": "+1",
+      "macd_hist": 1.03,
+      "value": "46.20B",
+      "ema20": 728.93,
+      "ema20_break_age": "+1",
+      "quality": "MED"
     },
     {
       "ticker": "POWR.JK",
@@ -33,15 +44,48 @@
       "quality": "MED"
     },
     {
-      "ticker": "DFAM.JK",
-      "price": 75.0,
-      "spike_ratio": 8.6,
-      "hist_age": "+6",
-      "macd_hist": 1.48,
-      "value": "9.16B",
-      "ema20": 64.47,
+      "ticker": "ABMM.JK",
+      "price": 2600.0,
+      "spike_ratio": 2.56,
+      "hist_age": "+1",
+      "macd_hist": 2.29,
+      "value": "5.41B",
+      "ema20": 2564.38,
       "ema20_break_age": "+1",
-      "quality": "LOW"
+      "quality": "MED"
+    },
+    {
+      "ticker": "AADI.JK",
+      "price": 11475.0,
+      "spike_ratio": 1.23,
+      "hist_age": "+4",
+      "macd_hist": 15.69,
+      "value": "98.12B",
+      "ema20": 11341.83,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "DSNG.JK",
+      "price": 1550.0,
+      "spike_ratio": 3.98,
+      "hist_age": "+4",
+      "macd_hist": 15.64,
+      "value": "17.51B",
+      "ema20": 1450.89,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "MPMX.JK",
+      "price": 1020.0,
+      "spike_ratio": 1.1,
+      "hist_age": "+6",
+      "macd_hist": 1.01,
+      "value": "7.06B",
+      "ema20": 1013.9,
+      "ema20_break_age": "+1",
+      "quality": "MED"
     }
   ]
 }
