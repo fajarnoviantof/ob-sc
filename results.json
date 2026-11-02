@@ -1,13 +1,27 @@
 {
   "status": "success",
-  "generated_at": "2026-10-30 23:43:46",
-  "started_at": "2026-10-30 23:40:00",
-  "finished_at": "2026-10-30 23:43:46",
-  "duration_seconds": 225.8,
-  "duration_text": "3m 45s",
+  "generated_at": "2026-11-02 16:02:27",
+  "started_at": "2026-11-02 15:59:22",
+  "finished_at": "2026-11-02 16:02:27",
+  "duration_seconds": 184.4,
+  "duration_text": "3m 4s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 0,
-  "data": []
+  "candidates": 1,
+  "data": [
+    {
+      "ticker": "PNSE.JK",
+      "ob_range": "438-384",
+      "sl": 382,
+      "sl_pct": 12.6,
+      "tp": 795.0,
+      "tp_pct": 81.5,
+      "rr": 6.48,
+      "distance": 1.37,
+      "bos_age": 9,
+      "ob_size": 12.16,
+      "score": 64.89
+    }
+  ]
 }
