@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03 23:59:45",
+  "updated_at": "2026-11-04 00:51:37",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,78 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-11-04 00:51:37",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 19s",
+      "data": [
+        {
+          "ticker": "PGAS.JK",
+          "price": 1370.0,
+          "spike_ratio": 1.17,
+          "hist_age": "+1",
+          "macd_hist": 5.31,
+          "value": "85.11B",
+          "ema20": 1337.64,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "SIMP.JK",
+          "price": 540.0,
+          "spike_ratio": 4.61,
+          "hist_age": "+1",
+          "macd_hist": 2.0,
+          "value": "9.96B",
+          "ema20": 533.56,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "DFAM.JK",
+          "price": 75.0,
+          "spike_ratio": 8.6,
+          "hist_age": "+6",
+          "macd_hist": 1.48,
+          "value": "9.16B",
+          "ema20": 64.47,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-11-04 00:49:17",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "5m 10s",
+      "data": [
+        {
+          "ticker": "PNSE.JK",
+          "ob_range": "438-384",
+          "sl": 382,
+          "sl_pct": 12.6,
+          "tp": 795.0,
+          "tp_pct": 81.5,
+          "rr": 6.48,
+          "distance": 1.37,
+          "bos_age": 9,
+          "ob_size": 12.16,
+          "score": 64.89
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "16:00",

@@ -1,13 +1,47 @@
 {
   "status": "success",
-  "generated_at": "2026-11-03 23:59:44",
-  "started_at": "2026-11-03 23:57:57",
-  "finished_at": "2026-11-03 23:59:44",
-  "duration_seconds": 107.0,
-  "duration_text": "1m 47s",
+  "generated_at": "2026-11-04 00:51:37",
+  "started_at": "2026-11-04 00:49:17",
+  "finished_at": "2026-11-04 00:51:37",
+  "duration_seconds": 139.9,
+  "duration_text": "2m 19s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 0,
-  "data": []
+  "candidates": 3,
+  "data": [
+    {
+      "ticker": "PGAS.JK",
+      "price": 1370.0,
+      "spike_ratio": 1.17,
+      "hist_age": "+1",
+      "macd_hist": 5.31,
+      "value": "85.11B",
+      "ema20": 1337.64,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "SIMP.JK",
+      "price": 540.0,
+      "spike_ratio": 4.61,
+      "hist_age": "+1",
+      "macd_hist": 2.0,
+      "value": "9.96B",
+      "ema20": 533.56,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "DFAM.JK",
+      "price": 75.0,
+      "spike_ratio": 8.6,
+      "hist_age": "+6",
+      "macd_hist": 1.48,
+      "value": "9.16B",
+      "ema20": 64.47,
+      "ema20_break_age": "+1",
+      "quality": "LOW"
+    }
+  ]
 }

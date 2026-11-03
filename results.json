@@ -1,27 +1,27 @@
 {
   "status": "success",
-  "generated_at": "2026-11-03 23:57:57",
-  "started_at": "2026-11-03 23:54:17",
-  "finished_at": "2026-11-03 23:57:57",
-  "duration_seconds": 219.3,
-  "duration_text": "3m 39s",
+  "generated_at": "2026-11-04 00:49:17",
+  "started_at": "2026-11-04 00:44:06",
+  "finished_at": "2026-11-04 00:49:17",
+  "duration_seconds": 310.9,
+  "duration_text": "5m 10s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
   "candidates": 1,
   "data": [
     {
-      "ticker": "CSRA.JK",
-      "ob_range": "615-580",
-      "sl": 579,
-      "sl_pct": 5.8,
-      "tp": 735.0,
-      "tp_pct": 19.5,
-      "rr": 3.36,
-      "distance": 4.07,
-      "bos_age": 3,
-      "ob_size": 5.47,
-      "score": 81.66
+      "ticker": "PNSE.JK",
+      "ob_range": "438-384",
+      "sl": 382,
+      "sl_pct": 12.6,
+      "tp": 795.0,
+      "tp_pct": 81.5,
+      "rr": 6.48,
+      "distance": 1.37,
+      "bos_age": 9,
+      "ob_size": 12.16,
+      "score": 64.89
     }
   ]
 }
