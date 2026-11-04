@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-11-04 15:49:15",
-  "started_at": "2026-11-04 15:47:53",
-  "finished_at": "2026-11-04 15:49:15",
-  "duration_seconds": 82.7,
-  "duration_text": "1m 22s",
+  "generated_at": "2026-11-04 19:04:41",
+  "started_at": "2026-11-04 19:03:06",
+  "finished_at": "2026-11-04 19:04:41",
+  "duration_seconds": 94.9,
+  "duration_text": "1m 34s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 4,
+  "candidates": 3,
   "data": [
     {
       "ticker": "ACES.JK",
@@ -16,43 +16,32 @@
       "spike_ratio": 0.68,
       "hist_age": "+1",
       "macd_hist": 0.1,
-      "value": "9.22B",
+      "value": "10.07B",
       "ema20": 331.34,
       "ema20_break_age": "+1",
       "quality": "MED"
     },
     {
-      "ticker": "INDF.JK",
-      "price": 6675.0,
-      "spike_ratio": 1.8,
-      "hist_age": "+1",
-      "macd_hist": 6.58,
-      "value": "34.64B",
-      "ema20": 6644.39,
+      "ticker": "PGAS.JK",
+      "price": 1370.0,
+      "spike_ratio": 0.88,
+      "hist_age": "+3",
+      "macd_hist": 11.03,
+      "value": "66.11B",
+      "ema20": 1340.06,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "POWR.JK",
+      "price": 940.0,
+      "spike_ratio": 0.97,
+      "hist_age": "+4",
+      "macd_hist": 2.42,
+      "value": "5.05B",
+      "ema20": 929.8,
       "ema20_break_age": "+1",
       "quality": "MED"
-    },
-    {
-      "ticker": "PGAS.JK",
-      "price": 1375.0,
-      "spike_ratio": 0.99,
-      "hist_age": "+3",
-      "macd_hist": 11.35,
-      "value": "57.53B",
-      "ema20": 1340.54,
-      "ema20_break_age": "+1",
-      "quality": "HIGH"
-    },
-    {
-      "ticker": "KLBF.JK",
-      "price": 735.0,
-      "spike_ratio": 1.12,
-      "hist_age": "+4",
-      "macd_hist": 2.05,
-      "value": "17.78B",
-      "ema20": 727.61,
-      "ema20_break_age": "+1",
-      "quality": "HIGH"
     }
   ]
 }
