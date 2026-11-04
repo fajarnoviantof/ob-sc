@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04 00:51:37",
+  "updated_at": "2026-11-04 15:49:16",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,89 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-11-04 15:49:15",
+      "candidates": 4,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 22s",
+      "data": [
+        {
+          "ticker": "ACES.JK",
+          "price": 332.0,
+          "spike_ratio": 0.68,
+          "hist_age": "+1",
+          "macd_hist": 0.1,
+          "value": "9.22B",
+          "ema20": 331.34,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "INDF.JK",
+          "price": 6675.0,
+          "spike_ratio": 1.8,
+          "hist_age": "+1",
+          "macd_hist": 6.58,
+          "value": "34.64B",
+          "ema20": 6644.39,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "PGAS.JK",
+          "price": 1375.0,
+          "spike_ratio": 0.99,
+          "hist_age": "+3",
+          "macd_hist": 11.35,
+          "value": "57.53B",
+          "ema20": 1340.54,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "KLBF.JK",
+          "price": 735.0,
+          "spike_ratio": 1.12,
+          "hist_age": "+4",
+          "macd_hist": 2.05,
+          "value": "17.78B",
+          "ema20": 727.61,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-11-04 15:47:52",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 30s",
+      "data": [
+        {
+          "ticker": "PTSN.JK",
+          "ob_range": "288-266",
+          "sl": 265,
+          "sl_pct": 7.8,
+          "tp": 448.0,
+          "tp_pct": 55.6,
+          "rr": 7.13,
+          "distance": 3.47,
+          "bos_age": 7,
+          "ob_size": 7.38,
+          "score": 74.36
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
