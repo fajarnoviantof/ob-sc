@@ -1,47 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-11-04 23:15:58",
-  "started_at": "2026-11-04 23:14:12",
-  "finished_at": "2026-11-04 23:15:58",
-  "duration_seconds": 105.4,
-  "duration_text": "1m 45s",
+  "generated_at": "2026-11-05 00:04:01",
+  "started_at": "2026-11-05 00:02:04",
+  "finished_at": "2026-11-05 00:04:01",
+  "duration_seconds": 116.2,
+  "duration_text": "1m 56s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 3,
-  "data": [
-    {
-      "ticker": "ACES.JK",
-      "price": 332.0,
-      "spike_ratio": 0.68,
-      "hist_age": "+1",
-      "macd_hist": 0.1,
-      "value": "10.07B",
-      "ema20": 331.34,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    },
-    {
-      "ticker": "PGAS.JK",
-      "price": 1370.0,
-      "spike_ratio": 0.88,
-      "hist_age": "+3",
-      "macd_hist": 11.03,
-      "value": "66.11B",
-      "ema20": 1340.06,
-      "ema20_break_age": "+1",
-      "quality": "HIGH"
-    },
-    {
-      "ticker": "POWR.JK",
-      "price": 940.0,
-      "spike_ratio": 0.97,
-      "hist_age": "+4",
-      "macd_hist": 2.42,
-      "value": "5.05B",
-      "ema20": 929.8,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
