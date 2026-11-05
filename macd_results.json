@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-11-05 16:11:39",
-  "started_at": "2026-11-05 16:10:16",
-  "finished_at": "2026-11-05 16:11:39",
-  "duration_seconds": 83.0,
-  "duration_text": "1m 23s",
+  "generated_at": "2026-11-05 17:48:23",
+  "started_at": "2026-11-05 17:45:25",
+  "finished_at": "2026-11-05 17:48:23",
+  "duration_seconds": 177.3,
+  "duration_text": "2m 57s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -16,7 +16,7 @@
       "spike_ratio": 1.34,
       "hist_age": "+1",
       "macd_hist": 26.43,
-      "value": "84.72B",
+      "value": "84.74B",
       "ema20": 6078.92,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -27,7 +27,7 @@
       "spike_ratio": 1.38,
       "hist_age": "+1",
       "macd_hist": 2.24,
-      "value": "10.44B",
+      "value": "10.50B",
       "ema20": 1624.57,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -38,7 +38,7 @@
       "spike_ratio": 2.55,
       "hist_age": "+1",
       "macd_hist": 4.41,
-      "value": "6.37B",
+      "value": "7.71B",
       "ema20": 1646.43,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -49,7 +49,7 @@
       "spike_ratio": 3.22,
       "hist_age": "+1",
       "macd_hist": 9.53,
-      "value": "8.29B",
+      "value": "8.61B",
       "ema20": 4233.65,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -60,7 +60,7 @@
       "spike_ratio": 1.26,
       "hist_age": "+2",
       "macd_hist": 18.68,
-      "value": "32.53B",
+      "value": "33.07B",
       "ema20": 6645.6,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -82,7 +82,7 @@
       "spike_ratio": 2.39,
       "hist_age": "+4",
       "macd_hist": 8.34,
-      "value": "79.86B",
+      "value": "79.93B",
       "ema20": 1446.98,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -93,7 +93,7 @@
       "spike_ratio": 1.87,
       "hist_age": "+5",
       "macd_hist": 3.98,
-      "value": "36.60B",
+      "value": "36.88B",
       "ema20": 729.83,
       "ema20_break_age": "+1",
       "quality": "MED"
