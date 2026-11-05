@@ -1,13 +1,102 @@
 {
   "status": "success",
-  "generated_at": "2026-11-05 01:02:13",
-  "started_at": "2026-11-05 01:00:24",
-  "finished_at": "2026-11-05 01:02:13",
-  "duration_seconds": 108.4,
-  "duration_text": "1m 48s",
+  "generated_at": "2026-11-05 16:11:39",
+  "started_at": "2026-11-05 16:10:16",
+  "finished_at": "2026-11-05 16:11:39",
+  "duration_seconds": 83.0,
+  "duration_text": "1m 23s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 0,
-  "data": []
+  "candidates": 8,
+  "data": [
+    {
+      "ticker": "ICBP.JK",
+      "price": 6125.0,
+      "spike_ratio": 1.34,
+      "hist_age": "+1",
+      "macd_hist": 26.43,
+      "value": "84.72B",
+      "ema20": 6078.92,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "SMSM.JK",
+      "price": 1640.0,
+      "spike_ratio": 1.38,
+      "hist_age": "+1",
+      "macd_hist": 2.24,
+      "value": "10.44B",
+      "ema20": 1624.57,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "SRTG.JK",
+      "price": 1675.0,
+      "spike_ratio": 2.55,
+      "hist_age": "+1",
+      "macd_hist": 4.41,
+      "value": "6.37B",
+      "ema20": 1646.43,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "CMRY.JK",
+      "price": 4330.0,
+      "spike_ratio": 3.22,
+      "hist_age": "+1",
+      "macd_hist": 9.53,
+      "value": "8.29B",
+      "ema20": 4233.65,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "INDF.JK",
+      "price": 6725.0,
+      "spike_ratio": 1.26,
+      "hist_age": "+2",
+      "macd_hist": 18.68,
+      "value": "32.53B",
+      "ema20": 6645.6,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "SIMP.JK",
+      "price": 535.0,
+      "spike_ratio": 0.41,
+      "hist_age": "+4",
+      "macd_hist": 4.19,
+      "value": "6.27B",
+      "ema20": 532.33,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "UNVR.JK",
+      "price": 1455.0,
+      "spike_ratio": 2.39,
+      "hist_age": "+4",
+      "macd_hist": 8.34,
+      "value": "79.86B",
+      "ema20": 1446.98,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "KLBF.JK",
+      "price": 760.0,
+      "spike_ratio": 1.87,
+      "hist_age": "+5",
+      "macd_hist": 3.98,
+      "value": "36.60B",
+      "ema20": 729.83,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    }
+  ]
 }

@@ -1,27 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-11-05 01:00:24",
-  "started_at": "2026-11-05 00:56:22",
-  "finished_at": "2026-11-05 01:00:24",
-  "duration_seconds": 241.9,
-  "duration_text": "4m 1s",
+  "generated_at": "2026-11-05 16:10:15",
+  "started_at": "2026-11-05 16:06:48",
+  "finished_at": "2026-11-05 16:10:15",
+  "duration_seconds": 206.9,
+  "duration_text": "3m 26s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "CSRA.JK",
-      "ob_range": "615-580",
-      "sl": 579,
-      "sl_pct": 5.8,
-      "tp": 735.0,
-      "tp_pct": 19.5,
-      "rr": 3.36,
-      "distance": 4.07,
-      "bos_age": 3,
-      "ob_size": 5.47,
-      "score": 81.66
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
