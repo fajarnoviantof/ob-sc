@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-06 22:56:34",
+  "updated_at": "2026-11-06 23:44:13",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,53 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-06 23:44:13",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 37s",
+      "data": [
+        {
+          "ticker": "ALII.JK",
+          "price": 675.0,
+          "spike_ratio": 1.28,
+          "hist_age": "+4",
+          "macd_hist": 7.04,
+          "value": "8.13B",
+          "ema20": 652.8,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "BRIS.JK",
+          "price": 1150.0,
+          "spike_ratio": 0.59,
+          "hist_age": "+6",
+          "macd_hist": 28.15,
+          "value": "151.97B",
+          "ema20": 1135.08,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-06 23:42:35",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 20s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "15:00",
@@ -361,78 +408,6 @@
       "processed": 962,
       "errors": 41,
       "duration_text": "4m 49s",
-      "data": [
-        {
-          "ticker": "PTSN.JK",
-          "ob_range": "288-266",
-          "sl": 265,
-          "sl_pct": 7.8,
-          "tp": 448.0,
-          "tp_pct": 55.6,
-          "rr": 7.13,
-          "distance": 3.47,
-          "bos_age": 7,
-          "ob_size": 7.38,
-          "score": 74.36
-        }
-      ]
-    },
-    {
-      "scanner": "MACD",
-      "slot": "16:00",
-      "cron": "5 9 * * 1-5",
-      "generated_at": "2026-11-06 00:19:18",
-      "candidates": 3,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 0,
-      "duration_text": "1m 49s",
-      "data": [
-        {
-          "ticker": "ACES.JK",
-          "price": 332.0,
-          "spike_ratio": 0.68,
-          "hist_age": "+1",
-          "macd_hist": 0.1,
-          "value": "10.07B",
-          "ema20": 331.34,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "PGAS.JK",
-          "price": 1370.0,
-          "spike_ratio": 0.88,
-          "hist_age": "+3",
-          "macd_hist": 11.03,
-          "value": "66.11B",
-          "ema20": 1340.06,
-          "ema20_break_age": "+1",
-          "quality": "HIGH"
-        },
-        {
-          "ticker": "POWR.JK",
-          "price": 940.0,
-          "spike_ratio": 0.97,
-          "hist_age": "+4",
-          "macd_hist": 2.42,
-          "value": "5.05B",
-          "ema20": 929.8,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        }
-      ]
-    },
-    {
-      "scanner": "SMC OB",
-      "slot": "16:00",
-      "cron": "5 9 * * 1-5",
-      "generated_at": "2026-11-06 00:17:28",
-      "candidates": 1,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 41,
-      "duration_text": "4m 20s",
       "data": [
         {
           "ticker": "PTSN.JK",
