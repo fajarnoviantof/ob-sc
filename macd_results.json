@@ -1,26 +1,15 @@
 {
   "status": "success",
-  "generated_at": "2026-11-06 16:04:19",
-  "started_at": "2026-11-06 16:02:53",
-  "finished_at": "2026-11-06 16:04:19",
-  "duration_seconds": 86.4,
-  "duration_text": "1m 26s",
+  "generated_at": "2026-11-06 17:43:44",
+  "started_at": "2026-11-06 17:42:19",
+  "finished_at": "2026-11-06 17:43:44",
+  "duration_seconds": 84.5,
+  "duration_text": "1m 24s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 3,
+  "candidates": 2,
   "data": [
-    {
-      "ticker": "NASI.JK",
-      "price": 144.0,
-      "spike_ratio": 1.97,
-      "hist_age": "+3",
-      "macd_hist": 2.2,
-      "value": "15.51B",
-      "ema20": 138.71,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    },
     {
       "ticker": "ALII.JK",
       "price": 675.0,
@@ -38,7 +27,7 @@
       "spike_ratio": 0.59,
       "hist_age": "+6",
       "macd_hist": 28.15,
-      "value": "146.59B",
+      "value": "151.97B",
       "ema20": 1135.08,
       "ema20_break_age": "+1",
       "quality": "HIGH"
