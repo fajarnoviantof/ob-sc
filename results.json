@@ -1,13 +1,27 @@
 {
   "status": "success",
-  "generated_at": "2026-11-10 03:41:42",
-  "started_at": "2026-11-10 03:38:41",
-  "finished_at": "2026-11-10 03:41:42",
-  "duration_seconds": 180.7,
-  "duration_text": "3m 0s",
+  "generated_at": "2026-11-10 16:28:04",
+  "started_at": "2026-11-10 16:24:51",
+  "finished_at": "2026-11-10 16:28:04",
+  "duration_seconds": 192.6,
+  "duration_text": "3m 12s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 0,
-  "data": []
+  "candidates": 1,
+  "data": [
+    {
+      "ticker": "MAYA.JK",
+      "ob_range": "160-158",
+      "sl": 157,
+      "sl_pct": 1.3,
+      "tp": 174.0,
+      "tp_pct": 8.8,
+      "rr": 6.89,
+      "distance": 1.88,
+      "bos_age": 1,
+      "ob_size": 1.23,
+      "score": 94.62
+    }
+  ]
 }
