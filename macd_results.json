@@ -1,14 +1,14 @@
 {
   "status": "success",
-  "generated_at": "2026-11-10 23:28:11",
-  "started_at": "2026-11-10 23:26:15",
-  "finished_at": "2026-11-10 23:28:11",
-  "duration_seconds": 115.3,
-  "duration_text": "1m 55s",
+  "generated_at": "2026-11-11 00:00:47",
+  "started_at": "2026-11-10 23:58:24",
+  "finished_at": "2026-11-11 00:00:47",
+  "duration_seconds": 143.5,
+  "duration_text": "2m 23s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 8,
+  "candidates": 6,
   "data": [
     {
       "ticker": "PGEO.JK",
@@ -55,17 +55,6 @@
       "quality": "HIGH"
     },
     {
-      "ticker": "RAJA.JK",
-      "price": 466.0,
-      "spike_ratio": 4.69,
-      "hist_age": "+2",
-      "macd_hist": 7.91,
-      "value": "164.22B",
-      "ema20": 461.71,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    },
-    {
       "ticker": "ANTM.JK",
       "price": 2760.0,
       "spike_ratio": 0.5,
@@ -84,17 +73,6 @@
       "macd_hist": 6.23,
       "value": "5.12B",
       "ema20": 1363.91,
-      "ema20_break_age": "+1",
-      "quality": "HIGH"
-    },
-    {
-      "ticker": "SMGR.JK",
-      "price": 1495.0,
-      "spike_ratio": 1.64,
-      "hist_age": "+3",
-      "macd_hist": 12.19,
-      "value": "23.34B",
-      "ema20": 1429.88,
       "ema20_break_age": "+1",
       "quality": "HIGH"
     }
