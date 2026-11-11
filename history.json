@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-11 00:48:31",
+  "updated_at": "2026-11-11 16:05:12",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,64 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-11-11 16:05:12",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 8s",
+      "data": [
+        {
+          "ticker": "WMPP.JK",
+          "price": 23.0,
+          "spike_ratio": 2.07,
+          "hist_age": "+1",
+          "macd_hist": 0.18,
+          "value": "9.33B",
+          "ema20": 22.31,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "KJEN.JK",
+          "price": 115.0,
+          "spike_ratio": 2.58,
+          "hist_age": "+1",
+          "macd_hist": 1.07,
+          "value": "8.76B",
+          "ema20": 114.0,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "DSSA.JK",
+          "price": 745.0,
+          "spike_ratio": 1.28,
+          "hist_age": "+3",
+          "macd_hist": 15.7,
+          "value": "131.56B",
+          "ema20": 739.75,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-11-11 16:03:02",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "4m 58s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
