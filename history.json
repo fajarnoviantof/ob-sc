@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-12 16:29:02",
+  "updated_at": "2026-11-12 17:54:43",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,177 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-11-12 17:54:43",
+      "candidates": 12,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 23s",
+      "data": [
+        {
+          "ticker": "UNTR.JK",
+          "price": 24600.0,
+          "spike_ratio": 1.64,
+          "hist_age": "+1",
+          "macd_hist": 60.29,
+          "value": "86.59B",
+          "ema20": 23810.95,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "ADRO.JK",
+          "price": 2450.0,
+          "spike_ratio": 3.0,
+          "hist_age": "+1",
+          "macd_hist": 6.83,
+          "value": "126.68B",
+          "ema20": 2392.03,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "TRON.JK",
+          "price": 78.0,
+          "spike_ratio": 6.69,
+          "hist_age": "+1",
+          "macd_hist": 1.06,
+          "value": "16.80B",
+          "ema20": 67.29,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "DOOH.JK",
+          "price": 232.0,
+          "spike_ratio": 1.31,
+          "hist_age": "+3",
+          "macd_hist": 5.2,
+          "value": "39.58B",
+          "ema20": 230.09,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "RATU.JK",
+          "price": 2450.0,
+          "spike_ratio": 0.87,
+          "hist_age": "+4",
+          "macd_hist": 94.05,
+          "value": "65.03B",
+          "ema20": 2441.08,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "TLKM.JK",
+          "price": 2130.0,
+          "spike_ratio": 0.88,
+          "hist_age": "+4",
+          "macd_hist": 25.08,
+          "value": "353.04B",
+          "ema20": 2074.69,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "ASSA.JK",
+          "price": 525.0,
+          "spike_ratio": 1.18,
+          "hist_age": "+4",
+          "macd_hist": 4.76,
+          "value": "6.15B",
+          "ema20": 514.81,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "BKSL.JK",
+          "price": 43.0,
+          "spike_ratio": 3.32,
+          "hist_age": "+4",
+          "macd_hist": 0.84,
+          "value": "10.80B",
+          "ema20": 42.44,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "BNBR.JK",
+          "price": 49.0,
+          "spike_ratio": 3.86,
+          "hist_age": "+4",
+          "macd_hist": 1.37,
+          "value": "51.16B",
+          "ema20": 48.12,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ANTM.JK",
+          "price": 2800.0,
+          "spike_ratio": 0.5,
+          "hist_age": "+5",
+          "macd_hist": 29.95,
+          "value": "196.77B",
+          "ema20": 2759.58,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "CMRY.JK",
+          "price": 4220.0,
+          "spike_ratio": 0.29,
+          "hist_age": "+6",
+          "macd_hist": 14.71,
+          "value": "6.05B",
+          "ema20": 4218.06,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "DEWA.JK",
+          "price": 258.0,
+          "spike_ratio": 2.23,
+          "hist_age": "+6",
+          "macd_hist": 6.42,
+          "value": "208.93B",
+          "ema20": 252.61,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-11-12 17:53:19",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "2m 56s",
+      "data": [
+        {
+          "ticker": "IFII.JK",
+          "ob_range": "195-191",
+          "sl": 190,
+          "sl_pct": 2.1,
+          "tp": 206.0,
+          "tp_pct": 5.6,
+          "rr": 2.7,
+          "distance": 4.62,
+          "bos_age": 3,
+          "ob_size": 1.96,
+          "score": 80.25
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
@@ -12708,89 +12879,6 @@
       "processed": 962,
       "errors": 41,
       "duration_text": "4m 23s",
-      "data": [
-        {
-          "ticker": "MOLI.JK",
-          "ob_range": "376-350",
-          "sl": 349,
-          "sl_pct": 7.0,
-          "tp": 442.0,
-          "tp_pct": 17.6,
-          "rr": 2.49,
-          "distance": 1.06,
-          "bos_age": 8,
-          "ob_size": 6.84,
-          "score": 77.05
-        }
-      ]
-    },
-    {
-      "scanner": "MACD",
-      "slot": "10:00",
-      "cron": "5 3 * * 1-5",
-      "generated_at": "2026-10-12 17:40:11",
-      "candidates": 4,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 0,
-      "duration_text": "2m 17s",
-      "data": [
-        {
-          "ticker": "INTP.JK",
-          "price": 5200.0,
-          "spike_ratio": 1.84,
-          "hist_age": "+1",
-          "macd_hist": 13.24,
-          "value": "15.58B",
-          "ema20": 5084.4,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "CPIN.JK",
-          "price": 3020.0,
-          "spike_ratio": 2.2,
-          "hist_age": "+1",
-          "macd_hist": 1.86,
-          "value": "64.86B",
-          "ema20": 3002.6,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "MINE.JK",
-          "price": 320.0,
-          "spike_ratio": 8.47,
-          "hist_age": "+1",
-          "macd_hist": 0.08,
-          "value": "9.04B",
-          "ema20": 279.96,
-          "ema20_break_age": "+1",
-          "quality": "LOW"
-        },
-        {
-          "ticker": "INKP.JK",
-          "price": 8675.0,
-          "spike_ratio": 2.91,
-          "hist_age": "+2",
-          "macd_hist": 32.55,
-          "value": "34.10B",
-          "ema20": 8373.04,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        }
-      ]
-    },
-    {
-      "scanner": "SMC OB",
-      "slot": "10:00",
-      "cron": "5 3 * * 1-5",
-      "generated_at": "2026-10-12 17:37:53",
-      "candidates": 1,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 41,
-      "duration_text": "4m 48s",
       "data": [
         {
           "ticker": "MOLI.JK",
