@@ -1,27 +1,27 @@
 {
   "status": "success",
-  "generated_at": "2026-11-12 00:54:09",
-  "started_at": "2026-11-12 00:50:58",
-  "finished_at": "2026-11-12 00:54:09",
-  "duration_seconds": 191.0,
-  "duration_text": "3m 11s",
+  "generated_at": "2026-11-12 16:27:44",
+  "started_at": "2026-11-12 16:25:08",
+  "finished_at": "2026-11-12 16:27:44",
+  "duration_seconds": 156.1,
+  "duration_text": "2m 36s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
   "candidates": 1,
   "data": [
     {
-      "ticker": "MAYA.JK",
-      "ob_range": "160-158",
-      "sl": 157,
-      "sl_pct": 1.3,
-      "tp": 174.0,
-      "tp_pct": 8.8,
-      "rr": 6.89,
-      "distance": 1.88,
-      "bos_age": 1,
-      "ob_size": 1.23,
-      "score": 94.62
+      "ticker": "IFII.JK",
+      "ob_range": "195-191",
+      "sl": 190,
+      "sl_pct": 2.1,
+      "tp": 206.0,
+      "tp_pct": 5.6,
+      "rr": 2.7,
+      "distance": 4.62,
+      "bos_age": 3,
+      "ob_size": 1.96,
+      "score": 80.25
     }
   ]
 }
