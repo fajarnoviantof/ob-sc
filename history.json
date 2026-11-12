@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13 00:34:15",
+  "updated_at": "2026-11-13 01:16:02",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,86 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-11-13 01:16:02",
+      "candidates": 5,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 46s",
+      "data": [
+        {
+          "ticker": "KJEN.JK",
+          "price": 117.0,
+          "spike_ratio": 3.01,
+          "hist_age": "+1",
+          "macd_hist": 1.19,
+          "value": "9.14B",
+          "ema20": 114.19,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "BMRI.JK",
+          "price": 3770.0,
+          "spike_ratio": 0.23,
+          "hist_age": "+3",
+          "macd_hist": 17.09,
+          "value": "252.46B",
+          "ema20": 3764.98,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "MINA.JK",
+          "price": 152.0,
+          "spike_ratio": 0.48,
+          "hist_age": "+3",
+          "macd_hist": 3.85,
+          "value": "79.95B",
+          "ema20": 151.27,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "BBRI.JK",
+          "price": 2860.0,
+          "spike_ratio": 0.56,
+          "hist_age": "+3",
+          "macd_hist": 16.41,
+          "value": "382.55B",
+          "ema20": 2850.82,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "DSSA.JK",
+          "price": 745.0,
+          "spike_ratio": 1.28,
+          "hist_age": "+3",
+          "macd_hist": 15.7,
+          "value": "133.58B",
+          "ema20": 739.75,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "17:00",
+      "cron": "5 10 * * 1-5",
+      "generated_at": "2026-11-13 01:14:15",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 42,
+      "duration_text": "4m 16s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "16:00",
