@@ -1,27 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-11-12 23:50:17",
-  "started_at": "2026-11-12 23:45:05",
-  "finished_at": "2026-11-12 23:50:17",
-  "duration_seconds": 312.5,
-  "duration_text": "5m 12s",
+  "generated_at": "2026-11-13 00:32:02",
+  "started_at": "2026-11-13 00:27:16",
+  "finished_at": "2026-11-13 00:32:02",
+  "duration_seconds": 286.1,
+  "duration_text": "4m 46s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "IFII.JK",
-      "ob_range": "195-191",
-      "sl": 190,
-      "sl_pct": 2.1,
-      "tp": 206.0,
-      "tp_pct": 5.6,
-      "rr": 2.7,
-      "distance": 4.62,
-      "bos_age": 3,
-      "ob_size": 1.96,
-      "score": 80.25
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
