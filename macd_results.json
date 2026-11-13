@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-11-13 16:18:17",
-  "started_at": "2026-11-13 16:16:22",
-  "finished_at": "2026-11-13 16:18:17",
-  "duration_seconds": 115.0,
-  "duration_text": "1m 55s",
+  "generated_at": "2026-11-13 17:50:29",
+  "started_at": "2026-11-13 17:49:12",
+  "finished_at": "2026-11-13 17:50:29",
+  "duration_seconds": 76.5,
+  "duration_text": "1m 16s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
@@ -16,7 +16,7 @@
       "spike_ratio": 1.64,
       "hist_age": "+1",
       "macd_hist": 2.67,
-      "value": "6.46B",
+      "value": "7.72B",
       "ema20": 735.14,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -27,7 +27,7 @@
       "spike_ratio": 0.78,
       "hist_age": "+2",
       "macd_hist": 1.0,
-      "value": "10.81B",
+      "value": "10.82B",
       "ema20": 81.35,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -49,7 +49,7 @@
       "spike_ratio": 0.91,
       "hist_age": "+2",
       "macd_hist": 2.57,
-      "value": "14.67B",
+      "value": "14.69B",
       "ema20": 376.12,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -60,7 +60,7 @@
       "spike_ratio": 1.5,
       "hist_age": "+2",
       "macd_hist": 0.46,
-      "value": "5.89B",
+      "value": "5.91B",
       "ema20": 21.04,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -71,7 +71,7 @@
       "spike_ratio": 2.79,
       "hist_age": "+2",
       "macd_hist": 1.33,
-      "value": "21.26B",
+      "value": "21.27B",
       "ema20": 85.33,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -82,7 +82,7 @@
       "spike_ratio": 7.87,
       "hist_age": "+2",
       "macd_hist": 2.2,
-      "value": "23.81B",
+      "value": "23.82B",
       "ema20": 80.07,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -104,7 +104,7 @@
       "spike_ratio": 0.72,
       "hist_age": "+3",
       "macd_hist": 5.33,
-      "value": "98.86B",
+      "value": "98.91B",
       "ema20": 255.71,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -115,7 +115,7 @@
       "spike_ratio": 1.23,
       "hist_age": "+3",
       "macd_hist": 9.85,
-      "value": "8.16B",
+      "value": "8.15B",
       "ema20": 773.66,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -126,7 +126,7 @@
       "spike_ratio": 1.38,
       "hist_age": "+3",
       "macd_hist": 1.9,
-      "value": "8.98B",
+      "value": "8.99B",
       "ema20": 298.57,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -148,7 +148,7 @@
       "spike_ratio": 0.64,
       "hist_age": "+4",
       "macd_hist": 18.09,
-      "value": "12.48B",
+      "value": "12.54B",
       "ema20": 559.42,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -159,7 +159,7 @@
       "spike_ratio": 1.71,
       "hist_age": "+4",
       "macd_hist": 75.65,
-      "value": "50.45B",
+      "value": "50.77B",
       "ema20": 6802.19,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -170,7 +170,7 @@
       "spike_ratio": 0.86,
       "hist_age": "+5",
       "macd_hist": 2.6,
-      "value": "9.65B",
+      "value": "9.71B",
       "ema20": 119.77,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -181,7 +181,7 @@
       "spike_ratio": 1.13,
       "hist_age": "+5",
       "macd_hist": 18.53,
-      "value": "50.63B",
+      "value": "50.64B",
       "ema20": 1006.26,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -192,7 +192,7 @@
       "spike_ratio": 1.25,
       "hist_age": "+5",
       "macd_hist": 8.8,
-      "value": "13.72B",
+      "value": "13.75B",
       "ema20": 706.75,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -203,7 +203,7 @@
       "spike_ratio": 1.45,
       "hist_age": "+5",
       "macd_hist": 20.42,
-      "value": "323.09B",
+      "value": "323.13B",
       "ema20": 335.74,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -225,7 +225,7 @@
       "spike_ratio": 1.73,
       "hist_age": "+5",
       "macd_hist": 7.37,
-      "value": "69.81B",
+      "value": "70.59B",
       "ema20": 337.72,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -236,7 +236,7 @@
       "spike_ratio": 1.76,
       "hist_age": "+5",
       "macd_hist": 3.02,
-      "value": "512.95B",
+      "value": "513.64B",
       "ema20": 130.94,
       "ema20_break_age": "+1",
       "quality": "MED"
@@ -247,7 +247,7 @@
       "spike_ratio": 1.91,
       "hist_age": "+5",
       "macd_hist": 1.67,
-      "value": "11.75B",
+      "value": "11.79B",
       "ema20": 83.02,
       "ema20_break_age": "+1",
       "quality": "HIGH"
@@ -258,7 +258,7 @@
       "spike_ratio": 3.92,
       "hist_age": "+5",
       "macd_hist": 19.95,
-      "value": "32.40B",
+      "value": "32.59B",
       "ema20": 365.34,
       "ema20_break_age": "+1",
       "quality": "LOW"
@@ -269,7 +269,7 @@
       "spike_ratio": 1.19,
       "hist_age": "+6",
       "macd_hist": 1.8,
-      "value": "6.80B",
+      "value": "6.79B",
       "ema20": 139.74,
       "ema20_break_age": "+1",
       "quality": "HIGH"
