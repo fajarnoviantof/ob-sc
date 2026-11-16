@@ -1,10 +1,10 @@
 {
   "status": "success",
-  "generated_at": "2026-11-16 23:57:51",
-  "started_at": "2026-11-16 23:53:26",
-  "finished_at": "2026-11-16 23:57:51",
-  "duration_seconds": 264.8,
-  "duration_text": "4m 24s",
+  "generated_at": "2026-11-17 01:24:56",
+  "started_at": "2026-11-17 01:20:28",
+  "finished_at": "2026-11-17 01:24:56",
+  "duration_seconds": 268.5,
+  "duration_text": "4m 28s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 41,
@@ -18,10 +18,10 @@
       "tp": 206.0,
       "tp_pct": 5.6,
       "rr": 2.7,
-      "distance": 3.59,
-      "bos_age": 5,
-      "ob_size": 1.98,
-      "score": 79.26
+      "distance": 4.62,
+      "bos_age": 4,
+      "ob_size": 1.96,
+      "score": 79.25
     }
   ]
 }
