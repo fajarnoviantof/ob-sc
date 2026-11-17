@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-18 00:40:02",
+  "updated_at": "2026-11-18 01:23:38",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,122 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-18 01:23:38",
+      "candidates": 7,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 37s",
+      "data": [
+        {
+          "ticker": "CTRA.JK",
+          "price": 535.0,
+          "spike_ratio": 1.45,
+          "hist_age": "+1",
+          "macd_hist": 0.67,
+          "value": "10.66B",
+          "ema20": 527.7,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "WBSA.JK",
+          "price": 418.0,
+          "spike_ratio": 2.55,
+          "hist_age": "+1",
+          "macd_hist": 4.45,
+          "value": "6.22B",
+          "ema20": 416.97,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "MSTI.JK",
+          "price": 1175.0,
+          "spike_ratio": 1.71,
+          "hist_age": "+2",
+          "macd_hist": 6.08,
+          "value": "5.64B",
+          "ema20": 1165.97,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "CLEO.JK",
+          "price": 388.0,
+          "spike_ratio": 1.99,
+          "hist_age": "+2",
+          "macd_hist": 1.74,
+          "value": "7.60B",
+          "ema20": 380.88,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "OPMS.JK",
+          "price": 79.0,
+          "spike_ratio": 3.47,
+          "hist_age": "+2",
+          "macd_hist": 0.96,
+          "value": "8.28B",
+          "ema20": 75.96,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "MGNA.JK",
+          "price": 162.0,
+          "spike_ratio": 6.1,
+          "hist_age": "+2",
+          "macd_hist": 2.88,
+          "value": "6.37B",
+          "ema20": 139.17,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "ICON.JK",
+          "price": 85.0,
+          "spike_ratio": 3.26,
+          "hist_age": "+4",
+          "macd_hist": 2.52,
+          "value": "5.71B",
+          "ema20": 82.19,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-18 01:22:00",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 11s",
+      "data": [
+        {
+          "ticker": "IFII.JK",
+          "ob_range": "195-191",
+          "sl": 190,
+          "sl_pct": 2.1,
+          "tp": 206.0,
+          "tp_pct": 5.6,
+          "rr": 2.7,
+          "distance": 3.59,
+          "bos_age": 5,
+          "ob_size": 1.98,
+          "score": 79.26
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "15:00",
