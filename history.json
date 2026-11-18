@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-19 00:16:13",
+  "updated_at": "2026-11-19 01:01:04",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,64 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-19 01:01:04",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 34s",
+      "data": [
+        {
+          "ticker": "DFAM.JK",
+          "price": 62.0,
+          "spike_ratio": 0.64,
+          "hist_age": "+3",
+          "macd_hist": 0.58,
+          "value": "5.77B",
+          "ema20": 61.23,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "DEFI.JK",
+          "price": 79.0,
+          "spike_ratio": 2.14,
+          "hist_age": "+5",
+          "macd_hist": 1.79,
+          "value": "8.19B",
+          "ema20": 74.2,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "KOCI.JK",
+          "price": 91.0,
+          "spike_ratio": 8.83,
+          "hist_age": "+5",
+          "macd_hist": 3.43,
+          "value": "17.46B",
+          "ema20": 71.71,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-19 00:58:28",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "5m 4s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "15:00",
