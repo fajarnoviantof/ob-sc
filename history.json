@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-18 02:12:32",
+  "updated_at": "2026-11-18 16:55:19",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,119 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-11-18 16:55:19",
+      "candidates": 8,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 23s",
+      "data": [
+        {
+          "ticker": "ALKA.JK",
+          "price": 5175.0,
+          "spike_ratio": 3.2,
+          "hist_age": "+1",
+          "macd_hist": 51.55,
+          "value": "8.98B",
+          "ema20": 4821.31,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ITMG.JK",
+          "price": 24575.0,
+          "spike_ratio": 0.63,
+          "hist_age": "+2",
+          "macd_hist": 24.14,
+          "value": "29.21B",
+          "ema20": 24548.31,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "HOPE.JK",
+          "price": 184.0,
+          "spike_ratio": 1.93,
+          "hist_age": "+3",
+          "macd_hist": 4.4,
+          "value": "5.94B",
+          "ema20": 175.89,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ERAA.JK",
+          "price": 520.0,
+          "spike_ratio": 0.69,
+          "hist_age": "+4",
+          "macd_hist": 4.13,
+          "value": "42.50B",
+          "ema20": 516.14,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        },
+        {
+          "ticker": "SOLA.JK",
+          "price": 79.0,
+          "spike_ratio": 7.0,
+          "hist_age": "+5",
+          "macd_hist": 2.03,
+          "value": "14.54B",
+          "ema20": 63.87,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "NZIA.JK",
+          "price": 117.0,
+          "spike_ratio": 10.25,
+          "hist_age": "+5",
+          "macd_hist": 4.24,
+          "value": "10.78B",
+          "ema20": 97.33,
+          "ema20_break_age": "+1",
+          "quality": "LOW"
+        },
+        {
+          "ticker": "PPRI.JK",
+          "price": 100.0,
+          "spike_ratio": 1.53,
+          "hist_age": "+6",
+          "macd_hist": 3.88,
+          "value": "17.64B",
+          "ema20": 96.79,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "EXCL.JK",
+          "price": 1715.0,
+          "spike_ratio": 4.29,
+          "hist_age": "+6",
+          "macd_hist": 36.6,
+          "value": "160.23B",
+          "ema20": 1653.59,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "09:00",
+      "cron": "5 2 * * 1-5",
+      "generated_at": "2026-11-18 16:53:54",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 41,
+      "duration_text": "3m 0s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "17:00",
