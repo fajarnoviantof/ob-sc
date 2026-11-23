@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-23 21:28:57",
+  "updated_at": "2026-11-24 01:03:11",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,78 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "13:00",
+      "cron": "5 6 * * 1-5",
+      "generated_at": "2026-11-24 01:03:11",
+      "candidates": 3,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 10s",
+      "data": [
+        {
+          "ticker": "CMNT.JK",
+          "price": 730.0,
+          "spike_ratio": 0.97,
+          "hist_age": "+1",
+          "macd_hist": 0.12,
+          "value": "5.47B",
+          "ema20": 727.52,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "PCAR.JK",
+          "price": 67.0,
+          "spike_ratio": 0.79,
+          "hist_age": "+2",
+          "macd_hist": 0.49,
+          "value": "5.91B",
+          "ema20": 64.61,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        },
+        {
+          "ticker": "ELSA.JK",
+          "price": 610.0,
+          "spike_ratio": 1.45,
+          "hist_age": "+6",
+          "macd_hist": 5.06,
+          "value": "10.90B",
+          "ema20": 598.67,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "13:00",
+      "cron": "5 6 * * 1-5",
+      "generated_at": "2026-11-24 01:01:00",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 43,
+      "duration_text": "4m 38s",
+      "data": [
+        {
+          "ticker": "MERI.JK",
+          "ob_range": "87-85",
+          "sl": 84,
+          "sl_pct": 2.3,
+          "tp": 92.0,
+          "tp_pct": 5.8,
+          "rr": 2.46,
+          "distance": 1.15,
+          "bos_age": 2,
+          "ob_size": 2.27,
+          "score": 84.49
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "11:00",
@@ -14830,119 +14902,6 @@
       "processed": 962,
       "errors": 41,
       "duration_text": "4m 14s",
-      "data": []
-    },
-    {
-      "scanner": "MACD",
-      "slot": "17:00",
-      "cron": "5 10 * * 1-5",
-      "generated_at": "2026-10-23 22:03:22",
-      "candidates": 8,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 0,
-      "duration_text": "2m 2s",
-      "data": [
-        {
-          "ticker": "TMPO.JK",
-          "price": 158.0,
-          "spike_ratio": 0.11,
-          "hist_age": "+1",
-          "macd_hist": 0.09,
-          "value": "9.64B",
-          "ema20": 157.49,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "TLKM.JK",
-          "price": 2240.0,
-          "spike_ratio": 0.56,
-          "hist_age": "+1",
-          "macd_hist": 9.72,
-          "value": "535.15B",
-          "ema20": 2221.28,
-          "ema20_break_age": "+1",
-          "quality": "HIGH"
-        },
-        {
-          "ticker": "LSIP.JK",
-          "price": 1470.0,
-          "spike_ratio": 0.78,
-          "hist_age": "+1",
-          "macd_hist": 1.8,
-          "value": "11.29B",
-          "ema20": 1453.26,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "CARE.JK",
-          "price": 370.0,
-          "spike_ratio": 0.95,
-          "hist_age": "+1",
-          "macd_hist": 1.47,
-          "value": "141.89B",
-          "ema20": 363.72,
-          "ema20_break_age": "+1",
-          "quality": "HIGH"
-        },
-        {
-          "ticker": "WMPP.JK",
-          "price": 26.0,
-          "spike_ratio": 2.46,
-          "hist_age": "+1",
-          "macd_hist": 0.11,
-          "value": "10.66B",
-          "ema20": 24.32,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "JSMR.JK",
-          "price": 2660.0,
-          "spike_ratio": 2.81,
-          "hist_age": "+1",
-          "macd_hist": 13.38,
-          "value": "28.66B",
-          "ema20": 2503.92,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        },
-        {
-          "ticker": "TOBA.JK",
-          "price": 520.0,
-          "spike_ratio": 5.65,
-          "hist_age": "+1",
-          "macd_hist": 5.5,
-          "value": "90.65B",
-          "ema20": 432.5,
-          "ema20_break_age": "+1",
-          "quality": "LOW"
-        },
-        {
-          "ticker": "WMUU.JK",
-          "price": 36.0,
-          "spike_ratio": 4.47,
-          "hist_age": "+2",
-          "macd_hist": 1.09,
-          "value": "9.03B",
-          "ema20": 31.21,
-          "ema20_break_age": "+1",
-          "quality": "MED"
-        }
-      ]
-    },
-    {
-      "scanner": "SMC OB",
-      "slot": "17:00",
-      "cron": "5 10 * * 1-5",
-      "generated_at": "2026-10-23 22:01:19",
-      "candidates": 0,
-      "total_tickers": 962,
-      "processed": 962,
-      "errors": 41,
-      "duration_text": "4m 55s",
       "data": []
     }
   ]
