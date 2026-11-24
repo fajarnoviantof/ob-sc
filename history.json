@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-24 19:09:55",
+  "updated_at": "2026-11-24 20:33:12",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,44 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-11-24 20:33:12",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 28s",
+      "data": []
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-11-24 20:31:43",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 43,
+      "duration_text": "2m 55s",
+      "data": [
+        {
+          "ticker": "SMGR.JK",
+          "ob_range": "1500-1470",
+          "sl": 1469,
+          "sl_pct": 2.0,
+          "tp": 1680.0,
+          "tp_pct": 12.0,
+          "rr": 5.88,
+          "distance": 5.0,
+          "bos_age": 7,
+          "ob_size": 1.9,
+          "score": 84.06
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
