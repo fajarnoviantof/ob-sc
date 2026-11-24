@@ -1,13 +1,25 @@
 {
   "status": "success",
-  "generated_at": "2026-11-24 21:50:26",
-  "started_at": "2026-11-24 21:48:26",
-  "finished_at": "2026-11-24 21:50:26",
-  "duration_seconds": 119.7,
-  "duration_text": "1m 59s",
+  "generated_at": "2026-11-25 00:37:07",
+  "started_at": "2026-11-25 00:34:47",
+  "finished_at": "2026-11-25 00:37:07",
+  "duration_seconds": 140.3,
+  "duration_text": "2m 20s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 0,
-  "data": []
+  "candidates": 1,
+  "data": [
+    {
+      "ticker": "ITMG.JK",
+      "price": 24500.0,
+      "spike_ratio": 0.62,
+      "hist_age": "+5",
+      "macd_hist": 32.78,
+      "value": "20.16B",
+      "ema20": 24495.16,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    }
+  ]
 }

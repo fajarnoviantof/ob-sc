@@ -1,27 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-11-24 21:48:26",
-  "started_at": "2026-11-24 21:44:02",
-  "finished_at": "2026-11-24 21:48:26",
-  "duration_seconds": 263.2,
-  "duration_text": "4m 23s",
+  "generated_at": "2026-11-25 00:34:46",
+  "started_at": "2026-11-25 00:30:05",
+  "finished_at": "2026-11-25 00:34:46",
+  "duration_seconds": 281.2,
+  "duration_text": "4m 41s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 43,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "SMGR.JK",
-      "ob_range": "1500-1470",
-      "sl": 1469,
-      "sl_pct": 2.0,
-      "tp": 1680.0,
-      "tp_pct": 12.0,
-      "rr": 5.88,
-      "distance": 5.0,
-      "bos_age": 7,
-      "ob_size": 1.9,
-      "score": 84.06
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
