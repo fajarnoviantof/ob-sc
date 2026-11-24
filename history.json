@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25 02:35:46",
+  "updated_at": "2026-11-25 03:10:06",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,42 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-25 03:10:06",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "2m 53s",
+      "data": [
+        {
+          "ticker": "ITMG.JK",
+          "price": 24500.0,
+          "spike_ratio": 0.62,
+          "hist_age": "+5",
+          "macd_hist": 32.78,
+          "value": "20.16B",
+          "ema20": 24495.16,
+          "ema20_break_age": "+1",
+          "quality": "HIGH"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "16:00",
+      "cron": "5 9 * * 1-5",
+      "generated_at": "2026-11-25 03:07:12",
+      "candidates": 0,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 43,
+      "duration_text": "5m 10s",
+      "data": []
+    },
     {
       "scanner": "MACD",
       "slot": "15:00",
