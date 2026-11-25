@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25 18:03:48",
+  "updated_at": "2026-11-25 19:31:16",
   "keep_days": 31,
   "slots": [
     "09:00",
@@ -12,6 +12,69 @@
     "17:00"
   ],
   "history": [
+    {
+      "scanner": "MACD",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-11-25 19:31:16",
+      "candidates": 1,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 0,
+      "duration_text": "1m 9s",
+      "data": [
+        {
+          "ticker": "KDTN.JK",
+          "price": 234.0,
+          "spike_ratio": 2.91,
+          "hist_age": "+5",
+          "macd_hist": 8.46,
+          "value": "6.30B",
+          "ema20": 224.05,
+          "ema20_break_age": "+1",
+          "quality": "MED"
+        }
+      ]
+    },
+    {
+      "scanner": "SMC OB",
+      "slot": "10:00",
+      "cron": "5 3 * * 1-5",
+      "generated_at": "2026-11-25 19:30:06",
+      "candidates": 2,
+      "total_tickers": 962,
+      "processed": 962,
+      "errors": 43,
+      "duration_text": "2m 12s",
+      "data": [
+        {
+          "ticker": "SMGR.JK",
+          "ob_range": "1500-1470",
+          "sl": 1469,
+          "sl_pct": 2.0,
+          "tp": 1680.0,
+          "tp_pct": 12.0,
+          "rr": 5.88,
+          "distance": 3.67,
+          "bos_age": 8,
+          "ob_size": 1.93,
+          "score": 84.36
+        },
+        {
+          "ticker": "BBNI.JK",
+          "ob_range": "3440-3370",
+          "sl": 3368,
+          "sl_pct": 2.1,
+          "tp": 3710.0,
+          "tp_pct": 7.8,
+          "rr": 3.77,
+          "distance": 4.07,
+          "bos_age": 8,
+          "ob_size": 1.96,
+          "score": 82.44
+        }
+      ]
+    },
     {
       "scanner": "MACD",
       "slot": "09:00",
