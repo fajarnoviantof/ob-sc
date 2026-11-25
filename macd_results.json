@@ -1,25 +1,13 @@
 {
   "status": "success",
-  "generated_at": "2026-11-25 21:14:39",
-  "started_at": "2026-11-25 21:12:14",
-  "finished_at": "2026-11-25 21:14:39",
-  "duration_seconds": 145.9,
-  "duration_text": "2m 25s",
+  "generated_at": "2026-11-26 00:10:04",
+  "started_at": "2026-11-26 00:08:28",
+  "finished_at": "2026-11-26 00:10:04",
+  "duration_seconds": 96.1,
+  "duration_text": "1m 36s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 1,
-  "data": [
-    {
-      "ticker": "KDTN.JK",
-      "price": 234.0,
-      "spike_ratio": 2.91,
-      "hist_age": "+5",
-      "macd_hist": 8.46,
-      "value": "6.30B",
-      "ema20": 224.05,
-      "ema20_break_age": "+1",
-      "quality": "MED"
-    }
-  ]
+  "candidates": 0,
+  "data": []
 }
