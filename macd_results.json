@@ -1,25 +1,25 @@
 {
   "status": "success",
-  "generated_at": "2026-11-25 03:42:20",
-  "started_at": "2026-11-25 03:40:20",
-  "finished_at": "2026-11-25 03:42:20",
-  "duration_seconds": 119.6,
-  "duration_text": "1m 59s",
+  "generated_at": "2026-11-25 18:03:48",
+  "started_at": "2026-11-25 18:01:55",
+  "finished_at": "2026-11-25 18:03:48",
+  "duration_seconds": 113.1,
+  "duration_text": "1m 53s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
   "candidates": 1,
   "data": [
     {
-      "ticker": "ITMG.JK",
-      "price": 24500.0,
-      "spike_ratio": 0.62,
+      "ticker": "KDTN.JK",
+      "price": 234.0,
+      "spike_ratio": 2.91,
       "hist_age": "+5",
-      "macd_hist": 32.78,
-      "value": "20.16B",
-      "ema20": 24495.16,
+      "macd_hist": 8.46,
+      "value": "6.30B",
+      "ema20": 224.05,
       "ema20_break_age": "+1",
-      "quality": "HIGH"
+      "quality": "MED"
     }
   ]
 }

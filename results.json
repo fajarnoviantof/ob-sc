@@ -1,13 +1,40 @@
 {
   "status": "success",
-  "generated_at": "2026-11-25 03:40:20",
-  "started_at": "2026-11-25 03:35:57",
-  "finished_at": "2026-11-25 03:40:20",
-  "duration_seconds": 262.6,
-  "duration_text": "4m 22s",
+  "generated_at": "2026-11-25 18:01:54",
+  "started_at": "2026-11-25 17:57:31",
+  "finished_at": "2026-11-25 18:01:54",
+  "duration_seconds": 263.4,
+  "duration_text": "4m 23s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 43,
-  "candidates": 0,
-  "data": []
+  "candidates": 2,
+  "data": [
+    {
+      "ticker": "SMGR.JK",
+      "ob_range": "1500-1470",
+      "sl": 1469,
+      "sl_pct": 2.0,
+      "tp": 1680.0,
+      "tp_pct": 12.0,
+      "rr": 5.88,
+      "distance": 3.67,
+      "bos_age": 8,
+      "ob_size": 1.93,
+      "score": 84.36
+    },
+    {
+      "ticker": "BBNI.JK",
+      "ob_range": "3440-3370",
+      "sl": 3368,
+      "sl_pct": 2.1,
+      "tp": 3710.0,
+      "tp_pct": 7.8,
+      "rr": 3.77,
+      "distance": 4.07,
+      "bos_age": 8,
+      "ob_size": 1.96,
+      "score": 82.44
+    }
+  ]
 }
