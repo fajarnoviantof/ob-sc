@@ -1,13 +1,47 @@
 {
   "status": "success",
-  "generated_at": "2026-11-26 03:00:06",
-  "started_at": "2026-11-26 02:58:00",
-  "finished_at": "2026-11-26 03:00:06",
-  "duration_seconds": 126.2,
-  "duration_text": "2m 6s",
+  "generated_at": "2026-11-26 17:36:39",
+  "started_at": "2026-11-26 17:35:40",
+  "finished_at": "2026-11-26 17:36:39",
+  "duration_seconds": 59.4,
+  "duration_text": "0m 59s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
-  "candidates": 0,
-  "data": []
+  "candidates": 3,
+  "data": [
+    {
+      "ticker": "AADI.JK",
+      "price": 10450.0,
+      "spike_ratio": 2.62,
+      "hist_age": "+1",
+      "macd_hist": 21.61,
+      "value": "418.50B",
+      "ema20": 10313.51,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "ADRO.JK",
+      "price": 2430.0,
+      "spike_ratio": 2.8,
+      "hist_age": "+1",
+      "macd_hist": 6.25,
+      "value": "91.12B",
+      "ema20": 2377.75,
+      "ema20_break_age": "+1",
+      "quality": "HIGH"
+    },
+    {
+      "ticker": "TOBA.JK",
+      "price": 412.0,
+      "spike_ratio": 7.0,
+      "hist_age": "+4",
+      "macd_hist": 5.27,
+      "value": "35.79B",
+      "ema20": 370.31,
+      "ema20_break_age": "+1",
+      "quality": "LOW"
+    }
+  ]
 }
