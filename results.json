@@ -1,28 +1,15 @@
 {
   "status": "success",
-  "generated_at": "2026-11-26 23:48:04",
-  "started_at": "2026-11-26 23:45:16",
-  "finished_at": "2026-11-26 23:48:04",
-  "duration_seconds": 168.3,
-  "duration_text": "2m 48s",
+  "generated_at": "2026-11-27 00:41:06",
+  "started_at": "2026-11-27 00:38:23",
+  "finished_at": "2026-11-27 00:41:06",
+  "duration_seconds": 162.9,
+  "duration_text": "2m 42s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 43,
-  "candidates": 4,
+  "candidates": 2,
   "data": [
-    {
-      "ticker": "DART.JK",
-      "ob_range": "119-115",
-      "sl": 114,
-      "sl_pct": 3.4,
-      "tp": 132.0,
-      "tp_pct": 10.9,
-      "rr": 3.18,
-      "distance": 1.68,
-      "bos_age": 1,
-      "ob_size": 3.31,
-      "score": 90.58
-    },
     {
       "ticker": "SMGR.JK",
       "ob_range": "1500-1470",
@@ -31,10 +18,10 @@
       "tp": 1680.0,
       "tp_pct": 12.0,
       "rr": 5.88,
-      "distance": 3.0,
-      "bos_age": 9,
-      "ob_size": 1.94,
-      "score": 84.02
+      "distance": 3.67,
+      "bos_age": 8,
+      "ob_size": 1.93,
+      "score": 84.36
     },
     {
       "ticker": "BBNI.JK",
@@ -45,22 +32,9 @@
       "tp_pct": 7.8,
       "rr": 3.77,
       "distance": 4.07,
-      "bos_age": 9,
+      "bos_age": 8,
       "ob_size": 1.96,
-      "score": 81.44
-    },
-    {
-      "ticker": "SMRA.JK",
-      "ob_range": "274-270",
-      "sl": 269,
-      "sl_pct": 1.5,
-      "tp": 286.0,
-      "tp_pct": 4.4,
-      "rr": 2.94,
-      "distance": 2.92,
-      "bos_age": 2,
-      "ob_size": 1.42,
-      "score": 80.31
+      "score": 82.44
     }
   ]
 }
