@@ -1,47 +1,47 @@
 {
   "status": "success",
-  "generated_at": "2026-11-27 23:40:06",
-  "started_at": "2026-11-27 23:37:28",
-  "finished_at": "2026-11-27 23:40:06",
-  "duration_seconds": 157.7,
-  "duration_text": "2m 37s",
+  "generated_at": "2026-11-28 00:26:17",
+  "started_at": "2026-11-28 00:24:41",
+  "finished_at": "2026-11-28 00:26:17",
+  "duration_seconds": 96.3,
+  "duration_text": "1m 36s",
   "total_tickers": 962,
   "processed": 962,
   "errors": 0,
   "candidates": 3,
   "data": [
     {
-      "ticker": "MARK.JK",
-      "price": 1005.0,
-      "spike_ratio": 2.39,
-      "hist_age": "+3",
-      "macd_hist": 8.68,
-      "value": "6.70B",
-      "ema20": 975.79,
+      "ticker": "AADI.JK",
+      "price": 10450.0,
+      "spike_ratio": 2.62,
+      "hist_age": "+1",
+      "macd_hist": 21.61,
+      "value": "381.85B",
+      "ema20": 10313.51,
+      "ema20_break_age": "+1",
+      "quality": "MED"
+    },
+    {
+      "ticker": "ADRO.JK",
+      "price": 2430.0,
+      "spike_ratio": 2.8,
+      "hist_age": "+1",
+      "macd_hist": 6.25,
+      "value": "88.72B",
+      "ema20": 2377.75,
       "ema20_break_age": "+1",
       "quality": "HIGH"
     },
     {
-      "ticker": "AKRA.JK",
-      "price": 1295.0,
-      "spike_ratio": 1.25,
+      "ticker": "TOBA.JK",
+      "price": 412.0,
+      "spike_ratio": 7.0,
       "hist_age": "+4",
-      "macd_hist": 4.02,
-      "value": "16.36B",
-      "ema20": 1294.62,
+      "macd_hist": 5.27,
+      "value": "35.79B",
+      "ema20": 370.31,
       "ema20_break_age": "+1",
-      "quality": "HIGH"
-    },
-    {
-      "ticker": "MEDC.JK",
-      "price": 1265.0,
-      "spike_ratio": 1.49,
-      "hist_age": "+4",
-      "macd_hist": 13.76,
-      "value": "52.12B",
-      "ema20": 1228.81,
-      "ema20_break_age": "+1",
-      "quality": "HIGH"
+      "quality": "LOW"
     }
   ]
 }
